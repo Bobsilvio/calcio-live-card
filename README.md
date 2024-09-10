@@ -17,29 +17,32 @@ Ricordatevi che il sensore prende il nome dal parametro che avete dato sull'inte
 quindi se avete dato 'Serie A' verrà chiamato 'seriea'
 
 
-  Classifica Card:
-    type: custom:calcio-live-classifica
-    entity: sensor.calciolive_seriea_classifica
-    
-    ![CLASSIFICA-CARD](images/card-classifica.png)
-  
-  Match Day Card:
-    type: custom:calcio-live-matches
-    entity: sensor.calciolive_seriea_match_day
-    
-    ![MATCH-CARD](images/card-match.png)
-    
-   Cannonieri Card:
-    type: custom:calcio-live-cannonieri
-    entity: sensor.calciolive_seriea_cannonieri
-    
-    ![CANNONIERI-CARD](images/card-cannonieri.png)
-
-   Competizioni Card: (è uguale per tutti i sensori che create)
-     type: custom:calcio-live-competizioni
-     entity: sensor.calciolive_seriea_competizioni
-   
-     ![COMPETIZIONI-CARD](images/card-competizioni.png)
+<table>
+  <tr>
+    <td>
+      <strong>Classifica Card:</strong><br>
+      <pre>type: custom:calcio-live-classifica<br>entity: sensor.calciolive_seriea_classifica</pre>
+    </td>
+    <td>
+      <strong>Match Day Card:</strong><br>
+      <pre>type: custom:calcio-live-matches<br>entity: sensor.calciolive_seriea_match_day</pre>
+    </td>
+    <td>
+      <strong>Cannonieri Card:</strong><br>
+      <pre>type: custom:calcio-live-cannonieri<br>entity: sensor.calciolive_seriea_cannonieri</pre>
+    </td>
+    <td>
+      <strong>Competizioni Card:</strong><br>
+      <pre>type: custom:calcio-live-competizioni<br>entity: sensor.calciolive_seriea_competizioni</pre>
+    </td>
+  </tr>
+  <tr>
+    <td><img src="images/card-classifica.png" alt="CLASSIFICA-CARD" width="200"></td>
+    <td><img src="images/card-match.png" alt="MATCH-CARD" width="200"></td>
+    <td><img src="images/card-cannonieri.png" alt="CANNONIERI-CARD" width="200"></td>
+    <td><img src="images/card-competizioni.png" alt="COMPETIZIONI-CARD" width="200"></td>
+  </tr>
+</table>
 
 ## Informazioni
 Questa è la mia prima card e sicuramente c'è tanto lavoro da fare, se vi piace, potete ricambiare seguendomi nei social:
