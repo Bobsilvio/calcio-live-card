@@ -5,7 +5,7 @@ L'integrazione "Calcio Live" per Home Assistant permette di ottenere informazion
 Queste sono le sue card, ho deciso di separare le card per dare modo di scegliere cosa usare e cosa no.
 
 ## Installazione tramite HACS
-1. Aggiungi il repository `https://github.com/tuo_username/calcio-live-card` in HACS.
+1. Aggiungi il repository `https://github.com/Bobsilvio/calcio-live-card` in HACS come DASHBOARD.
     ![INSTALLAZIONE](images/installazione-git.png)
     
 2. Cerca "Calcio Live Card" in HACS e installa l'integrazione.
