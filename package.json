@@ -148,5 +148,5 @@
     "yallist": "^3.1.1",
     "yocto-queue": "^1.1.1"
   },
-  "description": ""
+  "description": "## Descrizione L'integrazione \"Calcio Live\" per Home Assistant permette di ottenere informazioni in tempo reale sulle competizioni di calcio, come classifiche, cannonieri e giornate di campionato. Queste sono le sue card, ho deciso di separare le card per dare modo di scegliere cosa usare e cosa no."
 }

@@ -4,7 +4,9 @@ class CalcioLiveCannonieriCard extends LitElement {
   static get properties() {
     return {
       hass: {},
-      _config: {}
+      _config: {},
+      maxEventsVisible: { type: Number },
+      maxEventsTotal: { type: Number },
     };
   }
 
@@ -13,6 +15,8 @@ class CalcioLiveCannonieriCard extends LitElement {
       throw new Error("Devi definire un'entità");
     }
     this._config = config;
+    this.maxEventsVisible = config.max_events_visible ? config.max_events_visible : 5; // Impostazione predefinita
+    this.maxEventsTotal = config.max_events_total ? config.max_events_total : 10; // Impostazione predefinita
   }
 
   getCardSize() {
@@ -45,6 +49,9 @@ class CalcioLiveCannonieriCard extends LitElement {
     const competition = stateObj.attributes.competition || {};
     const season = stateObj.attributes.season || {};
 
+    const maxVisible = this.maxEventsVisible;
+    const maxTotal = this.maxEventsTotal;
+
     return html`
       <ha-card>
         <div class="card-header">
@@ -56,18 +63,19 @@ class CalcioLiveCannonieriCard extends LitElement {
           <hr class="separator">
         </div>
         <div class="card-content">
-          ${scorers.map((scorer, index) => html`
-            <div class="scorer">
-              <img class="team-logo" src="${scorer.team.crest}" alt="${scorer.team.name}" />
-              <div class="info">
-                <div class="player-name">${scorer.player.name} (${scorer.player.nationality})</div>
-                <div class="team-name">${scorer.team.name}</div>
-                <div class="goals">Goals: ${scorer.goals}</div>
-                <div class="played-matches">Partite giocate: ${scorer.playedMatches}</div>
+          <div class="scrollable-content">
+            ${scorers.slice(0, maxTotal).map((scorer, index) => html`
+              <div class="scorer ${index >= maxVisible ? 'hidden' : ''}">
+                <img class="team-logo" src="${scorer.team.crest}" alt="${scorer.team.name}" />
+                <div class="info">
+                  <div class="player-name">${scorer.player.name} (${scorer.player.nationality})</div>
+                  <div class="team-name">${scorer.team.name}</div>
+                  <div class="goals">Goals: ${scorer.goals}</div>
+                  <div class="played-matches">Partite giocate: ${scorer.playedMatches}</div>
+                </div>
               </div>
-            </div>
-            ${index < scorers.length - 1 ? html`<div class="separator"></div>` : ''}
-          `)}
+            `)}
+          </div>
         </div>
       </ha-card>
     `;
@@ -78,7 +86,7 @@ class CalcioLiveCannonieriCard extends LitElement {
       ha-card {
         padding: 16px;
         box-sizing: border-box;
-        width: 100%; /* Utilizza il 100% della larghezza disponibile */
+        width: 100%;
       }
       .card-header {
         text-align: center;
@@ -107,6 +115,7 @@ class CalcioLiveCannonieriCard extends LitElement {
       .scorer {
         display: flex;
         align-items: center;
+        justify-content: space-between;
         margin-bottom: 16px;
       }
       .team-logo {
@@ -118,6 +127,7 @@ class CalcioLiveCannonieriCard extends LitElement {
         display: flex;
         flex-direction: column;
         text-align: left;
+        flex-grow: 1;
       }
       .player-name {
         font-weight: bold;
@@ -143,6 +153,13 @@ class CalcioLiveCannonieriCard extends LitElement {
         background-color: #ddd;
         border: none;
         margin: 16px 0;
+      }
+      .scrollable-content {
+        max-height: 300px;
+        overflow-y: auto;
+      }
+      .hidden {
+        display: none;
       }
     `;
   }
