@@ -28,31 +28,48 @@ Per la card 'squadra' è possibile nascondere gli eventi finiti e vedere solo i 
       <strong>Squadra Card:</strong><br>
       <pre>type: custom:calcio-live-team-matches<br>entity: sensor.calciolive_seriea_classifica<br>max_events_visible: 5<br>max_events_total: 10<br>show_finished_matches: true</pre>
     </td>
+  </tr>
+  <tr>
+    <td><img src="images/card-squadra.gif" alt="SQUADRA-CARD" width="700"></td>
+  </tr>
+  <tr>
     <td>
       <strong>Classifica Card:</strong><br>
       <pre>type: custom:calcio-live-classifica<br>entity: sensor.calciolive_seriea_classifica<br>max_teams_visible: 5<br>hide_header: false</pre>
     </td>
+  </tr>
+  <tr>
+    <td><img src="images/card-classifica.gif" alt="CLASSIFICA-CARD" width="700"></td>
+  </tr>
+  <tr>
     <td>
       <strong>Match Day Card:</strong><br>
       <pre>type: custom:calcio-live-matches<br>entity: sensor.calciolive_seriea_match_day<br>max_events_visible: 5<br>max_events_total: 10<br>hide_header: false</pre>
     </td>
+  </tr>
+  <tr>
+    <td><img src="images/card-match.gif" alt="MATCH-CARD" width="700"></td>
+  </tr>
+  <tr>
     <td>
       <strong>Cannonieri Card:</strong><br>
       <pre>type: custom:calcio-live-cannonieri<br>entity: sensor.calciolive_seriea_cannonieri<br>max_events_visible: 5<br>max_events_total: 10<br>hide_header: false</pre>
     </td>
+  </tr>
+  <tr>
+    <td><img src="images/card-cannonieri.png" alt="CANNONIERI-CARD" width="700"></td>
+  </tr>
+  <tr>
     <td>
       <strong>Competizioni Card:</strong><br>
       <pre>type: custom:calcio-live-competizioni<br>entity: sensor.calciolive_seriea_competizioni<br>max_competitions_visible: 5<br>max_competitions_total: 13</pre>
     </td>
   </tr>
   <tr>
-    <td><img src="images/card-squadra.png" alt="SQUADRA-CARD" width="200"></td>
-    <td><img src="images/card-classifica.png" alt="CLASSIFICA-CARD" width="200"></td>
-    <td><img src="images/card-match.png" alt="MATCH-CARD" width="200"></td>
-    <td><img src="images/card-cannonieri.png" alt="CANNONIERI-CARD" width="200"></td>
-    <td><img src="images/card-competizioni.png" alt="COMPETIZIONI-CARD" width="200"></td>
+    <td><img src="images/card-competizioni.gif" alt="COMPETIZIONI-CARD" width="700"></td>
   </tr>
 </table>
+
 
 ## Informazioni
 Questa è la mia prima card e sicuramente c'è tanto lavoro da fare, se vi piace, potete ricambiare seguendomi nei social:
