@@ -46,7 +46,7 @@ Per la card 'squadra' è possibile nascondere gli eventi finiti e vedere solo i 
     </td>
   </tr>
   <tr>
-    <td><img src="images/card-squadra" alt="SQUADRA-CARD" width="200"></td>
+    <td><img src="images/card-squadra.png" alt="SQUADRA-CARD" width="200"></td>
     <td><img src="images/card-classifica.png" alt="CLASSIFICA-CARD" width="200"></td>
     <td><img src="images/card-match.png" alt="MATCH-CARD" width="200"></td>
     <td><img src="images/card-cannonieri.png" alt="CANNONIERI-CARD" width="200"></td>
