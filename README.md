@@ -22,6 +22,7 @@ vedro i primi 5 sempre e i restanti 5 tramite scroll.
 Inoltre per le card 'classifica', 'cannonieri', e 'matches' è possibile nascondere l'intestazione iniziale per ridurre ulteriormente la card.
 Per la card 'squadra' è possibile nascondere gli eventi finiti e vedere solo i futuri.
 
+<!-- Squadra Card -->
 <table>
   <tr>
     <td>
@@ -30,8 +31,12 @@ Per la card 'squadra' è possibile nascondere gli eventi finiti e vedere solo i 
     </td>
   </tr>
   <tr>
-    <td><img src="images/card-squadra.gif" alt="SQUADRA-CARD" width="700"></td>
+    <td><img src="images/card-squadra.gif" alt="SQUADRA-CARD" width="500"></td>
   </tr>
+</table>
+
+<!-- Classifica Card -->
+<table>
   <tr>
     <td>
       <strong>Classifica Card:</strong><br>
@@ -39,8 +44,12 @@ Per la card 'squadra' è possibile nascondere gli eventi finiti e vedere solo i 
     </td>
   </tr>
   <tr>
-    <td><img src="images/card-classifica.gif" alt="CLASSIFICA-CARD" width="700"></td>
+    <td><img src="images/card-classifica.gif" alt="CLASSIFICA-CARD" width="500"></td>
   </tr>
+</table>
+
+<!-- Match Day Card -->
+<table>
   <tr>
     <td>
       <strong>Match Day Card:</strong><br>
@@ -48,8 +57,12 @@ Per la card 'squadra' è possibile nascondere gli eventi finiti e vedere solo i 
     </td>
   </tr>
   <tr>
-    <td><img src="images/card-match.gif" alt="MATCH-CARD" width="700"></td>
+    <td><img src="images/card-match.gif" alt="MATCH-CARD" width="500"></td>
   </tr>
+</table>
+
+<!-- Cannonieri Card -->
+<table>
   <tr>
     <td>
       <strong>Cannonieri Card:</strong><br>
@@ -57,8 +70,12 @@ Per la card 'squadra' è possibile nascondere gli eventi finiti e vedere solo i 
     </td>
   </tr>
   <tr>
-    <td><img src="images/card-cannonieri.gif" alt="CANNONIERI-CARD" width="700"></td>
+    <td><img src="images/card-cannonieri.gif" alt="CANNONIERI-CARD" width="500"></td>
   </tr>
+</table>
+
+<!-- Competizioni Card -->
+<table>
   <tr>
     <td>
       <strong>Competizioni Card:</strong><br>
@@ -66,10 +83,9 @@ Per la card 'squadra' è possibile nascondere gli eventi finiti e vedere solo i 
     </td>
   </tr>
   <tr>
-    <td><img src="images/card-competizioni.gif" alt="COMPETIZIONI-CARD" width="700"></td>
+    <td><img src="images/card-competizioni.gif" alt="COMPETIZIONI-CARD" width="500"></td>
   </tr>
 </table>
-
 
 ## Informazioni
 Questa è la mia prima card e sicuramente c'è tanto lavoro da fare, se vi piace, potete ricambiare seguendomi nei social:
