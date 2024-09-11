@@ -57,7 +57,7 @@ Per la card 'squadra' è possibile nascondere gli eventi finiti e vedere solo i 
     </td>
   </tr>
   <tr>
-    <td><img src="images/card-cannonieri.png" alt="CANNONIERI-CARD" width="700"></td>
+    <td><img src="images/card-cannonieri.gif" alt="CANNONIERI-CARD" width="700"></td>
   </tr>
   <tr>
     <td>
