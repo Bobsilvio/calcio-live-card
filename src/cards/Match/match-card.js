@@ -4,7 +4,10 @@ class CalcioLiveMatchesCard extends LitElement {
   static get properties() {
     return {
       hass: {},
-      _config: {}
+      _config: {},
+      maxEventsVisible: { type: Number },
+      maxEventsTotal: { type: Number },
+      hideHeader: { type: Boolean },
     };
   }
 
@@ -13,10 +16,13 @@ class CalcioLiveMatchesCard extends LitElement {
       throw new Error("Devi definire un'entità");
     }
     this._config = config;
+    this.maxEventsVisible = config.max_events_visible ? config.max_events_visible : 3;
+    this.maxEventsTotal = config.max_events_total ? config.max_events_total : 10;
+    this.hideHeader = config.hide_header || false; // Aggiunta opzione per nascondere header
   }
 
   getCardSize() {
-    return 3; // Dimensione della card in base alla quantità di contenuto
+    return 3;
   }
 
   formatDate(dateString) {
@@ -46,19 +52,32 @@ class CalcioLiveMatchesCard extends LitElement {
     const resultSet = stateObj.attributes.result_set || {};
     const first = resultSet.first || '';
     const last = resultSet.last || '';
-    
+
+    const maxVisible = Math.min(this.maxEventsVisible, matches.length);
+    const maxTotal = Math.min(this.maxEventsTotal, matches.length);
+
+    const itemHeight = 90; // Altezza stimata per ogni riga della partita
+    const maxHeight = maxVisible * itemHeight;
+
     return html`
       <ha-card>
-        <div class="card-header">
-          <div class="competition-container">
-            <img class="competition-emblem" src="${competition.emblem}" alt="${competition.name}" />
-            <div class="competition-name">Giornata ${matchday}</div>
-            <div class="season-dates">Stagione: ${this.formatDate(first)} - ${this.formatDate(last)}</div>
-          </div>
-          <hr class="separator">
-        </div>
-        <div class="card-content">
-          ${matches.map((match, index) => html`
+        ${this.hideHeader
+          ? html``
+          : html`
+              <div class="card-header">
+                <div class="header-row">
+                  <img class="competition-emblem" src="${competition.emblem}" alt="${competition.name}" />
+                  <div class="competition-details">
+                    <div class="competition-name">Giornata ${matchday}</div>
+                    <div class="season-dates">Stagione: ${this.formatDate(first)} - ${this.formatDate(last)}</div>
+                  </div>
+                </div>
+                <hr class="separator" />
+              </div>
+            `}
+        <!-- Imposta max-height esatto per evitare che parte della sesta partita venga mostrata -->
+        <div class="scroll-content" style="max-height: ${maxHeight}px; overflow-y: auto;">
+          ${matches.slice(0, maxTotal).map((match, index) => html`
             <div class="match">
               <img class="team-logo" src="${match.homeTeam.crest}" alt="${match.homeTeam.name}" />
               <div class="match-info">
@@ -80,48 +99,45 @@ class CalcioLiveMatchesCard extends LitElement {
       ha-card {
         padding: 16px;
         box-sizing: border-box;
-        width: 100%; /* Utilizza il 100% della larghezza disponibile */
+        width: 100%;
       }
       .card-header {
-        display: flex;
-        flex-direction: column;
-        align-items: center; /* Centra il contenuto orizzontalmente */
-        margin-bottom: 16px;
+        margin-bottom: 2px;
       }
-      .competition-container {
+      .header-row {
         display: flex;
-        flex-direction: column;
-        align-items: center; /* Centra il logo e il testo */
-        text-align: center;  /* Centra il testo sotto il logo */
+        align-items: center;
+        justify-content: flex-start;
       }
       .competition-emblem {
-        width: 80px; /* Usa le stesse dimensioni del logo */
-        height: 80px;
-        margin-bottom: 8px; /* Usa lo stesso margine del logo */
+        width: 60px;
+        height: 60px;
+        margin-right: 16px;
+      }
+      .competition-details {
+        display: flex;
+        flex-direction: column;
       }
       .competition-name {
         font-weight: bold;
-        font-size: 1.2em; /* Usa lo stesso stile del testo */
-        margin-bottom: 4px;
+        font-size: 1.2em;
       }
       .season-dates {
         color: var(--secondary-text-color);
         font-size: 14px;
-        margin-bottom: 8px; /* Riduci il margine inferiore per allineare il separatore */
       }
-      .card-content {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
+      .scroll-content {
+        overflow-y: auto;
       }
       .match {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        margin-bottom: 8px;
       }
       .team-logo {
-        width: 80px;
-        height: 80px;
+        width: 65px;
+        height: 65px;
       }
       .match-info {
         flex: 1;
@@ -129,7 +145,7 @@ class CalcioLiveMatchesCard extends LitElement {
       }
       .team-name {
         font-weight: bold;
-        font-size: 1em;
+        font-size: 16px;
         margin: 4px 0;
       }
       .match-date {
@@ -141,7 +157,7 @@ class CalcioLiveMatchesCard extends LitElement {
         height: 1px;
         background-color: #ddd;
         border: none;
-        margin: 8px 0; /* Riduci il margine superiore per allineare il separatore */
+        margin: 8px 0;
       }
     `;
   }

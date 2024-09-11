@@ -4,7 +4,9 @@ class CalcioLiveStandingsCard extends LitElement {
   static get properties() {
     return {
       hass: {},
-      _config: {}
+      _config: {},
+      maxTeamsVisible: { type: Number },
+      hideHeader: { type: Boolean },
     };
   }
 
@@ -13,10 +15,12 @@ class CalcioLiveStandingsCard extends LitElement {
       throw new Error("Devi definire un'entità");
     }
     this._config = config;
+    this.maxTeamsVisible = config.max_teams_visible ? config.max_teams_visible : 10; // Impostazione predefinita
+    this.hideHeader = config.hide_header || false; // Aggiunta opzione per nascondere header
   }
 
   getCardSize() {
-    return 3; // Dimensione della card in base alla quantità di contenuto
+    return 3;
   }
 
   render() {
@@ -35,30 +39,38 @@ class CalcioLiveStandingsCard extends LitElement {
     const competition = stateObj.attributes.competition || {};
     const season = stateObj.attributes.season || {};
 
+    const maxVisible = Math.min(this.maxTeamsVisible, standings.length);
+
     return html`
       <ha-card>
-        <div class="card-header">
-          <div class="competition-container">
-            <img class="competition-emblem" src="${competition.emblem}" alt="${competition.name}" />
-            <div class="competition-name">Classifica</div>
-            <div class="season-dates">Stagione: ${this.formatDate(season.startDate)} - ${this.formatDate(season.endDate)}</div>
-          </div>
-          <hr class="separator">
-        </div>
+        ${this.hideHeader
+          ? html``
+          : html`
+              <div class="card-header">
+                <div class="header-row">
+                  <img class="competition-emblem" src="${competition.emblem}" alt="${competition.name}" />
+                  <div class="competition-details">
+                    <div class="competition-name">Classifica</div>
+                    <div class="season-dates">Stagione: ${this.formatDate(season.startDate)} - ${this.formatDate(season.endDate)}</div>
+                  </div>
+                </div>
+                <hr class="separator" />
+              </div>
+            `}
         <div class="card-content">
-          <div class="table-container">
+          <div class="table-container" style="max-height: ${maxVisible * 50}px; overflow-y: auto;">
             <table>
               <thead>
                 <tr>
-                  <th style="width: 10%;">Pos</th>
-                  <th style="width: 25%;">Squadra</th>
+                  <th style="width: 6%;">Pos</th>
+                  <th style="width: 24%;">Squadra</th>
                   <th style="width: 10%;">Punti</th>
-                  <th style="width: 8%;">V</th>
-                  <th style="width: 8%;">P</th>
-                  <th style="width: 8%;">S</th>
-                  <th style="width: 8%;">GF</th>
-                  <th style="width: 8%;">GS</th>
-                  <th style="width: 10%;">+/-</th>
+                  <th style="width: 6%;">V</th>
+                  <th style="width: 6%;">P</th>
+                  <th style="width: 6%;">S</th>
+                  <th style="width: 6%;">GF</th>
+                  <th style="width: 6%;">GS</th>
+                  <th style="width: 6%;">+/-</th>
                 </tr>
               </thead>
               <tbody>
@@ -86,7 +98,6 @@ class CalcioLiveStandingsCard extends LitElement {
     `;
   }
 
-  // Funzione per formattare la data in formato italiano
   formatDate(dateString) {
     const options = {
       day: '2-digit',
@@ -101,29 +112,28 @@ class CalcioLiveStandingsCard extends LitElement {
       ha-card {
         padding: 16px;
         box-sizing: border-box;
-        width: 100%; /* Utilizza il 100% della larghezza disponibile */
+        width: 100%;
       }
       .card-header {
-        display: flex;
-        flex-direction: column;
-        align-items: center; /* Centra il contenuto orizzontalmente */
-        margin-bottom: 16px;
+        margin-bottom: 2px;
       }
-      .competition-container {
+      .header-row {
         display: flex;
-        flex-direction: column;
-        align-items: center; /* Centra il logo e il testo */
-        text-align: center;  /* Centra il testo sotto il logo */
+        align-items: center;
+        justify-content: flex-start;
       }
       .competition-emblem {
-        width: 80px; /* Usa le stesse dimensioni del logo */
-        height: 80px;
-        margin-bottom: 8px; /* Usa lo stesso margine del logo */
+        width: 60px;
+        height: 60px;
+        margin-right: 16px;
+      }
+      .competition-details {
+        display: flex;
+        flex-direction: column;
       }
       .competition-name {
         font-weight: bold;
-        font-size: 1.2em; /* Usa lo stesso stile del testo */
-        margin-bottom: 4px;
+        font-size: 1.2em;
       }
       .season-dates {
         color: var(--secondary-text-color);
@@ -136,7 +146,7 @@ class CalcioLiveStandingsCard extends LitElement {
       table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 16px;
+        margin-top: 2px; 
       }
       th, td {
         padding: 8px;
@@ -162,7 +172,7 @@ class CalcioLiveStandingsCard extends LitElement {
         height: 1px;
         background-color: #ddd;
         border: none;
-        margin: 16px 0;
+        margin: 2px 0;
       }
     `;
   }

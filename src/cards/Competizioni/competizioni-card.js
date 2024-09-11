@@ -4,7 +4,9 @@ class CalcioLiveCompetizioniCard extends LitElement {
   static get properties() {
     return {
       hass: {},
-      _config: {}
+      _config: {},
+      maxCompetitionsVisible: { type: Number },
+      maxCompetitionsTotal: { type: Number },
     };
   }
 
@@ -13,10 +15,12 @@ class CalcioLiveCompetizioniCard extends LitElement {
       throw new Error("Devi definire un'entità");
     }
     this._config = config;
+    this.maxCompetitionsVisible = config.max_competitions_visible ? config.max_competitions_visible : 5; // Default
+    this.maxCompetitionsTotal = config.max_competitions_total ? config.max_competitions_total : 10; // Default
   }
 
   getCardSize() {
-    return 3; // Puoi cambiare questa dimensione in base al contenuto della tua scheda
+    return 3;
   }
 
   render() {
@@ -32,12 +36,18 @@ class CalcioLiveCompetizioniCard extends LitElement {
     }
 
     const competitions = stateObj.attributes.competitions || [];
+    const totalCompetitions = Math.min(this.maxCompetitionsTotal, competitions.length);  // Limita il numero totale di competizioni
+    const visibleCompetitions = Math.min(this.maxCompetitionsVisible, totalCompetitions);  // Limita il numero visibile
+
+    // Calcola l'altezza massima esatta per evitare overflow
+    const itemHeight = 120; // Altezza stimata per ogni competizione
+    const maxHeight = visibleCompetitions * itemHeight;
 
     return html`
       <ha-card>
-        <div class="card-content">
+        <div class="card-content" style="max-height: ${maxHeight}px; overflow-y: auto;">
           <h1>Competizioni</h1>
-          ${competitions.map((competition, index) => html`
+          ${competitions.slice(0, totalCompetitions).map((competition, index) => html`
             <div class="competition">
               <img class="competition-emblem" src="${competition.emblem}" alt="${competition.name}" />
               <div class="info">
@@ -49,7 +59,7 @@ class CalcioLiveCompetizioniCard extends LitElement {
                 <div class="current-matchday">Giornata attuale: ${competition.currentSeason.currentMatchday}</div>
               </div>
             </div>
-            ${index < competitions.length - 1 ? html`<div class="separator"></div>` : ''}
+            ${index < totalCompetitions - 1 ? html`<div class="separator"></div>` : ''}
           `)}
         </div>
       </ha-card>

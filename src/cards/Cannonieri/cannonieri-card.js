@@ -7,6 +7,7 @@ class CalcioLiveCannonieriCard extends LitElement {
       _config: {},
       maxEventsVisible: { type: Number },
       maxEventsTotal: { type: Number },
+      hideHeader: { type: Boolean },
     };
   }
 
@@ -15,15 +16,15 @@ class CalcioLiveCannonieriCard extends LitElement {
       throw new Error("Devi definire un'entità");
     }
     this._config = config;
-    this.maxEventsVisible = config.max_events_visible ? config.max_events_visible : 5; // Impostazione predefinita
+    this.maxEventsVisible = config.max_events_visible ? config.max_events_visible : 3; // Impostazione predefinita
     this.maxEventsTotal = config.max_events_total ? config.max_events_total : 10; // Impostazione predefinita
+    this.hideHeader = config.hide_header || false; // Aggiunta opzione per nascondere l'intestazione
   }
 
   getCardSize() {
-    return 3; // Dimensione della card in base alla quantità di contenuto
+    return 3;
   }
 
-  // Funzione per formattare la data in formato italiano
   formatDate(dateString) {
     const options = {
       day: '2-digit',
@@ -49,33 +50,42 @@ class CalcioLiveCannonieriCard extends LitElement {
     const competition = stateObj.attributes.competition || {};
     const season = stateObj.attributes.season || {};
 
-    const maxVisible = this.maxEventsVisible;
-    const maxTotal = this.maxEventsTotal;
+    const maxVisible = Math.min(this.maxEventsVisible, scorers.length);
+    const maxTotal = Math.min(this.maxEventsTotal, scorers.length);
+
+    // Calcola l'altezza massima esatta per evitare overflow
+    const itemHeight = 100; // Altezza stimata per ogni cannoniere
+    const maxHeight = maxVisible * itemHeight;
 
     return html`
       <ha-card>
-        <div class="card-header">
-          <div class="competition-container">
-            <img class="competition-emblem" src="${competition.emblem}" alt="${competition.name}" />
-            <div class="competition-name">Cannonieri</div>
-            <div class="season-dates">Stagione: ${this.formatDate(season.startDate)} - ${this.formatDate(season.endDate)}</div>
-          </div>
-          <hr class="separator">
-        </div>
-        <div class="card-content">
-          <div class="scrollable-content">
-            ${scorers.slice(0, maxTotal).map((scorer, index) => html`
-              <div class="scorer ${index >= maxVisible ? 'hidden' : ''}">
-                <img class="team-logo" src="${scorer.team.crest}" alt="${scorer.team.name}" />
-                <div class="info">
-                  <div class="player-name">${scorer.player.name} (${scorer.player.nationality})</div>
-                  <div class="team-name">${scorer.team.name}</div>
-                  <div class="goals">Goals: ${scorer.goals}</div>
-                  <div class="played-matches">Partite giocate: ${scorer.playedMatches}</div>
+        ${this.hideHeader
+          ? html``
+          : html`
+              <div class="card-header">
+                <div class="header-row">
+                  <img class="competition-emblem" src="${competition.emblem}" alt="${competition.name}" />
+                  <div class="competition-details">
+                    <div class="competition-name">Cannonieri</div>
+                    <div class="season-dates">Stagione: ${this.formatDate(season.startDate)} - ${this.formatDate(season.endDate)}</div>
+                  </div>
                 </div>
+                <hr class="separator" />
               </div>
-            `)}
-          </div>
+            `}
+        <!-- Sezione scrollabile -->
+        <div class="scroll-content" style="max-height: ${maxHeight}px; overflow-y: auto;">
+          ${scorers.slice(0, maxTotal).map((scorer) => html`
+            <div class="scorer">
+              <img class="team-logo" src="${scorer.team.crest}" alt="${scorer.team.name}" />
+              <div class="info">
+                <div class="player-name">${scorer.player.name} (${scorer.player.nationality})</div>
+                <div class="team-name">${scorer.team.name}</div>
+                <div class="goals">Goals: ${scorer.goals}</div>
+                <div class="played-matches">Partite giocate: ${scorer.playedMatches}</div>
+              </div>
+            </div>
+          `)}
         </div>
       </ha-card>
     `;
@@ -89,45 +99,47 @@ class CalcioLiveCannonieriCard extends LitElement {
         width: 100%;
       }
       .card-header {
-        text-align: center;
-        margin-bottom: 16px;
+        margin-bottom: 2px;
       }
-      .competition-container {
+      .header-row {
         display: flex;
-        flex-direction: column;
         align-items: center;
-        margin-bottom: 16px;
+        justify-content: flex-start;
       }
       .competition-emblem {
-        width: 80px;
-        height: 80px;
-        margin-bottom: 8px;
+        width: 60px;
+        height: 60px;
+        margin-right: 16px;
+      }
+      .competition-details {
+        display: flex;
+        flex-direction: column;
       }
       .competition-name {
         font-weight: bold;
         font-size: 1.2em;
-        margin-bottom: 4px;
       }
       .season-dates {
         color: var(--secondary-text-color);
         font-size: 14px;
       }
+      .scroll-content {
+        overflow-y: auto;
+      }
       .scorer {
         display: flex;
         align-items: center;
-        justify-content: space-between;
         margin-bottom: 16px;
       }
       .team-logo {
-        width: 48px;
-        height: 48px;
+        width: 60px;
+        height: 60px;
         margin-right: 16px;
       }
       .info {
         display: flex;
         flex-direction: column;
         text-align: left;
-        flex-grow: 1;
       }
       .player-name {
         font-weight: bold;
@@ -152,14 +164,7 @@ class CalcioLiveCannonieriCard extends LitElement {
         height: 1px;
         background-color: #ddd;
         border: none;
-        margin: 16px 0;
-      }
-      .scrollable-content {
-        max-height: 300px;
-        overflow-y: auto;
-      }
-      .hidden {
-        display: none;
+        margin: 2px 0;
       }
     `;
   }

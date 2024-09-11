@@ -21,14 +21,6 @@ class CalcioLiveTeamMatchesCard extends LitElement {
     this.showFinishedMatches = config.show_finished_matches !== undefined ? config.show_finished_matches : true;
   }
 
-  static getConfigElement() {
-    return document.createElement('calcio-live-team-matches-editor');
-  }
-
-  static getStubConfig() {
-    return { max_events_visible: 3, max_events_total: 10, show_finished_matches: true };
-  }
-
   getCardSize() {
     return 3;
   }
@@ -40,6 +32,28 @@ class CalcioLiveTeamMatchesCard extends LitElement {
       year: 'numeric',
     };
     return new Intl.DateTimeFormat('it-IT', options).format(new Date(dateString));
+  }
+
+  findMainTeam(matches) {
+    const teamFrequency = {};
+    const matchesToCheck = matches.slice(0, 3);
+
+    matchesToCheck.forEach((match) => {
+      const homeTeam = match.home_team;
+      const awayTeam = match.away_team;
+
+      teamFrequency[homeTeam] = (teamFrequency[homeTeam] || 0) + 1;
+      teamFrequency[awayTeam] = (teamFrequency[awayTeam] || 0) + 1;
+    });
+
+    let mainTeam = Object.keys(teamFrequency).reduce((a, b) => teamFrequency[a] > teamFrequency[b] ? a : b);
+
+    return mainTeam;
+  }
+
+  findTeamCrest(matches, teamName) {
+    const match = matches.find((match) => match.home_team === teamName || match.away_team === teamName);
+    return match ? (match.home_team === teamName ? match.home_team_crest : match.away_team_crest) : "";
   }
 
   render() {
@@ -57,36 +71,56 @@ class CalcioLiveTeamMatchesCard extends LitElement {
     const matches = stateObj.attributes.matches || [];
     const firstMatchDate = stateObj.attributes.first_match_date || '';
     const lastMatchDate = stateObj.attributes.last_match_date || '';
-
-    const maxVisible = Math.min(this.maxEventsVisible, matches.length);
-    const maxTotal = Math.min(this.maxEventsTotal, matches.length);
+    const wins = stateObj.attributes.wins || 0;
+    const losses = stateObj.attributes.losses || 0;
+    const draws = stateObj.attributes.draws || 0;
 
     const filteredMatches = matches.filter(match => {
       return this.showFinishedMatches || match.status !== 'FINISHED';
     });
 
+    const totalMatchesToShow = Math.min(this.maxEventsTotal, filteredMatches.length);
+    const matchesToDisplay = filteredMatches.slice(0, totalMatchesToShow);
+
+    const scrollHeight = this.maxEventsVisible * 95;
+
     return html`
       <ha-card>
-        <div class="card-header">
-          <img class="team-logo" src="${filteredMatches.length ? filteredMatches[0].home_team_crest : ''}" alt="${filteredMatches.length ? filteredMatches[0].home_team : ''}" />
-          <div class="season-dates">
-            Stagione: ${this.formatDate(firstMatchDate)} - ${this.formatDate(lastMatchDate)}
+        <!-- Logo e nome della squadra che appare più spesso -->
+        <div class="team-header">
+          <img class="team-logo" src="${this.findTeamCrest(matches, this.findMainTeam(filteredMatches))}" alt="${this.findMainTeam(filteredMatches)}" />
+          <div class="team-info">
+            <div class="team-name">${this.findMainTeam(filteredMatches)}</div>
+            <div class="team-stats">
+              Vittorie: ${wins} | Pareggi: ${draws} | Sconfitte: ${losses}
+            </div>
+            <div class="season-dates">
+              Stagione: ${this.formatDate(firstMatchDate)} - ${this.formatDate(lastMatchDate)}
+            </div>
           </div>
         </div>
-        <div class="scroll-content" style="max-height: ${maxVisible * 100}px; overflow-y: auto;">
-          ${filteredMatches.slice(0, maxTotal).map((match) => html`
-            <div class="match">
-              <img class="team-logo" src="${match.home_team_crest}" alt="${match.home_team}" />
-              <div class="match-info">
-                <div class="team-name">${match.home_team} vs ${match.away_team}</div>
-                <div class="match-date">
-                  ${this.formatDate(match.utc_date)} 
-                  ${match.status === 'FINISHED' 
-                    ? html`<span class="match-result">${match.score_full_time.home} - ${match.score_full_time.away}</span>`
-                    : html`<span class="match-upcoming">${match.status}</span>`}
+        <hr /> <!-- Linea separatrice sotto le informazioni della stagione -->
+
+        <!-- Lista delle partite con scroll -->
+        <div class="scroll-content" style="max-height: ${scrollHeight}px; overflow-y: auto;">
+          ${matchesToDisplay.map((match) => html`
+            <div>
+              <div class="match">
+                <img class="team-logo" src="${match.home_team_crest}" alt="${match.home_team}" />
+                <div class="match-info">
+                  <div class="team-name">${match.home_team}</div>
+                  <div class="match-date">
+                    ${this.formatDate(match.utc_date)} 
+                    ${match.status === 'FINISHED' 
+                      ? html`<span class="match-result">${match.score_full_time.home} - ${match.score_full_time.away}</span>`
+                      : html`<span class="match-upcoming">${match.status}</span>`}
+                  </div>
+                  <div class="match-type">${match.competition_name}</div> <!-- Tipo di partita -->
+                  <div class="team-name">${match.away_team}</div>
                 </div>
+                <img class="team-logo" src="${match.away_team_crest}" alt="${match.away_team}" />
               </div>
-              <img class="team-logo" src="${match.away_team_crest}" alt="${match.away_team}" />
+              <hr class="separator-line" /> <!-- Linea tra le partite -->
             </div>
           `)}
         </div>
@@ -100,19 +134,38 @@ class CalcioLiveTeamMatchesCard extends LitElement {
         padding: 16px;
         box-sizing: border-box;
       }
-      .card-header {
+      .team-header {
         display: flex;
-        flex-direction: column;
         align-items: center;
         margin-bottom: 16px;
       }
       .team-logo {
-        width: 80px;
-        height: 80px;
+        width: 60px;
+        height: 60px;
+        margin-right: 16px;
       }
-      .season-dates {
+      .team-info {
+        display: flex;
+        flex-direction: column;
+      }
+      .team-name {
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+      }
+      .team-stats {
         font-size: 14px;
         color: var(--secondary-text-color);
+        margin-top: 8px;
+      }
+      .season-dates {
+        font-size: 12px;
+        color: var(--secondary-text-color);
+      }
+      hr {
+        border: 0;
+        border-top: 1px solid var(--divider-color);
+        margin: 16px 0;
       }
       .scroll-content {
         overflow-y: auto;
@@ -129,6 +182,7 @@ class CalcioLiveTeamMatchesCard extends LitElement {
       }
       .team-name {
         font-weight: bold;
+        font-size: 14px;
       }
       .match-date {
         font-size: 12px;
@@ -141,6 +195,16 @@ class CalcioLiveTeamMatchesCard extends LitElement {
       .match-upcoming {
         color: orange;
         font-weight: bold;
+      }
+      .match-type {
+        font-size: 12px;
+        font-style: italic;
+        color: var(--secondary-text-color);
+      }
+      .separator-line {
+        border: none;
+        border-top: 1px solid var(--divider-color);
+        margin: 8px 0;
       }
     `;
   }
