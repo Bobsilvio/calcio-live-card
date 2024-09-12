@@ -71,10 +71,11 @@ class CalcioLiveTeamMatchesCard extends LitElement {
     const matches = stateObj.attributes.matches || [];
     const firstMatchDate = stateObj.attributes.first_match_date || '';
     const lastMatchDate = stateObj.attributes.last_match_date || '';
-    const wins = stateObj.attributes.wins || 0;
-    const losses = stateObj.attributes.losses || 0;
-    const draws = stateObj.attributes.draws || 0;
-
+    const wins = stateObj.attributes.wins || 0; // dato non funzionante
+    const losses = stateObj.attributes.losses || 0; // dato non funzionante
+    const draws = stateObj.attributes.draws || 0; // dato non funzionante
+    const played = stateObj.attributes.played || 0;
+    
     const filteredMatches = matches.filter(match => {
       return this.showFinishedMatches || match.status !== 'FINISHED';
     });
@@ -92,7 +93,7 @@ class CalcioLiveTeamMatchesCard extends LitElement {
           <div class="team-info">
             <div class="team-name">${this.findMainTeam(filteredMatches)}</div>
             <div class="team-stats">
-              Vittorie: ${wins} | Pareggi: ${draws} | Sconfitte: ${losses}
+              Giocate: ${played}
             </div>
             <div class="season-dates">
               Stagione: ${this.formatDate(firstMatchDate)} - ${this.formatDate(lastMatchDate)}
