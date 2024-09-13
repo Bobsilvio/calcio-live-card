@@ -18,20 +18,49 @@ class CalcioLiveMatchesCard extends LitElement {
     this._config = config;
     this.maxEventsVisible = config.max_events_visible ? config.max_events_visible : 3;
     this.maxEventsTotal = config.max_events_total ? config.max_events_total : 10;
-    this.hideHeader = config.hide_header || false; // Aggiunta opzione per nascondere header
+    this.hideHeader = config.hide_header || false;
   }
 
   getCardSize() {
     return 3;
   }
 
-  formatDate(dateString) {
-    const options = {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    };
-    return new Intl.DateTimeFormat('it-IT', options).format(new Date(dateString));
+  formatSimpleDate(dateString) {
+    if (!dateString) {
+      return 'None';
+    }
+    const [year, month, day] = dateString.split('-');
+    if (!year || !month || !day) {
+      return 'Data non valida';
+    }
+    return `${day}/${month}/${year}`;
+  }
+
+  formatDateOrDay(dateString) {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return 'Data non valida';
+    }
+
+    const now = new Date();
+    const diffTime = date.getTime() - now.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays >= 0 && diffDays <= 6) {
+      const daysOfWeek = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
+      return daysOfWeek[date.getDay()];
+    }
+
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    return new Intl.DateTimeFormat('it-IT', options).format(date);
+  }
+
+  formatTime(dateString) {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return 'Orario non disponibile';
+    }
+    return date.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
   }
 
   render() {
@@ -48,15 +77,15 @@ class CalcioLiveMatchesCard extends LitElement {
 
     const matches = stateObj.attributes.matches || [];
     const competition = stateObj.attributes.competition || {};
-    const matchday = stateObj.attributes.matchday || 0;
-    const resultSet = stateObj.attributes.result_set || {};
+    const matchday = stateObj.attributes.matches[0].season.currentMatchday || 0;
+    const resultSet = stateObj.attributes.resultSet || {};
     const first = resultSet.first || '';
     const last = resultSet.last || '';
 
     const maxVisible = Math.min(this.maxEventsVisible, matches.length);
     const maxTotal = Math.min(this.maxEventsTotal, matches.length);
 
-    const itemHeight = 90; // Altezza stimata per ogni riga della partita
+    const itemHeight = 125;
     const maxHeight = maxVisible * itemHeight;
 
     return html`
@@ -69,25 +98,38 @@ class CalcioLiveMatchesCard extends LitElement {
                   <img class="competition-emblem" src="${competition.emblem}" alt="${competition.name}" />
                   <div class="competition-details">
                     <div class="competition-name">Giornata ${matchday}</div>
-                    <div class="season-dates">Stagione: ${this.formatDate(first)} - ${this.formatDate(last)}</div>
+                    <div class="season-dates">
+                      Stagione: ${this.formatSimpleDate(first)} - ${this.formatSimpleDate(last)}
+                    </div>
                   </div>
                 </div>
                 <hr class="separator" />
               </div>
             `}
-        <!-- Imposta max-height esatto per evitare che parte della sesta partita venga mostrata -->
         <div class="scroll-content" style="max-height: ${maxHeight}px; overflow-y: auto;">
           ${matches.slice(0, maxTotal).map((match, index) => html`
-            <div class="match">
-              <img class="team-logo" src="${match.homeTeam.crest}" alt="${match.homeTeam.name}" />
-              <div class="match-info">
-                <div class="team-name">${match.homeTeam.name}</div>
-                <div class="match-date">${new Date(match.utcDate).toLocaleDateString('it-IT')}</div>
-                <div class="team-name">${match.awayTeam.name}</div>
+            <div class="match-wrapper">
+              <div class="match-header">
+                <div class="match-competition">
+                  ${match.competition.name} | 
+                  <span class="match-date">
+                    ${this.formatDateOrDay(match.utcDate)} - ${this.formatTime(match.utcDate)}
+                  </span>
+                </div>
               </div>
-              <img class="team-logo" src="${match.awayTeam.crest}" alt="${match.awayTeam.name}" />
+              <div class="match">
+                <img class="team-logo" src="${match.homeTeam.crest}" alt="${match.homeTeam.name}" />
+                <div class="match-info">
+                  <div class="team-name">${match.homeTeam.name}</div>
+                  ${match.status === 'FINISHED' 
+                    ? html`<div class="match-result finished">${match.score.fullTime.home} - ${match.score.fullTime.away}</div>`
+                    : html`<div class="match-result upcoming">${match.status}</div>`}
+                  <div class="team-name">${match.awayTeam.name}</div>
+                </div>
+                <img class="team-logo" src="${match.awayTeam.crest}" alt="${match.awayTeam.name}" />
+              </div>
+              ${index < matches.length - 1 ? html`<hr class="separator-line" />` : ''}
             </div>
-            ${index < matches.length - 1 ? html`<div class="separator"></div>` : ''}
           `)}
         </div>
       </ha-card>
@@ -129,6 +171,9 @@ class CalcioLiveMatchesCard extends LitElement {
       .scroll-content {
         overflow-y: auto;
       }
+      .match-wrapper {
+        margin-bottom: 16px;
+      }
       .match {
         display: flex;
         align-items: center;
@@ -148,15 +193,36 @@ class CalcioLiveMatchesCard extends LitElement {
         font-size: 16px;
         margin: 4px 0;
       }
-      .match-date {
+      .match-result {
         font-size: 0.9em;
         color: var(--secondary-text-color);
+      }
+      .match-result.finished {
+        color: green;
+      }
+      .match-result.upcoming {
+        color: orange;
+      }
+      .match-header {
+        text-align: center;
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: blue;
+      }
+      .match-date {
+        color: orange;
       }
       .separator {
         width: 100%;
         height: 1px;
         background-color: #ddd;
         border: none;
+        margin: 8px 0;
+      }
+      .separator-line {
+        border: none;
+        border-top: 1px solid var(--divider-color);
         margin: 8px 0;
       }
     `;

@@ -16,9 +16,9 @@ class CalcioLiveCannonieriCard extends LitElement {
       throw new Error("Devi definire un'entità");
     }
     this._config = config;
-    this.maxEventsVisible = config.max_events_visible ? config.max_events_visible : 3; // Impostazione predefinita
-    this.maxEventsTotal = config.max_events_total ? config.max_events_total : 10; // Impostazione predefinita
-    this.hideHeader = config.hide_header || false; // Aggiunta opzione per nascondere l'intestazione
+    this.maxEventsVisible = config.max_events_visible ? config.max_events_visible : 3
+    this.maxEventsTotal = config.max_events_total ? config.max_events_total : 10;
+    this.hideHeader = config.hide_header || false;
   }
 
   getCardSize() {
@@ -26,12 +26,19 @@ class CalcioLiveCannonieriCard extends LitElement {
   }
 
   formatDate(dateString) {
+    if (!dateString) {
+      return 'Data non disponibile';
+    }
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return 'Data non valida';
+    }
     const options = {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
     };
-    return new Intl.DateTimeFormat('it-IT', options).format(new Date(dateString));
+    return new Intl.DateTimeFormat('it-IT', options).format(date);
   }
 
   render() {
@@ -53,8 +60,7 @@ class CalcioLiveCannonieriCard extends LitElement {
     const maxVisible = Math.min(this.maxEventsVisible, scorers.length);
     const maxTotal = Math.min(this.maxEventsTotal, scorers.length);
 
-    // Calcola l'altezza massima esatta per evitare overflow
-    const itemHeight = 100; // Altezza stimata per ogni cannoniere
+    const itemHeight = 100;
     const maxHeight = maxVisible * itemHeight;
 
     return html`

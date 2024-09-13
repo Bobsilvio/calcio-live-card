@@ -25,35 +25,61 @@ class CalcioLiveTeamMatchesCard extends LitElement {
     return 3;
   }
 
-  formatDate(dateString) {
-    const options = {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    };
-    return new Intl.DateTimeFormat('it-IT', options).format(new Date(dateString));
-  }
-
   findMainTeam(matches) {
+    if (!matches || matches.length === 0) {
+      return 'Squadra non disponibile';
+    }
     const teamFrequency = {};
     const matchesToCheck = matches.slice(0, 3);
 
     matchesToCheck.forEach((match) => {
-      const homeTeam = match.home_team;
-      const awayTeam = match.away_team;
+      const homeTeam = match.homeTeam.name;
+      const awayTeam = match.awayTeam.name;
 
       teamFrequency[homeTeam] = (teamFrequency[homeTeam] || 0) + 1;
       teamFrequency[awayTeam] = (teamFrequency[awayTeam] || 0) + 1;
     });
 
-    let mainTeam = Object.keys(teamFrequency).reduce((a, b) => teamFrequency[a] > teamFrequency[b] ? a : b);
-
-    return mainTeam;
+    return Object.keys(teamFrequency).reduce((a, b) => teamFrequency[a] > teamFrequency[b] ? a : b, '');
   }
 
   findTeamCrest(matches, teamName) {
-    const match = matches.find((match) => match.home_team === teamName || match.away_team === teamName);
-    return match ? (match.home_team === teamName ? match.home_team_crest : match.away_team_crest) : "";
+    const match = matches.find((match) => match.homeTeam.name === teamName || match.awayTeam.name === teamName);
+    return match ? (match.homeTeam.name === teamName ? match.homeTeam.crest : match.awayTeam.crest) : "";
+  }
+
+  formatDateOrDay(dateString) {
+    if (!dateString) {
+      return 'Data non disponibile';
+    }
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return 'Data non valida';
+    }
+
+    const now = new Date();
+    const diffTime = date.getTime() - now.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays >= 0 && diffDays <= 6) {
+      const daysOfWeek = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
+      return daysOfWeek[date.getDay()];
+    }
+
+    const options = {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    };
+    return new Intl.DateTimeFormat('it-IT', options).format(date);
+  }
+
+  formatTime(dateString) {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return 'Orario non disponibile';
+    }
+    return date.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
   }
 
   render() {
@@ -69,12 +95,10 @@ class CalcioLiveTeamMatchesCard extends LitElement {
     }
 
     const matches = stateObj.attributes.matches || [];
-    const firstMatchDate = stateObj.attributes.first_match_date || '';
-    const lastMatchDate = stateObj.attributes.last_match_date || '';
-    const wins = stateObj.attributes.wins || 0; // dato non funzionante
-    const losses = stateObj.attributes.losses || 0; // dato non funzionante
-    const draws = stateObj.attributes.draws || 0; // dato non funzionante
-    const played = stateObj.attributes.played || 0;
+    const wins = stateObj.attributes.resultSet.wins || 0;
+    const losses = stateObj.attributes.resultSet.losses || 0;
+    const draws = stateObj.attributes.resultSet.draws || 0;
+    const played = stateObj.attributes.resultSet.played || 0;
     
     const filteredMatches = matches.filter(match => {
       return this.showFinishedMatches || match.status !== 'FINISHED';
@@ -83,45 +107,48 @@ class CalcioLiveTeamMatchesCard extends LitElement {
     const totalMatchesToShow = Math.min(this.maxEventsTotal, filteredMatches.length);
     const matchesToDisplay = filteredMatches.slice(0, totalMatchesToShow);
 
-    const scrollHeight = this.maxEventsVisible * 95;
+    const scrollHeight = this.maxEventsVisible * 150;
 
     return html`
       <ha-card>
-        <!-- Logo e nome della squadra che appare più spesso -->
         <div class="team-header">
           <img class="team-logo" src="${this.findTeamCrest(matches, this.findMainTeam(filteredMatches))}" alt="${this.findMainTeam(filteredMatches)}" />
           <div class="team-info">
             <div class="team-name">${this.findMainTeam(filteredMatches)}</div>
             <div class="team-stats">
-              Giocate: ${played}
-            </div>
-            <div class="season-dates">
-              Stagione: ${this.formatDate(firstMatchDate)} - ${this.formatDate(lastMatchDate)}
+              Giocate: ${played}, Vittorie: ${wins}, Sconfitte: ${losses}
             </div>
           </div>
         </div>
-        <hr /> <!-- Linea separatrice sotto le informazioni della stagione -->
+        <hr />
 
-        <!-- Lista delle partite con scroll -->
         <div class="scroll-content" style="max-height: ${scrollHeight}px; overflow-y: auto;">
           ${matchesToDisplay.map((match) => html`
             <div>
               <div class="match">
-                <img class="team-logo" src="${match.home_team_crest}" alt="${match.home_team}" />
+                <img class="team-logo" src="${match.homeTeam.crest}" alt="${match.homeTeam.name}" />
                 <div class="match-info">
-                  <div class="team-name">${match.home_team}</div>
-                  <div class="match-date">
-                    ${this.formatDate(match.utc_date)} 
-                    ${match.status === 'FINISHED' 
-                      ? html`<span class="match-result">${match.score_full_time.home} - ${match.score_full_time.away}</span>`
-                      : html`<span class="match-upcoming">${match.status}</span>`}
+                  <div class="match-header">
+                    <!-- Competizione, data, orario e arbitro su una riga -->
+                    <div class="match-competition">
+                      ${match.competition.name} | 
+                      ${match.referees && match.referees.length > 0
+                        ? `Arbitro: ${match.referees[0].name}`
+                        : `Arbitro non disponibile`}
+                    </div>
+                    <div class="match-date orange-date">
+                      ${this.formatDateOrDay(match.utcDate)} - ${this.formatTime(match.utcDate)}
+                    </div>
                   </div>
-                  <div class="match-type">${match.competition_name}</div> <!-- Tipo di partita -->
-                  <div class="team-name">${match.away_team}</div>
+                  <div class="team-name">${match.homeTeam.name}</div>
+                  ${match.status === 'FINISHED' 
+                    ? html`<div class="match-result">${match.score.fullTime.home} - ${match.score.fullTime.away}</div>`
+                    : html`<div class="match-upcoming">${match.status}</div>`}
+                  <div class="team-name">${match.awayTeam.name}</div>
                 </div>
-                <img class="team-logo" src="${match.away_team_crest}" alt="${match.away_team}" />
+                <img class="team-logo" src="${match.awayTeam.crest}" alt="${match.awayTeam.name}" />
               </div>
-              <hr class="separator-line" /> <!-- Linea tra le partite -->
+              <hr class="separator-line" />
             </div>
           `)}
         </div>
@@ -135,6 +162,15 @@ class CalcioLiveTeamMatchesCard extends LitElement {
         padding: 16px;
         box-sizing: border-box;
       }
+      .match-competition {
+        text-align: center;
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 8px;
+      }
+      .orange-date {
+        color: orange;
+      }
       .team-header {
         display: flex;
         align-items: center;
@@ -143,24 +179,18 @@ class CalcioLiveTeamMatchesCard extends LitElement {
       .team-logo {
         width: 60px;
         height: 60px;
-        margin-right: 16px;
       }
       .team-info {
-        display: flex;
-        flex-direction: column;
+        flex-grow: 1;
+        text-align: center;
       }
       .team-name {
-        font-size: 20px;
+        font-size: 14px;
         font-weight: bold;
-        text-align: center;
+        margin-bottom: 8px;
       }
       .team-stats {
         font-size: 14px;
-        color: var(--secondary-text-color);
-        margin-top: 8px;
-      }
-      .season-dates {
-        font-size: 12px;
         color: var(--secondary-text-color);
       }
       hr {
@@ -175,19 +205,16 @@ class CalcioLiveTeamMatchesCard extends LitElement {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin-bottom: 16px;
+      }
+      .match-header {
+        text-align: center;
+        font-size: 12px;
+        color: var(--secondary-text-color);
         margin-bottom: 8px;
       }
       .match-info {
-        flex: 1;
         text-align: center;
-      }
-      .team-name {
-        font-weight: bold;
-        font-size: 14px;
-      }
-      .match-date {
-        font-size: 12px;
-        color: var(--secondary-text-color);
       }
       .match-result {
         color: green;
@@ -196,11 +223,6 @@ class CalcioLiveTeamMatchesCard extends LitElement {
       .match-upcoming {
         color: orange;
         font-weight: bold;
-      }
-      .match-type {
-        font-size: 12px;
-        font-style: italic;
-        color: var(--secondary-text-color);
       }
       .separator-line {
         border: none;

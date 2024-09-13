@@ -15,8 +15,24 @@ class CalcioLiveStandingsCard extends LitElement {
       throw new Error("Devi definire un'entità");
     }
     this._config = config;
-    this.maxTeamsVisible = config.max_teams_visible ? config.max_teams_visible : 10; // Impostazione predefinita
-    this.hideHeader = config.hide_header || false; // Aggiunta opzione per nascondere header
+    this.maxTeamsVisible = config.max_teams_visible ? config.max_teams_visible : 10;
+    this.hideHeader = config.hide_header || false;
+  }
+
+  formatDate(dateString) {
+    if (!dateString) {
+      return 'Data non disponibile';
+    }
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return 'Data non valida';
+    }
+    const options = {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    };
+    return new Intl.DateTimeFormat('it-IT', options).format(date);
   }
 
   getCardSize() {
@@ -96,15 +112,6 @@ class CalcioLiveStandingsCard extends LitElement {
         </div>
       </ha-card>
     `;
-  }
-
-  formatDate(dateString) {
-    const options = {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    };
-    return new Intl.DateTimeFormat('it-IT', options).format(new Date(dateString));
   }
 
   static get styles() {
