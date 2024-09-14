@@ -81,14 +81,14 @@ class CalcioLiveCannonieriCard extends LitElement {
             `}
         <!-- Sezione scrollabile -->
         <div class="scroll-content" style="max-height: ${maxHeight}px; overflow-y: auto;">
-          ${scorers.slice(0, maxTotal).map((scorer) => html`
-            <div class="scorer">
+          ${scorers.slice(0, maxTotal).map((scorer, index) => html`
+            <div class="scorer ${index % 2 === 0 ? 'even' : 'odd'}">
               <img class="team-logo" src="${scorer.team.crest}" alt="${scorer.team.name}" />
               <div class="info">
-                <div class="player-name">${scorer.player.name} (${scorer.player.nationality})</div>
+                <div class="player-name">${scorer.player.name} <span class="nationality">(${scorer.player.nationality})</span></div>
                 <div class="team-name">${scorer.team.name}</div>
-                <div class="goals">Goals: ${scorer.goals}</div>
-                <div class="played-matches">Partite giocate: ${scorer.playedMatches}</div>
+                <div class="goals">Goals: <span class="goals-number">${scorer.goals}</span></div>
+                <div class="played-matches">Partite giocate: <span class="matches-number">${scorer.playedMatches}</span></div>
               </div>
             </div>
           `)}
@@ -123,7 +123,7 @@ class CalcioLiveCannonieriCard extends LitElement {
       }
       .competition-name {
         font-weight: bold;
-        font-size: 1.2em;
+        font-size: 1.5em;
       }
       .season-dates {
         color: var(--secondary-text-color);
@@ -136,7 +136,11 @@ class CalcioLiveCannonieriCard extends LitElement {
         display: flex;
         align-items: center;
         margin-bottom: 16px;
+        padding: 8px;
+        border-radius: 10px;
+        transition: background-color 0.3s ease;
       }
+
       .team-logo {
         width: 60px;
         height: 60px;
@@ -149,11 +153,16 @@ class CalcioLiveCannonieriCard extends LitElement {
       }
       .player-name {
         font-weight: bold;
-        font-size: 1.2em;
+        font-size: 1.3em;
+        color: #FFC107; /* Colore arancione per il nome del giocatore */
         margin-bottom: 4px;
       }
+      .nationality {
+        font-size: 0.9em;
+        color: #757575; /* Grigio per la nazionalità */
+      }
       .team-name {
-        color: var(--secondary-text-color);
+        color: #2196F3; /* Viola per il nome della squadra */
         font-size: 14px;
         margin-bottom: 4px;
       }
@@ -161,9 +170,17 @@ class CalcioLiveCannonieriCard extends LitElement {
         font-size: 14px;
         color: var(--primary-text-color);
       }
+      .goals-number {
+        font-weight: bold;
+        color: #4CAF50; /* Verde per il numero di gol */
+      }
       .played-matches {
         font-size: 12px;
         color: var(--secondary-text-color);
+      }
+      .matches-number {
+        font-weight: bold;
+        color: #FF9800; /* Arancione per il numero di partite giocate */
       }
       .separator {
         width: 100%;

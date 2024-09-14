@@ -82,6 +82,39 @@ class CalcioLiveTeamMatchesCard extends LitElement {
     return date.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
   }
 
+  calculateMinutesPlayed(matchStart, matchStatus) {
+    const now = new Date();
+    const start = new Date(matchStart);
+    if (now >= start) {
+      let diffMs = now - start;
+      let diffMinutes = Math.floor(diffMs / 60000);
+
+      // Se la partita è in corso o è ripresa dopo la pausa, sottrai 15 minuti
+      if (matchStatus === 'IN_PLAY' || matchStatus === 'PAUSED') {
+        diffMinutes = Math.max(diffMinutes - 15, 0);  // Sottrai 15 minuti di pausa
+      }
+      return `${diffMinutes}'`;
+    }
+    return null;
+  }
+
+  getMatchResultText(match) {
+    if (!match.score || !match.score.fullTime) {
+      return 'Dati non disponibili';
+    }
+
+    if (match.status === 'FINISHED') {
+      return `${match.score.fullTime.home} - ${match.score.fullTime.away}`;
+    }
+    if (match.status === 'IN_PLAY' || match.status === 'PAUSED') {  // Gestione di IN_PLAY e PAUSED
+      if (match.score.halfTime && match.score.halfTime.home !== null) {
+        return `Primo Tempo: ${match.score.halfTime.home} - ${match.score.halfTime.away}`;
+      }
+      return `${match.score.fullTime.home} - ${match.score.fullTime.away}`;
+    }
+    return 'Non iniziata';
+  }
+
   render() {
     if (!this.hass || !this._config) {
       return html``;
@@ -95,10 +128,10 @@ class CalcioLiveTeamMatchesCard extends LitElement {
     }
 
     const matches = stateObj.attributes.matches || [];
-    const wins = stateObj.attributes.resultSet.wins || 0;
-    const losses = stateObj.attributes.resultSet.losses || 0;
-    const draws = stateObj.attributes.resultSet.draws || 0;
-    const played = stateObj.attributes.resultSet.played || 0;
+    const wins = stateObj.attributes.resultSet?.wins || 0;
+    const losses = stateObj.attributes.resultSet?.losses || 0;
+    const draws = stateObj.attributes.resultSet?.draws || 0;
+    const played = stateObj.attributes.resultSet?.played || 0;
     
     const filteredMatches = matches.filter(match => {
       return this.showFinishedMatches || match.status !== 'FINISHED';
@@ -120,35 +153,33 @@ class CalcioLiveTeamMatchesCard extends LitElement {
             </div>
           </div>
         </div>
-        <hr />
+        <hr class="separator" />
 
         <div class="scroll-content" style="max-height: ${scrollHeight}px; overflow-y: auto;">
-          ${matchesToDisplay.map((match) => html`
-            <div>
+          ${matchesToDisplay.map((match, index) => html`
+            <div class="match-wrapper">
+              <div class="match-header">
+                <div class="match-competition">
+                  ${match.competition.name} | 
+                  <span class="match-date">
+                    ${this.formatDateOrDay(match.utcDate)} - ${this.formatTime(match.utcDate)}
+                  </span>
+                    ${match.status === 'IN_PLAY' ? html`<span class="match-minutes"> | ${this.calculateMinutesPlayed(match.utcDate, match.status)}</span>` : ''}
+                </div>
+              </div>
               <div class="match">
                 <img class="team-logo" src="${match.homeTeam.crest}" alt="${match.homeTeam.name}" />
                 <div class="match-info">
-                  <div class="match-header">
-                    <!-- Competizione, data, orario e arbitro su una riga -->
-                    <div class="match-competition">
-                      ${match.competition.name} | 
-                      ${match.referees && match.referees.length > 0
-                        ? `Arbitro: ${match.referees[0].name}`
-                        : `Arbitro non disponibile`}
-                    </div>
-                    <div class="match-date orange-date">
-                      ${this.formatDateOrDay(match.utcDate)} - ${this.formatTime(match.utcDate)}
-                    </div>
-                  </div>
                   <div class="team-name">${match.homeTeam.name}</div>
-                  ${match.status === 'FINISHED' 
-                    ? html`<div class="match-result">${match.score.fullTime.home} - ${match.score.fullTime.away}</div>`
-                    : html`<div class="match-upcoming">${match.status}</div>`}
+                  <div class="match-result ${match.status === 'IN_PLAY' || match.status === 'FINISHED' ? 'ongoing' : 'not-started'}">
+                    ${this.getMatchResultText(match)}
+                  </div>
                   <div class="team-name">${match.awayTeam.name}</div>
+                  ${match.referees && match.referees.length > 0 ? html`<div class="referee">Arbitro: ${match.referees[0].name}</div>` : html`<div class="referee">Arbitro non disponibile</div>`}
                 </div>
                 <img class="team-logo" src="${match.awayTeam.crest}" alt="${match.awayTeam.name}" />
               </div>
-              <hr class="separator-line" />
+              ${index < matchesToDisplay.length - 1 ? html`<hr class="separator-line" />` : ''}
             </div>
           `)}
         </div>
@@ -161,15 +192,7 @@ class CalcioLiveTeamMatchesCard extends LitElement {
       ha-card {
         padding: 16px;
         box-sizing: border-box;
-      }
-      .match-competition {
-        text-align: center;
-        font-size: 14px;
-        font-weight: bold;
-        margin-bottom: 8px;
-      }
-      .orange-date {
-        color: orange;
+        width: 100%;
       }
       .team-header {
         display: flex;
@@ -177,57 +200,87 @@ class CalcioLiveTeamMatchesCard extends LitElement {
         margin-bottom: 16px;
       }
       .team-logo {
-        width: 60px;
-        height: 60px;
+        width: 65px;
+        height: 65px;
       }
       .team-info {
         flex-grow: 1;
         text-align: center;
       }
       .team-name {
-        font-size: 14px;
         font-weight: bold;
-        margin-bottom: 8px;
+        font-size: 16px;
+        margin: 4px 0;
       }
       .team-stats {
-        font-size: 14px;
         color: var(--secondary-text-color);
-      }
-      hr {
-        border: 0;
-        border-top: 1px solid var(--divider-color);
-        margin: 16px 0;
+        font-size: 14px;
       }
       .scroll-content {
         overflow-y: auto;
       }
-      .match {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 16px;
-      }
       .match-header {
         text-align: center;
-        font-size: 12px;
-        color: var(--secondary-text-color);
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: blue;
+      }
+      .match-competition {
+        text-align: center;
+        font-size: 14px;
+        font-weight: bold;
         margin-bottom: 8px;
       }
-      .match-info {
+      .match-date {
+        color: orange;
+        font-size: 14px;
+        font-weight: bold;
+      }
+      .match {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+      }
+      .team-name {
+        font-weight: bold;
+        font-size: 16px;
+        margin: 4px 0;
         text-align: center;
       }
       .match-result {
-        color: green;
-        font-weight: bold;
+        font-size: 0.9em;
+        color: var(--secondary-text-color);
+        text-align: center;
       }
-      .match-upcoming {
+      .match-result.ongoing {
+        color: green;
+      }
+      .match-result.not-started {
         color: orange;
-        font-weight: bold;
+      }
+      .separator {
+        width: 100%;
+        height: 1px;
+        background-color: #ddd;
+        border: none;
+        margin: 8px 0;
       }
       .separator-line {
         border: none;
         border-top: 1px solid var(--divider-color);
         margin: 8px 0;
+      }
+      .match-minutes {
+        font-weight: bold;
+        color: green;
+      }
+      .referee {
+        font-size: 12px;
+        color: var(--secondary-text-color);
+        text-align: center;
+        margin-top: 8px;
       }
     `;
   }

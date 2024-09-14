@@ -78,29 +78,29 @@ class CalcioLiveStandingsCard extends LitElement {
             <table>
               <thead>
                 <tr>
-                  <th style="width: 6%;">Pos</th>
-                  <th style="width: 24%;">Squadra</th>
-                  <th style="width: 10%;">Punti</th>
-                  <th style="width: 6%;">V</th>
-                  <th style="width: 6%;">P</th>
-                  <th style="width: 6%;">S</th>
-                  <th style="width: 6%;">GF</th>
-                  <th style="width: 6%;">GS</th>
-                  <th style="width: 6%;">+/-</th>
+                  <th>Pos</th>
+                  <th>Squadra</th>
+                  <th>Punti</th>
+                  <th>V</th>
+                  <th>P</th>
+                  <th>S</th>
+                  <th>GF</th>
+                  <th>GS</th>
+                  <th>+/-</th>
                 </tr>
               </thead>
               <tbody>
-                ${standings.map(team => html`
+                ${standings.map((team, index) => html`
                   <tr>
                     <td>${team.position}</td>
                     <td>
                       <img class="team-crest" src="${team.team.crest}" alt="${team.team.shortName}" />
                       ${team.team.shortName}
                     </td>
-                    <td>${team.points}</td>
-                    <td>${team.won}</td>
-                    <td>${team.draw}</td>
-                    <td>${team.lost}</td>
+                    <td class="points">${team.points}</td>
+                    <td class="won">${team.won}</td>
+                    <td class="draw">${team.draw}</td>
+                    <td class="lost">${team.lost}</td>
                     <td>${team.goalsFor}</td>
                     <td>${team.goalsAgainst}</td>
                     <td>${team.goalDifference}</td>
@@ -140,7 +140,7 @@ class CalcioLiveStandingsCard extends LitElement {
       }
       .competition-name {
         font-weight: bold;
-        font-size: 1.2em;
+        font-size: 1.5em;
       }
       .season-dates {
         color: var(--secondary-text-color);
@@ -173,6 +173,19 @@ class CalcioLiveStandingsCard extends LitElement {
         width: 24px;
         height: 24px;
         margin-right: 8px;
+      }
+      .points {
+        font-weight: bold;
+        color: #4CAF50; /* Verde per i punti */
+      }
+      .won {
+        color: #4CAF50; /* Verde per le vittorie */
+      }
+      .draw {
+        color: #FFC107; /* Giallo per i pareggi */
+      }
+      .lost {
+        color: #F44336; /* Rosso per le sconfitte */
       }
       .separator {
         width: 100%;

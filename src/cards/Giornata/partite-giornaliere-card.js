@@ -38,6 +38,43 @@ class CalcioLiveTodayMatchesCard extends LitElement {
     return date.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
   }
 
+  calculateMinutesPlayed(matchStart, matchStatus) {
+    const now = new Date();
+    const start = new Date(matchStart);
+    if (now >= start) {
+      let diffMs = now - start;
+      let diffMinutes = Math.floor(diffMs / 60000);
+
+      // Se la partita è in corso o è ripresa dopo la pausa, sottrai 15 minuti
+      if (matchStatus === 'IN_PLAY' || matchStatus === 'PAUSED') {
+        diffMinutes = Math.max(diffMinutes - 15, 0);  // Sottrai 15 minuti di pausa
+      }
+      return `${diffMinutes}'`;
+    }
+    return null;
+  }
+
+  getMatchResultText(match) {
+    if (!match.score || !match.score.fullTime) {
+      return 'Dati non disponibili';
+    }
+
+    // Se la partita è terminata, mostra il risultato completo
+    if (match.status === 'FINISHED') {
+      return `${match.score.fullTime.home} - ${match.score.fullTime.away}`;
+    }
+
+    // Se la partita è in corso o in pausa, mostra il risultato del primo tempo se disponibile
+    if (match.status === 'IN_PLAY' || match.status === 'PAUSED') {
+      if (match.score.halfTime && match.score.halfTime.home !== null) {
+        return `Primo Tempo: ${match.score.halfTime.home} - ${match.score.halfTime.away}`;
+      }
+      return `${match.score.fullTime.home} - ${match.score.fullTime.away}`;
+    }
+
+    return 'Non iniziata';
+  }
+
   render() {
     if (!this.hass || !this._config) {
       return html``;
@@ -62,11 +99,13 @@ class CalcioLiveTodayMatchesCard extends LitElement {
     return html`
       <ha-card>
         <div class="scroll-content" style="max-height: ${scrollHeight}px; overflow-y: auto;">
-          ${todayMatches.map((match) => html`
+          ${todayMatches.map((match, index) => html`
             <div class="match-wrapper">
               <div class="match-header">
                 <div class="match-competition">
                   ${match.competition.name} | <span class="match-date">${this.formatTime(match.utcDate)}</span>
+                  <!-- Mostra il tempo trascorso se la partita è in corso, con colore verde -->
+                  ${match.status === 'IN_PLAY' ? html`<span class="match-minutes green-text"> | ${this.calculateMinutesPlayed(match.utcDate, match.status)}</span>` : ''}
                 </div>
               </div>
               <div class="match">
@@ -76,16 +115,17 @@ class CalcioLiveTodayMatchesCard extends LitElement {
                 <!-- Info partita con squadre sopra e sotto -->
                 <div class="match-info">
                   <div class="team-name">${match.homeTeam.name}</div>
-                  ${match.status === 'FINISHED' 
-                    ? html`<div class="match-result finished">${match.score.fullTime.home} - ${match.score.fullTime.away}</div>`
-                    : html`<div class="match-result upcoming">${match.status}</div>`}
+                  <div class="match-result ${match.status === 'IN_PLAY' || match.status === 'FINISHED' ? 'ongoing' : 'not-started'}">
+                    ${this.getMatchResultText(match)}
+                  </div>
                   <div class="team-name">${match.awayTeam.name}</div>
+                  ${match.referees && match.referees.length > 0 ? html`<div class="referee">Arbitro: ${match.referees[0].name}</div>` : html`<div class="referee">Arbitro non disponibile</div>`}
                 </div>
 
                 <!-- Logo squadra trasferta -->
                 <img class="team-logo" src="${match.awayTeam.crest}" alt="${match.awayTeam.name}" />
               </div>
-              <hr class="separator-line" />
+              ${index < todayMatches.length - 1 ? html`<hr class="separator-line" />` : ''}
             </div>
           `)}
         </div>
@@ -98,6 +138,7 @@ class CalcioLiveTodayMatchesCard extends LitElement {
       ha-card {
         padding: 16px;
         box-sizing: border-box;
+        width: 100%;
       }
       .match-competition {
         text-align: center;
@@ -110,8 +151,8 @@ class CalcioLiveTodayMatchesCard extends LitElement {
         color: orange;
       }
       .team-logo {
-        width: 60px;
-        height: 60px;
+        width: 65px;
+        height: 65px;
       }
       .match-wrapper {
         margin-bottom: 16px;
@@ -144,16 +185,26 @@ class CalcioLiveTodayMatchesCard extends LitElement {
         font-weight: bold;
         margin: 8px 0;
       }
-      .match-result.finished {
-        color: green; 
+      .match-result.ongoing {
+        color: green;
       }
-      .match-result.upcoming {
+      .match-result.not-started {
         color: orange;
+      }
+      .green-text {
+        color: green;
+        font-weight: bold;
       }
       .separator-line {
         border: none;
         border-top: 1px solid var(--divider-color);
         margin: 8px 0;
+      }
+      .referee {
+        font-size: 12px;
+        color: var(--secondary-text-color);
+        text-align: center;
+        margin-top: 8px;
       }
     `;
   }

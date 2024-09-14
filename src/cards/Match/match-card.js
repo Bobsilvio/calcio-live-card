@@ -63,6 +63,36 @@ class CalcioLiveMatchesCard extends LitElement {
     return date.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
   }
 
+  calculateMinutesPlayed(matchStart, matchStatus) {
+    const now = new Date();
+    const start = new Date(matchStart);
+    if (now >= start) {
+      let diffMs = now - start;
+      let diffMinutes = Math.floor(diffMs / 60000);
+
+      // Se la partita è in corso o è ripresa dopo la pausa, sottrai 15 minuti
+      if (matchStatus === 'IN_PLAY' || matchStatus === 'PAUSED') {
+        diffMinutes = Math.max(diffMinutes - 15, 0);  // Sottrai 15 minuti di pausa
+      }
+      return `${diffMinutes}'`;
+    }
+    return null;
+  }
+  
+
+  getMatchResultText(match) {
+    if (match.status === 'FINISHED') {
+      return `${match.score.fullTime.home} - ${match.score.fullTime.away}`;
+    }
+    if (match.status === 'IN_PLAY' || match.status === 'PAUSED') {  // Gestione di IN_PLAY e PAUSED
+      if (match.score.halfTime.home !== null) {
+        return `Primo Tempo: ${match.score.halfTime.home} - ${match.score.halfTime.away}`;
+      }
+      return `${match.score.fullTime.home} - ${match.score.fullTime.away}`;
+    }
+    return 'Non iniziata';
+  }
+
   render() {
     if (!this.hass || !this._config) {
       return html``;
@@ -115,16 +145,18 @@ class CalcioLiveMatchesCard extends LitElement {
                   <span class="match-date">
                     ${this.formatDateOrDay(match.utcDate)} - ${this.formatTime(match.utcDate)}
                   </span>
+                    ${match.status === 'IN_PLAY' ? html`<span class="match-minutes"> | ${this.calculateMinutesPlayed(match.utcDate, match.status)}</span>` : ''}
                 </div>
               </div>
               <div class="match">
                 <img class="team-logo" src="${match.homeTeam.crest}" alt="${match.homeTeam.name}" />
                 <div class="match-info">
                   <div class="team-name">${match.homeTeam.name}</div>
-                  ${match.status === 'FINISHED' 
-                    ? html`<div class="match-result finished">${match.score.fullTime.home} - ${match.score.fullTime.away}</div>`
-                    : html`<div class="match-result upcoming">${match.status}</div>`}
+                  <div class="match-result ${match.status === 'IN_PLAY' || match.status === 'FINISHED' ? 'ongoing' : 'not-started'}">
+                    ${this.getMatchResultText(match)}
+                  </div>
                   <div class="team-name">${match.awayTeam.name}</div>
+                  ${match.referees.length > 0 ? html`<div class="referee">Arbitro: ${match.referees[0].name}</div>` : ''}
                 </div>
                 <img class="team-logo" src="${match.awayTeam.crest}" alt="${match.awayTeam.name}" />
               </div>
@@ -197,11 +229,13 @@ class CalcioLiveMatchesCard extends LitElement {
         font-size: 0.9em;
         color: var(--secondary-text-color);
       }
-      .match-result.finished {
+      .match-result.ongoing {
         color: green;
+        font-weight: bold;
       }
-      .match-result.upcoming {
+      .match-result.not-started {
         color: orange;
+        font-weight: bold;
       }
       .match-header {
         text-align: center;
@@ -224,6 +258,14 @@ class CalcioLiveMatchesCard extends LitElement {
         border: none;
         border-top: 1px solid var(--divider-color);
         margin: 8px 0;
+      }
+      .match-minutes {
+        font-weight: bold;
+        color: green;
+      }
+      .referee {
+        font-size: 12px;
+        color: var(--secondary-text-color);
       }
     `;
   }
