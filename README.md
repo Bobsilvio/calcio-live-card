@@ -86,6 +86,19 @@ Per la card 'squadra' è possibile nascondere gli eventi finiti e vedere solo i 
   </tr>
 </table>
 
+<!-- Match Oggi Card -->
+<table>
+  <tr>
+    <td>
+      <strong>Match di Oggi:</strong><br>
+      <pre>type: custom:calcio-live-cannonieri<br>entity: sensor.calciolive_matchof_day<br>max_events_visible: 5<br>max_events_total: 10<br>show_finished_matches: true</pre>
+    </td>
+  </tr>
+  <tr>
+    <td><img src="images/card-match_today.gif" alt="MATCH OGGI-CARD" width="500"></td>
+  </tr>
+</table>
+
 <!-- Competizioni Card -->
 <table>
   <tr>
