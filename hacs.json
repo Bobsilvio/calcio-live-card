@@ -2,6 +2,6 @@
   "name": "Calcio Live Card",
   "content_in_root": false,
   "filename": "dist/calcio-live-card.bundle.js",
-  "homeassistant": "2021.6.0",
+  "homeassistant": "2024.8.0",
   "render_readme": true
 }
