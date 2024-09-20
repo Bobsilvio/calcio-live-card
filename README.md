@@ -39,7 +39,7 @@ Per la card 'squadra' è possibile nascondere gli eventi finiti e vedere solo i 
   <tr>
     <td>
       <strong>Squadra Card:</strong><br>
-      <pre>type: custom:calcio-live-team-matches<br>entity: sensor.calciolive_seriea_classifica<br>max_events_visible: 5<br>max_events_total: 10<br>show_finished_matches: true</pre>
+      <pre>type: custom:calcio-live-team-matches<br>entity: sensor.calciolive_team_108_inter<br>max_events_visible: 5<br>max_events_total: 10<br>show_finished_matches: true</pre>
     </td>
   </tr>
   <tr>
@@ -91,7 +91,7 @@ Per la card 'squadra' è possibile nascondere gli eventi finiti e vedere solo i 
   <tr>
     <td>
       <strong>Match di Oggi:</strong><br>
-      <pre>type: custom:calcio-live-cannonieri<br>entity: sensor.calciolive_matchof_day<br>max_events_visible: 5<br>max_events_total: 10<br>show_finished_matches: true</pre>
+      <pre>type: custom:calcio-live-today-matches<br>entity: sensor.calciolive_matchof_day<br>max_events_visible: 5<br>max_events_total: 10<br>show_finished_matches: true</pre>
     </td>
   </tr>
   <tr>
