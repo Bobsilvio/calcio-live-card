@@ -1,6 +1,6 @@
-import "./cards/Cannonieri/cannonieri-card.js";
-import "./cards/Classifica/classifica-card.js";
-import "./cards/Competizioni/competizioni-card.js";
-import "./cards/Match/match-card.js";
-import "./cards/Team/team-card.js";
-import "./cards/Giornata/partite-giornaliere-card.js";
+import "./cards/Cannonieri/calcio-live-cannonieri.js";
+import "./cards/Classifica/calcio-live-classifica.js";
+import "./cards/Competizioni/calcio-live-competizioni.js";
+import "./cards/Giornata/calcio-live-today-matches.js";
+import "./cards/Match/calcio-live-matches.js";
+import "./cards/Team/calcio-live-team-matches.js";

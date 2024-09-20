@@ -90,21 +90,24 @@ class CalcioLiveTodayMatchesCard extends LitElement {
     const matches = stateObj.attributes.matches || [];
     const todayMatches = this.filterTodayMatches(matches);
 
-    if (todayMatches.length === 0) {
+    // Limita il numero di eventi totali a maxEventsTotal
+    const limitedMatches = todayMatches.slice(0, this.maxEventsTotal);
+
+    if (limitedMatches.length === 0) {
       return html`<ha-card>Nessuna partita per oggi</ha-card>`;
     }
 
-    const scrollHeight = this.maxEventsVisible * 130;
+    // Imposta l'altezza massima basata su maxEventsVisible per lo scrolling
+    const scrollHeight = this.maxEventsVisible * 160;
 
     return html`
       <ha-card>
         <div class="scroll-content" style="max-height: ${scrollHeight}px; overflow-y: auto;">
-          ${todayMatches.map((match, index) => html`
+          ${limitedMatches.map((match, index) => html`
             <div class="match-wrapper">
               <div class="match-header">
                 <div class="match-competition">
                   ${match.competition.name} | <span class="match-date">${this.formatTime(match.utcDate)}</span>
-                  <!-- Mostra il tempo trascorso se la partita è in corso, con colore verde -->
                   ${match.status === 'IN_PLAY' ? html`<span class="match-minutes green-text"> | ${this.calculateMinutesPlayed(match.utcDate, match.status)}</span>` : ''}
                 </div>
               </div>
@@ -125,13 +128,14 @@ class CalcioLiveTodayMatchesCard extends LitElement {
                 <!-- Logo squadra trasferta -->
                 <img class="team-logo" src="${match.awayTeam.crest}" alt="${match.awayTeam.name}" />
               </div>
-              ${index < todayMatches.length - 1 ? html`<hr class="separator-line" />` : ''}
+              ${index < limitedMatches.length - 1 ? html`<hr class="separator-line" />` : ''}
             </div>
           `)}
         </div>
       </ha-card>
     `;
   }
+  
 
   static get styles() {
     return css`

@@ -140,7 +140,7 @@ class CalcioLiveTeamMatchesCard extends LitElement {
     const totalMatchesToShow = Math.min(this.maxEventsTotal, filteredMatches.length);
     const matchesToDisplay = filteredMatches.slice(0, totalMatchesToShow);
 
-    const scrollHeight = this.maxEventsVisible * 150;
+    const scrollHeight = this.maxEventsVisible * 145;
 
     return html`
       <ha-card>

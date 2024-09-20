@@ -115,7 +115,7 @@ class CalcioLiveMatchesCard extends LitElement {
     const maxVisible = Math.min(this.maxEventsVisible, matches.length);
     const maxTotal = Math.min(this.maxEventsTotal, matches.length);
 
-    const itemHeight = 125;
+    const itemHeight = 145;
     const maxHeight = maxVisible * itemHeight;
 
     return html`

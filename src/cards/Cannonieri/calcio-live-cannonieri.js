@@ -60,7 +60,7 @@ class CalcioLiveCannonieriCard extends LitElement {
     const maxVisible = Math.min(this.maxEventsVisible, scorers.length);
     const maxTotal = Math.min(this.maxEventsTotal, scorers.length);
 
-    const itemHeight = 100;
+    const itemHeight = 120;
     const maxHeight = maxVisible * itemHeight;
 
     return html`

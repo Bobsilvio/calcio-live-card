@@ -74,21 +74,24 @@ class CalcioLiveStandingsCard extends LitElement {
               </div>
             `}
         <div class="card-content">
-          <div class="table-container" style="max-height: ${maxVisible * 50}px; overflow-y: auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Pos</th>
+                <th>Squadra</th>
+                <th>Punti</th>
+                <th>V</th>
+                <th>P</th>
+                <th>S</th>
+                <th>GF</th>
+                <th>GS</th>
+                <th>+/-</th>
+              </tr>
+            </thead>
+          </table>
+          <!-- Div table-container con overflow-y e max-height calcolato solo per il tbody -->
+          <div class="table-container" style="max-height: ${maxVisible * 45}px; overflow-y: auto;">
             <table>
-              <thead>
-                <tr>
-                  <th>Pos</th>
-                  <th>Squadra</th>
-                  <th>Punti</th>
-                  <th>V</th>
-                  <th>P</th>
-                  <th>S</th>
-                  <th>GF</th>
-                  <th>GS</th>
-                  <th>+/-</th>
-                </tr>
-              </thead>
               <tbody>
                 ${standings.map((team, index) => html`
                   <tr>
@@ -148,7 +151,7 @@ class CalcioLiveStandingsCard extends LitElement {
       }
       .table-container {
         width: 100%;
-        overflow-x: auto;
+        overflow-y: auto;
       }
       table {
         width: 100%;
@@ -196,6 +199,7 @@ class CalcioLiveStandingsCard extends LitElement {
       }
     `;
   }
+  
 }
 
 customElements.define("calcio-live-classifica", CalcioLiveStandingsCard);
