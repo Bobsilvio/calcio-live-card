@@ -89,7 +89,6 @@ class CalcioLiveStandingsCard extends LitElement {
               </tr>
             </thead>
           </table>
-          <!-- Div table-container con overflow-y e max-height calcolato solo per il tbody -->
           <div class="table-container" style="max-height: ${maxVisible * 45}px; overflow-y: auto;">
             <table>
               <tbody>

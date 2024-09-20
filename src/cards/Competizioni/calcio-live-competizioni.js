@@ -15,8 +15,8 @@ class CalcioLiveCompetizioniCard extends LitElement {
       throw new Error("Devi definire un'entità");
     }
     this._config = config;
-    this.maxCompetitionsVisible = config.max_competitions_visible ? config.max_competitions_visible : 5; // Default
-    this.maxCompetitionsTotal = config.max_competitions_total ? config.max_competitions_total : 10; // Default
+    this.maxCompetitionsVisible = config.max_competitions_visible ? config.max_competitions_visible : 5;
+    this.maxCompetitionsTotal = config.max_competitions_total ? config.max_competitions_total : 10;
   }
 
   getCardSize() {
@@ -36,11 +36,10 @@ class CalcioLiveCompetizioniCard extends LitElement {
     }
 
     const competitions = stateObj.attributes.competitions || [];
-    const totalCompetitions = Math.min(this.maxCompetitionsTotal, competitions.length);  // Limita il numero totale di competizioni
-    const visibleCompetitions = Math.min(this.maxCompetitionsVisible, totalCompetitions);  // Limita il numero visibile
+    const totalCompetitions = Math.min(this.maxCompetitionsTotal, competitions.length);  
+    const visibleCompetitions = Math.min(this.maxCompetitionsVisible, totalCompetitions);
 
-    // Calcola l'altezza massima esatta per evitare overflow
-    const itemHeight = 120; // Altezza stimata per ogni competizione
+    const itemHeight = 120; 
     const maxHeight = visibleCompetitions * itemHeight;
 
     return html`

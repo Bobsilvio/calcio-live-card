@@ -16,7 +16,7 @@ class CalcioLiveCannonieriCard extends LitElement {
       throw new Error("Devi definire un'entità");
     }
     this._config = config;
-    this.maxEventsVisible = config.max_events_visible ? config.max_events_visible : 3
+    this.maxEventsVisible = config.max_events_visible ? config.max_events_visible : 5
     this.maxEventsTotal = config.max_events_total ? config.max_events_total : 10;
     this.hideHeader = config.hide_header || false;
   }

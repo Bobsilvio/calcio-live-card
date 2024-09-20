@@ -16,7 +16,7 @@ class CalcioLiveTodayMatchesCard extends LitElement {
       throw new Error("Devi definire un'entità");
     }
     this._config = config;
-    this.maxEventsVisible = config.max_events_visible ? config.max_events_visible : 3;
+    this.maxEventsVisible = config.max_events_visible ? config.max_events_visible : 5;
     this.maxEventsTotal = config.max_events_total ? config.max_events_total : 10;
     this.showFinishedMatches = config.show_finished_matches !== undefined ? config.show_finished_matches : true;
   }
@@ -45,9 +45,8 @@ class CalcioLiveTodayMatchesCard extends LitElement {
       let diffMs = now - start;
       let diffMinutes = Math.floor(diffMs / 60000);
 
-      // Se la partita è in corso o è ripresa dopo la pausa, sottrai 15 minuti
       if (matchStatus === 'IN_PLAY' || matchStatus === 'PAUSED') {
-        diffMinutes = Math.max(diffMinutes - 15, 0);  // Sottrai 15 minuti di pausa
+        diffMinutes = Math.max(diffMinutes - 15, 0);
       }
       return `${diffMinutes}'`;
     }
@@ -59,12 +58,10 @@ class CalcioLiveTodayMatchesCard extends LitElement {
       return 'Dati non disponibili';
     }
 
-    // Se la partita è terminata, mostra il risultato completo
     if (match.status === 'FINISHED') {
       return `${match.score.fullTime.home} - ${match.score.fullTime.away}`;
     }
 
-    // Se la partita è in corso o in pausa, mostra il risultato del primo tempo se disponibile
     if (match.status === 'IN_PLAY' || match.status === 'PAUSED') {
       if (match.score.halfTime && match.score.halfTime.home !== null) {
         return `Primo Tempo: ${match.score.halfTime.home} - ${match.score.halfTime.away}`;
@@ -90,14 +87,12 @@ class CalcioLiveTodayMatchesCard extends LitElement {
     const matches = stateObj.attributes.matches || [];
     const todayMatches = this.filterTodayMatches(matches);
 
-    // Limita il numero di eventi totali a maxEventsTotal
     const limitedMatches = todayMatches.slice(0, this.maxEventsTotal);
 
     if (limitedMatches.length === 0) {
       return html`<ha-card>Nessuna partita per oggi</ha-card>`;
     }
 
-    // Imposta l'altezza massima basata su maxEventsVisible per lo scrolling
     const scrollHeight = this.maxEventsVisible * 160;
 
     return html`

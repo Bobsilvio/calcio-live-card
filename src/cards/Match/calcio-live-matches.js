@@ -70,9 +70,8 @@ class CalcioLiveMatchesCard extends LitElement {
       let diffMs = now - start;
       let diffMinutes = Math.floor(diffMs / 60000);
 
-      // Se la partita è in corso o è ripresa dopo la pausa, sottrai 15 minuti
       if (matchStatus === 'IN_PLAY' || matchStatus === 'PAUSED') {
-        diffMinutes = Math.max(diffMinutes - 15, 0);  // Sottrai 15 minuti di pausa
+        diffMinutes = Math.max(diffMinutes - 15, 0);
       }
       return `${diffMinutes}'`;
     }
@@ -84,7 +83,7 @@ class CalcioLiveMatchesCard extends LitElement {
     if (match.status === 'FINISHED') {
       return `${match.score.fullTime.home} - ${match.score.fullTime.away}`;
     }
-    if (match.status === 'IN_PLAY' || match.status === 'PAUSED') {  // Gestione di IN_PLAY e PAUSED
+    if (match.status === 'IN_PLAY' || match.status === 'PAUSED') { 
       if (match.score.halfTime.home !== null) {
         return `Primo Tempo: ${match.score.halfTime.home} - ${match.score.halfTime.away}`;
       }
