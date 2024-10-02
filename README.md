@@ -24,26 +24,37 @@ Queste sono le sue card, ho deciso di separare le card per dare modo di sceglier
     ![HACS](images/hacs.png)
 
 ## Utilizzo delle card
-Ci sono 5 tipi di card e vi riporto degli esempi
-Ricordatevi che il sensore prende il nome dal parametro che avete dato sull'integrazione,
-quindi se avete dato 'Serie A' verrà chiamato 'seriea', e vale la stessa cosa per la squadra del cuore
+Ci sono 4 tipi di card e vi riporto degli esempi
+Ricordatevi che il sensore prende il nome dal campionato o dal team, lo fa in automatico quindi dovete solo cliccare e vedere il suo nome.
 
 E' possibile inoltre ridurre sia il numero di righe da visualizzare e sia il numero di eventi totali, quindi se voglio visualizzare 5 eventi e 10 totali,
 vedro i primi 5 sempre e i restanti 5 tramite scroll.
 
-Inoltre per le card 'classifica', 'cannonieri', e 'matches' è possibile nascondere l'intestazione iniziale per ridurre ulteriormente la card.
-Per la card 'squadra' è possibile nascondere gli eventi finiti e vedere solo i futuri.
+Inoltre per le card è possibile nascondere l'intestazione iniziale per ridurre ulteriormente la card.
 
 <!-- Squadra Card -->
 <table>
   <tr>
     <td>
-      <strong>Squadra Card:</strong><br>
-      <pre>type: custom:calcio-live-team-matches<br>entity: sensor.calciolive_team_108_inter<br>max_events_visible: 5<br>max_events_total: 10<br>show_finished_matches: true</pre>
+      <strong>Squadra Card Prossima di Campionato:</strong><br>
+      <pre>type: custom:calcio-live-team-next<br>entity: sensor.calciolive_team_110_internazionale_next</pre>
     </td>
   </tr>
   <tr>
-    <td><img src="images/card-squadra.gif" alt="SQUADRA-CARD" width="500"></td>
+    <td><img src="images/squadra_prossima.png" alt="SQUADRA-CARD" width="500"></td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td>
+      <strong>Squadra Card Concluse Campionato:</strong><br>
+      <pre>type: custom:calcio-live-team-matches<br>entity: sensor.calciolive_team_110_internazionale<br>max_events_visible: 5<br>max_events_total: 10<br>hide_header: false
+</pre>
+    </td>
+  </tr>
+  <tr>
+    <td><img src="images/squadra_concluse.png" alt="SQUADRA-CARD-CONCLUSE" width="500"></td>
   </tr>
 </table>
 
@@ -52,11 +63,11 @@ Per la card 'squadra' è possibile nascondere gli eventi finiti e vedere solo i 
   <tr>
     <td>
       <strong>Classifica Card:</strong><br>
-      <pre>type: custom:calcio-live-classifica<br>entity: sensor.calciolive_seriea_classifica<br>max_teams_visible: 5<br>hide_header: false</pre>
+      <pre>type: custom:calcio-live-classifica<br>entity: sensor.calciolive_serie_a_classifica<br>max_teams_visible: 10<br>hide_header: false</pre>
     </td>
   </tr>
   <tr>
-    <td><img src="images/card-classifica.gif" alt="CLASSIFICA-CARD" width="500"></td>
+    <td><img src="images/classifica.png" alt="CLASSIFICA-CARD" width="500"></td>
   </tr>
 </table>
 
@@ -64,51 +75,12 @@ Per la card 'squadra' è possibile nascondere gli eventi finiti e vedere solo i 
 <table>
   <tr>
     <td>
-      <strong>Match Day Card:</strong><br>
-      <pre>type: custom:calcio-live-matches<br>entity: sensor.calciolive_seriea_match_day<br>max_events_visible: 5<br>max_events_total: 10<br>hide_header: false</pre>
+      <strong>Match Week:</strong><br>
+      <pre>type: custom:calcio-live-today-matches<br>entity: sensor.calciolive_serie_a_match_day<br>max_events_visible: 5<br>max_events_total: 10<br>show_finished_matches: true<BR>hide_header: false</pre>
     </td>
   </tr>
   <tr>
-    <td><img src="images/card-match.gif" alt="MATCH-CARD" width="500"></td>
-  </tr>
-</table>
-
-<!-- Cannonieri Card -->
-<table>
-  <tr>
-    <td>
-      <strong>Cannonieri Card:</strong><br>
-      <pre>type: custom:calcio-live-cannonieri<br>entity: sensor.calciolive_seriea_cannonieri<br>max_events_visible: 5<br>max_events_total: 10<br>hide_header: false</pre>
-    </td>
-  </tr>
-  <tr>
-    <td><img src="images/card-cannonieri.gif" alt="CANNONIERI-CARD" width="500"></td>
-  </tr>
-</table>
-
-<!-- Match Oggi Card -->
-<table>
-  <tr>
-    <td>
-      <strong>Match di Oggi:</strong><br>
-      <pre>type: custom:calcio-live-today-matches<br>entity: sensor.calciolive_matchof_day<br>max_events_visible: 5<br>max_events_total: 10<br>show_finished_matches: true</pre>
-    </td>
-  </tr>
-  <tr>
-    <td><img src="images/card-match_today.gif" alt="MATCH OGGI-CARD" width="500"></td>
-  </tr>
-</table>
-
-<!-- Competizioni Card -->
-<table>
-  <tr>
-    <td>
-      <strong>Competizioni Card:</strong><br>
-      <pre>type: custom:calcio-live-competizioni<br>entity: sensor.calciolive_seriea_competizioni<br>max_competitions_visible: 5<br>max_competitions_total: 13</pre>
-    </td>
-  </tr>
-  <tr>
-    <td><img src="images/card-competizioni.gif" alt="COMPETIZIONI-CARD" width="500"></td>
+    <td><img src="images/prossime_campionato.png" alt="MATCH-WEEK" width="500"></td>
   </tr>
 </table>
 
