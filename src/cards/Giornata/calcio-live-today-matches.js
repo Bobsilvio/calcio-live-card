@@ -8,6 +8,9 @@ class CalcioLiveTodayMatchesCard extends LitElement {
       maxEventsVisible: { type: Number },
       maxEventsTotal: { type: Number },
       showFinishedMatches: { type: Boolean },
+      hideHeader: { type: Boolean }, 
+      activeMatch: { type: Object },
+      showPopup: { type: Boolean },
     };
   }
 
@@ -19,57 +22,150 @@ class CalcioLiveTodayMatchesCard extends LitElement {
     this.maxEventsVisible = config.max_events_visible ? config.max_events_visible : 5;
     this.maxEventsTotal = config.max_events_total ? config.max_events_total : 10;
     this.showFinishedMatches = config.show_finished_matches !== undefined ? config.show_finished_matches : true;
+    this.hideHeader = config.hide_header !== undefined ? config.hide_header : false; 
+    this.activeMatch = null;
+    this.showPopup = false;
   }
 
   getCardSize() {
     return 3;
   }
 
-  filterTodayMatches(matches) {
-    const today = new Date().toISOString().split('T')[0];
-    return matches.filter(match => match.utcDate.startsWith(today));
-  }
-
-  formatTime(dateString) {
+  formatDateTime(dateString) {
     const date = new Date(dateString);
     if (isNaN(date.getTime())) {
-      return 'Orario non disponibile';
+      return 'Data non disponibile';
     }
-    return date.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+    const formattedDate = date.toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    const formattedTime = date.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+    return `${formattedDate} ${formattedTime}`;
   }
 
-  calculateMinutesPlayed(matchStart, matchStatus) {
-    const now = new Date();
-    const start = new Date(matchStart);
-    if (now >= start) {
-      let diffMs = now - start;
-      let diffMinutes = Math.floor(diffMs / 60000);
-
-      if (matchStatus === 'IN_PLAY' || matchStatus === 'PAUSED') {
-        diffMinutes = Math.max(diffMinutes - 15, 0);
-      }
-      return `${diffMinutes}'`;
+  getMatchStatusText(match) {
+    if (match.status === 'Scheduled') {
+      return this.formatDateTime(match.date);
     }
-    return null;
+    if (match.status === 'In-Play') {
+      return `${match.home_score} - ${match.away_score} (${match.clock})`;
+    }
+    if (match.status === 'Full Time') {
+      return `${match.home_score} - ${match.away_score}`;
+    }
+    return 'Dati non disponibili';
   }
 
-  getMatchResultText(match) {
-    if (!match.score || !match.score.fullTime) {
-      return 'Dati non disponibili';
-    }
+  showDetails(match) {
+    this.activeMatch = match;
+    this.showPopup = true;
+  }
 
-    if (match.status === 'FINISHED') {
-      return `${match.score.fullTime.home} - ${match.score.fullTime.away}`;
-    }
+  closePopup() {
+    this.showPopup = false;
+  }
 
-    if (match.status === 'IN_PLAY' || match.status === 'PAUSED') {
-      if (match.score.halfTime && match.score.halfTime.home !== null) {
-        return `Primo Tempo: ${match.score.halfTime.home} - ${match.score.halfTime.away}`;
+  separateEvents(details) {
+    const goals = [];
+    const yellowCards = [];
+    const redCards = [];
+
+    details.forEach(event => {
+      if (event.includes('Goal')) {
+        goals.push(event);
+      } else if (event.includes('Yellow Card')) {
+        yellowCards.push(event);
+      } else if (event.includes('Red Card')) {
+        redCards.push(event);
       }
-      return `${match.score.fullTime.home} - ${match.score.fullTime.away}`;
+    });
+
+    return { goals, yellowCards, redCards };
+  }
+
+  renderMatchDetails(details, clock) {
+    if (!details || details.length === 0) {
+      return html`<p>Nessun dettaglio disponibile.</p>`;
     }
 
-    return 'Non iniziata';
+    const { goals, yellowCards, redCards } = this.separateEvents(details);
+
+    return html`
+      <p><strong>Clock finale:</strong> ${clock}</p>
+      ${goals.length > 0
+        ? html`
+            <div class="event-section">
+              <h5 class="event-title">Goal</h5>
+              <ul class="goal-details">
+                ${goals.map(goal => html`<li>${goal}</li>`)}
+              </ul>
+            </div>`
+        : ''}
+      ${yellowCards.length > 0
+        ? html`
+            <div class="event-section">
+              <h5 class="event-title">Cartellini Gialli</h5>
+              <ul class="yellow-card-details">
+                ${yellowCards.map(card => html`<li>${card}</li>`)}
+              </ul>
+            </div>`
+        : ''}
+      ${redCards.length > 0
+        ? html`
+            <div class="event-section">
+              <h5 class="event-title">Cartellini Rossi</h5>
+              <ul class="red-card-details">
+                ${redCards.map(card => html`<li>${card}</li>`)}
+              </ul>
+            </div>`
+        : ''}
+    `;
+  }
+
+  renderPopup() {
+    if (!this.showPopup || !this.activeMatch) {
+      return html``;
+    }
+
+    return html`
+      <div class="popup-overlay" @click="${this.closePopup}">
+        <div class="popup-content" @click="${(e) => e.stopPropagation()}">
+          <h3 class="popup-title">Dettagli Partita</h3>
+        
+          <!-- Loghi delle squadre -->
+          <div class="popup-logos">
+            <img class="popup-logo" src="${this.activeMatch.home_logo}" alt="${this.activeMatch.home_team}" />
+            <span class="popup-vs">vs</span>
+            <img class="popup-logo" src="${this.activeMatch.away_logo}" alt="${this.activeMatch.away_team}" />
+          </div>
+        
+          <!-- Informazioni sulle squadre -->
+          <p class="popup-teams">${this.activeMatch.home_team} <span class="popup-vs">vs</span> ${this.activeMatch.away_team}</p>
+          <p><strong>Formazione Casa:</strong> <span class="home-stat">${this.activeMatch.home_form}</span></p>
+          <p><strong>Formazione Trasferta:</strong> <span class="away-stat">${this.activeMatch.away_form}</span></p>
+        
+          <!-- Altre informazioni (statistiche) -->
+          <p><strong>Statistiche Casa:</strong></p>
+          <ul>
+            <li>Possesso Palla: <span class="stat-value">${this.activeMatch.home_statistics.possessionPct}%</span></li>
+            <li>Tiri Totali: <span class="stat-value">${this.activeMatch.home_statistics.totalShots}</span></li>
+            <li>Tiri in Porta: <span class="stat-value">${this.activeMatch.home_statistics.shotsOnTarget}</span></li>
+            <li>Falli Comessi: <span class="stat-value">${this.activeMatch.home_statistics.foulsCommitted}</span></li>
+            <li>Assist: <span class="stat-value">${this.activeMatch.home_statistics.goalAssists}</span></li>
+          </ul>
+          <p><strong>Statistiche Trasferta:</strong></p>
+          <ul>
+            <li>Possesso Palla: <span class="stat-value">${this.activeMatch.away_statistics.possessionPct}%</span></li>
+            <li>Tiri Totali: <span class="stat-value">${this.activeMatch.away_statistics.totalShots}</span></li>
+            <li>Tiri in Porta: <span class="stat-value">${this.activeMatch.away_statistics.shotsOnTarget}</span></li>
+            <li>Falli Comessi: <span class="stat-value">${this.activeMatch.away_statistics.foulsCommitted}</span></li>
+            <li>Assist: <span class="stat-value">${this.activeMatch.away_statistics.goalAssists}</span></li>
+          </ul>
+
+          <h4 class="popup-subtitle">Eventi Partita</h4>
+          ${this.renderMatchDetails(this.activeMatch.match_details, this.activeMatch.clock)}
+          <button @click="${this.closePopup}" class="close-button">Chiudi</button>
+        </div>
+      </div>
+    `;
   }
 
   render() {
@@ -84,53 +180,57 @@ class CalcioLiveTodayMatchesCard extends LitElement {
       return html`<ha-card>Entità sconosciuta: ${entityId}</ha-card>`;
     }
 
-    const matches = stateObj.attributes.matches || [];
-    const todayMatches = this.filterTodayMatches(matches);
+    let matches = stateObj.attributes.matches || [];
 
-    const limitedMatches = todayMatches.slice(0, this.maxEventsTotal);
-
-    if (limitedMatches.length === 0) {
-      return html`<ha-card>Nessuna partita per oggi</ha-card>`;
+    if (!this.showFinishedMatches) {
+      matches = matches.filter((match) => match.status !== "Full Time");
     }
 
-    const scrollHeight = this.maxEventsVisible * 160;
+    const limitedMatches = matches.slice(0, this.maxEventsTotal);
+
+    if (limitedMatches.length === 0) {
+      return html`<ha-card>Nessuna partita disponibile</ha-card>`;
+    }
+
+    const scrollHeight = this.maxEventsVisible * 130;
 
     return html`
       <ha-card>
+        ${!this.hideHeader ? html`
+        <div class="header">
+          <span>Prossime di campionato</span>
+        </div>
+        ` : ''}
         <div class="scroll-content" style="max-height: ${scrollHeight}px; overflow-y: auto;">
           ${limitedMatches.map((match, index) => html`
             <div class="match-wrapper">
               <div class="match-header">
                 <div class="match-competition">
-                  ${match.competition.name} | <span class="match-date">${this.formatTime(match.utcDate)}</span>
-                  ${match.status === 'IN_PLAY' ? html`<span class="match-minutes green-text"> | ${this.calculateMinutesPlayed(match.utcDate, match.status)}</span>` : ''}
+                  ${match.venue} | <span class="match-date">${this.formatDateTime(match.date)}</span>
+                  ${match.status !== 'Scheduled' 
+                    ? html`<span class="info-icon" @click="${() => this.showDetails(match)}">Info</span>`
+                    : ''}
                 </div>
               </div>
               <div class="match">
-                <!-- Logo squadra casa -->
-                <img class="team-logo" src="${match.homeTeam.crest}" alt="${match.homeTeam.name}" />
-
-                <!-- Info partita con squadre sopra e sotto -->
+                <img class="team-logo" src="${match.home_logo}" alt="${match.home_team}" />
                 <div class="match-info">
-                  <div class="team-name">${match.homeTeam.name}</div>
-                  <div class="match-result ${match.status === 'IN_PLAY' || match.status === 'FINISHED' ? 'ongoing' : 'not-started'}">
-                    ${this.getMatchResultText(match)}
+                  <div class="team-name">${match.home_team}</div>
+                  <div class="match-result">
+                    ${this.getMatchStatusText(match)}
                   </div>
-                  <div class="team-name">${match.awayTeam.name}</div>
-                  ${match.referees && match.referees.length > 0 ? html`<div class="referee">Arbitro: ${match.referees[0].name}</div>` : html`<div class="referee">Arbitro non disponibile</div>`}
+                  <div class="team-name">${match.away_team}</div>
                 </div>
-
-                <!-- Logo squadra trasferta -->
-                <img class="team-logo" src="${match.awayTeam.crest}" alt="${match.awayTeam.name}" />
+                <img class="team-logo" src="${match.away_logo}" alt="${match.away_team}" />
               </div>
               ${index < limitedMatches.length - 1 ? html`<hr class="separator-line" />` : ''}
             </div>
           `)}
         </div>
+        ${this.renderPopup()}
       </ha-card>
     `;
   }
-  
 
   static get styles() {
     return css`
@@ -138,6 +238,12 @@ class CalcioLiveTodayMatchesCard extends LitElement {
         padding: 16px;
         box-sizing: border-box;
         width: 100%;
+      }
+      .header {
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        padding-bottom: 10px;
       }
       .match-competition {
         text-align: center;
@@ -183,27 +289,105 @@ class CalcioLiveTodayMatchesCard extends LitElement {
         font-size: 16px;
         font-weight: bold;
         margin: 8px 0;
+        color: green; /* Colore verde per il risultato */
       }
-      .match-result.ongoing {
-        color: green;
-      }
-      .match-result.not-started {
-        color: orange;
-      }
-      .green-text {
-        color: green;
-        font-weight: bold;
+      .info-icon {
+        font-size: 12px;
+        color: var(--primary-color);
+        cursor: pointer;
+        margin-left: 8px;
       }
       .separator-line {
         border: none;
         border-top: 1px solid var(--divider-color);
         margin: 8px 0;
       }
-      .referee {
-        font-size: 12px;
-        color: var(--secondary-text-color);
+      .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+      .popup-content {
+        background: white;
+        padding: 16px;
+        border-radius: 8px;
+        width: 80%;
+        max-width: 400px;
+      }
+      .popup-title {
+        color: var(--primary-color);
+        margin-top: 0;
+      }
+      .popup-logos {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+
+      .popup-logo {
+        width: 60px;
+        height: 60px;
+        margin: 0 10px;
+      }
+
+      .popup-vs {
+        font-size: 24px;
+        font-weight: bold;
+        color: var(--primary-color);
+        margin: 0 10px;
+      }
+
+      .popup-teams {
         text-align: center;
-        margin-top: 8px;
+        font-size: 1.2em;
+        color: var(--primary-text-color);
+        margin-bottom: 16px;
+      }
+      
+      .popup-subtitle {
+        color: var(--primary-color);
+        margin-top: 16px;
+      }
+      .stat-value {
+        color: var(--primary-color);
+      }
+      .home-stat {
+        color: green;
+      }
+      .away-stat {
+        color: red;
+      }
+      .event-section {
+        margin-bottom: 16px;
+      }
+      .event-title {
+        color: var(--primary-color);
+        font-weight: bold;
+        margin-bottom: 8px;
+      }
+      .goal-details li, .yellow-card-details li, .red-card-details li {
+        color: var(--primary-text-color);
+        margin-bottom: 4px;
+      }
+      .close-button {
+        background: var(--primary-color);
+        color: white;
+        padding: 8px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 16px;
+      }
+      .close-button:hover {
+        background: var(--primary-color-dark);
       }
     `;
   }

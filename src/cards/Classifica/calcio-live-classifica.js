@@ -51,9 +51,10 @@ class CalcioLiveStandingsCard extends LitElement {
       return html`<ha-card>Entità sconosciuta: ${entityId}</ha-card>`;
     }
 
-    const standings = stateObj.attributes.standings[0].table || [];
-    const competition = stateObj.attributes.competition || {};
-    const season = stateObj.attributes.season || {};
+    const standings = stateObj.attributes.standings || [];
+    const seasonName = stateObj.attributes.season || '';
+    const seasonStart = stateObj.attributes.season_start || '';
+    const seasonEnd = stateObj.attributes.season_end || '';
 
     const maxVisible = Math.min(this.maxTeamsVisible, standings.length);
 
@@ -64,10 +65,9 @@ class CalcioLiveStandingsCard extends LitElement {
           : html`
               <div class="card-header">
                 <div class="header-row">
-                  <img class="competition-emblem" src="${competition.emblem}" alt="${competition.name}" />
                   <div class="competition-details">
-                    <div class="competition-name">Classifica</div>
-                    <div class="season-dates">Stagione: ${this.formatDate(season.startDate)} - ${this.formatDate(season.endDate)}</div>
+                    <div class="competition-name">${stateObj.state}</div>
+                    <div class="season-dates">Stagione: ${seasonName} (${this.formatDate(seasonStart)} - ${this.formatDate(seasonEnd)})</div>
                   </div>
                 </div>
                 <hr class="separator" />
@@ -94,18 +94,18 @@ class CalcioLiveStandingsCard extends LitElement {
               <tbody>
                 ${standings.map((team, index) => html`
                   <tr>
-                    <td>${team.position}</td>
+                    <td>${team.rank ?? '-'}</td>
                     <td>
-                      <img class="team-crest" src="${team.team.crest}" alt="${team.team.shortName}" />
-                      ${team.team.shortName}
+                      <img class="team-crest" src="${team.team_logo}" alt="${team.team_name}" />
+                      ${team.team_name}
                     </td>
                     <td class="points">${team.points}</td>
-                    <td class="won">${team.won}</td>
-                    <td class="draw">${team.draw}</td>
-                    <td class="lost">${team.lost}</td>
-                    <td>${team.goalsFor}</td>
-                    <td>${team.goalsAgainst}</td>
-                    <td>${team.goalDifference}</td>
+                    <td class="won">${team.wins}</td>
+                    <td class="draw">${team.draws}</td>
+                    <td class="lost">${team.losses}</td>
+                    <td>${team.goals_for}</td>
+                    <td>${team.goals_against}</td>
+                    <td>${team.goal_difference}</td>
                   </tr>
                 `)}
               </tbody>
@@ -130,11 +130,6 @@ class CalcioLiveStandingsCard extends LitElement {
         display: flex;
         align-items: center;
         justify-content: flex-start;
-      }
-      .competition-emblem {
-        width: 60px;
-        height: 60px;
-        margin-right: 16px;
       }
       .competition-details {
         display: flex;
@@ -178,16 +173,16 @@ class CalcioLiveStandingsCard extends LitElement {
       }
       .points {
         font-weight: bold;
-        color: #4CAF50; /* Verde per i punti */
+        color: #4CAF50;
       }
       .won {
-        color: #4CAF50; /* Verde per le vittorie */
+        color: #4CAF50; 
       }
       .draw {
-        color: #FFC107; /* Giallo per i pareggi */
+        color: #FFC107;
       }
       .lost {
-        color: #F44336; /* Rosso per le sconfitte */
+        color: #F44336;
       }
       .separator {
         width: 100%;
@@ -198,7 +193,6 @@ class CalcioLiveStandingsCard extends LitElement {
       }
     `;
   }
-  
 }
 
 customElements.define("calcio-live-classifica", CalcioLiveStandingsCard);

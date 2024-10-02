@@ -154,15 +154,15 @@ class CalcioLiveCannonieriCard extends LitElement {
       .player-name {
         font-weight: bold;
         font-size: 1.3em;
-        color: #FFC107; /* Colore arancione per il nome del giocatore */
+        color: #FFC107;
         margin-bottom: 4px;
       }
       .nationality {
         font-size: 0.9em;
-        color: #757575; /* Grigio per la nazionalità */
+        color: #757575;
       }
       .team-name {
-        color: #2196F3; /* Viola per il nome della squadra */
+        color: #2196F3;
         font-size: 14px;
         margin-bottom: 4px;
       }
@@ -172,7 +172,7 @@ class CalcioLiveCannonieriCard extends LitElement {
       }
       .goals-number {
         font-weight: bold;
-        color: #4CAF50; /* Verde per il numero di gol */
+        color: #4CAF50;
       }
       .played-matches {
         font-size: 12px;
@@ -180,7 +180,7 @@ class CalcioLiveCannonieriCard extends LitElement {
       }
       .matches-number {
         font-weight: bold;
-        color: #FF9800; /* Arancione per il numero di partite giocate */
+        color: #FF9800;
       }
       .separator {
         width: 100%;
