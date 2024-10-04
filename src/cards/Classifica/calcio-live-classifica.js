@@ -19,22 +19,6 @@ class CalcioLiveStandingsCard extends LitElement {
     this.hideHeader = config.hide_header || false;
   }
 
-  formatDate(dateString) {
-    if (!dateString) {
-      return 'Data non disponibile';
-    }
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) {
-      return 'Data non valida';
-    }
-    const options = {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    };
-    return new Intl.DateTimeFormat('it-IT', options).format(date);
-  }
-
   getCardSize() {
     return 3;
   }
@@ -67,7 +51,7 @@ class CalcioLiveStandingsCard extends LitElement {
                 <div class="header-row">
                   <div class="competition-details">
                     <div class="competition-name">${stateObj.state}</div>
-                    <div class="season-dates">Stagione: ${seasonName} (${this.formatDate(seasonStart)} - ${this.formatDate(seasonEnd)})</div>
+                    <div class="season-dates">${seasonName}</div>
                   </div>
                 </div>
                 <hr class="separator" />
@@ -137,11 +121,11 @@ class CalcioLiveStandingsCard extends LitElement {
       }
       .competition-name {
         font-weight: bold;
-        font-size: 1.5em;
+        font-size: 1.3em;
       }
       .season-dates {
         color: var(--secondary-text-color);
-        font-size: 14px;
+        font-size: 16px;
       }
       .table-container {
         width: 100%;

@@ -5,12 +5,8 @@ class CalcioLiveTodayMatchesCard extends LitElement {
     return {
       hass: {},
       _config: {},
-      maxEventsVisible: { type: Number },
-      maxEventsTotal: { type: Number },
-      showFinishedMatches: { type: Boolean },
-      hideHeader: { type: Boolean }, 
-      activeMatch: { type: Object },
       showPopup: { type: Boolean },
+      activeMatch: { type: Object },
     };
   }
 
@@ -18,11 +14,12 @@ class CalcioLiveTodayMatchesCard extends LitElement {
     if (!config.entity) {
       throw new Error("Devi definire un'entità");
     }
+
     this._config = config;
     this.maxEventsVisible = config.max_events_visible ? config.max_events_visible : 5;
-    this.maxEventsTotal = config.max_events_total ? config.max_events_total : 10;
+    this.maxEventsTotal = config.max_events_total ? config.max_events_total : 50;
     this.showFinishedMatches = config.show_finished_matches !== undefined ? config.show_finished_matches : true;
-    this.hideHeader = config.hide_header !== undefined ? config.hide_header : false; 
+    this.hideHeader = config.hide_header !== undefined ? config.hide_header : false;
     this.activeMatch = null;
     this.showPopup = false;
   }
@@ -31,19 +28,9 @@ class CalcioLiveTodayMatchesCard extends LitElement {
     return 3;
   }
 
-  formatDateTime(dateString) {
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) {
-      return 'Data non disponibile';
-    }
-    const formattedDate = date.toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric' });
-    const formattedTime = date.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
-    return `${formattedDate} ${formattedTime}`;
-  }
-
   getMatchStatusText(match) {
     if (match.status === 'Scheduled') {
-      return this.formatDateTime(match.date);
+      return `${match.date}`;
     }
     if (match.status === 'In-Play') {
       return `${match.home_score} - ${match.away_score} (${match.clock})`;
@@ -89,7 +76,7 @@ class CalcioLiveTodayMatchesCard extends LitElement {
     const { goals, yellowCards, redCards } = this.separateEvents(details);
 
     return html`
-      <p><strong>Clock finale:</strong> ${clock}</p>
+      ${clock ? html`<p><strong>Clock finale:</strong> ${clock}</p>` : ''}
       ${goals.length > 0
         ? html`
             <div class="event-section">
@@ -138,26 +125,25 @@ class CalcioLiveTodayMatchesCard extends LitElement {
           </div>
         
           <!-- Informazioni sulle squadre -->
-          <p class="popup-teams">${this.activeMatch.home_team} <span class="popup-vs">vs</span> ${this.activeMatch.away_team}</p>
           <p><strong>Formazione Casa:</strong> <span class="home-stat">${this.activeMatch.home_form}</span></p>
           <p><strong>Formazione Trasferta:</strong> <span class="away-stat">${this.activeMatch.away_form}</span></p>
         
           <!-- Altre informazioni (statistiche) -->
           <p><strong>Statistiche Casa:</strong></p>
           <ul>
-            <li>Possesso Palla: <span class="stat-value">${this.activeMatch.home_statistics.possessionPct}%</span></li>
-            <li>Tiri Totali: <span class="stat-value">${this.activeMatch.home_statistics.totalShots}</span></li>
-            <li>Tiri in Porta: <span class="stat-value">${this.activeMatch.home_statistics.shotsOnTarget}</span></li>
-            <li>Falli Comessi: <span class="stat-value">${this.activeMatch.home_statistics.foulsCommitted}</span></li>
-            <li>Assist: <span class="stat-value">${this.activeMatch.home_statistics.goalAssists}</span></li>
+            <li>Possesso Palla: <span class="stat-value">${this.activeMatch.home_statistics?.possessionPct ?? 'N/A'}%</span></li>
+            <li>Tiri Totali: <span class="stat-value">${this.activeMatch.home_statistics?.totalShots ?? 'N/A'}</span></li>
+            <li>Tiri in Porta: <span class="stat-value">${this.activeMatch.home_statistics?.shotsOnTarget ?? 'N/A'}</span></li>
+            <li>Falli Comessi: <span class="stat-value">${this.activeMatch.home_statistics?.foulsCommitted ?? 'N/A'}</span></li>
+            <li>Assist: <span class="stat-value">${this.activeMatch.home_statistics?.goalAssists ?? 'N/A'}</span></li>
           </ul>
           <p><strong>Statistiche Trasferta:</strong></p>
           <ul>
-            <li>Possesso Palla: <span class="stat-value">${this.activeMatch.away_statistics.possessionPct}%</span></li>
-            <li>Tiri Totali: <span class="stat-value">${this.activeMatch.away_statistics.totalShots}</span></li>
-            <li>Tiri in Porta: <span class="stat-value">${this.activeMatch.away_statistics.shotsOnTarget}</span></li>
-            <li>Falli Comessi: <span class="stat-value">${this.activeMatch.away_statistics.foulsCommitted}</span></li>
-            <li>Assist: <span class="stat-value">${this.activeMatch.away_statistics.goalAssists}</span></li>
+            <li>Possesso Palla: <span class="stat-value">${this.activeMatch.away_statistics?.possessionPct ?? 'N/A'}%</span></li>
+            <li>Tiri Totali: <span class="stat-value">${this.activeMatch.away_statistics?.totalShots ?? 'N/A'}</span></li>
+            <li>Tiri in Porta: <span class="stat-value">${this.activeMatch.away_statistics?.shotsOnTarget ?? 'N/A'}</span></li>
+            <li>Falli Comessi: <span class="stat-value">${this.activeMatch.away_statistics?.foulsCommitted ?? 'N/A'}</span></li>
+            <li>Assist: <span class="stat-value">${this.activeMatch.away_statistics?.goalAssists ?? 'N/A'}</span></li>
           </ul>
 
           <h4 class="popup-subtitle">Eventi Partita</h4>
@@ -192,7 +178,7 @@ class CalcioLiveTodayMatchesCard extends LitElement {
       return html`<ha-card>Nessuna partita disponibile</ha-card>`;
     }
 
-    const scrollHeight = this.maxEventsVisible * 130;
+    const scrollHeight = this.maxEventsVisible * 150;
 
     return html`
       <ha-card>
@@ -206,7 +192,7 @@ class CalcioLiveTodayMatchesCard extends LitElement {
             <div class="match-wrapper">
               <div class="match-header">
                 <div class="match-competition">
-                  ${match.venue} | <span class="match-date">${this.formatDateTime(match.date)}</span>
+                  ${match.venue} | <span class="match-date">${match.date}</span>
                   ${match.status !== 'Scheduled' 
                     ? html`<span class="info-icon" @click="${() => this.showDetails(match)}">Info</span>`
                     : ''}
@@ -256,14 +242,14 @@ class CalcioLiveTodayMatchesCard extends LitElement {
         color: orange;
       }
       .team-logo {
-        width: 65px;
-        height: 65px;
+        width: 90px;
+        height: 90px;
       }
       .match-wrapper {
         margin-bottom: 16px;
       }
       .team-name {
-        font-size: 14px;
+        font-size: 17px;
         font-weight: bold;
         text-align: center;
       }
@@ -315,11 +301,13 @@ class CalcioLiveTodayMatchesCard extends LitElement {
         z-index: 1000;
       }
       .popup-content {
-        background: white;
+        background: black;
         padding: 16px;
         border-radius: 8px;
         width: 80%;
         max-width: 400px;
+        overflow-y: auto;
+        max-height: 80vh; /* Aggiunto per rendere il popup scrollabile */
       }
       .popup-title {
         color: var(--primary-color);
