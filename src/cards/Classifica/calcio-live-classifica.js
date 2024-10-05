@@ -61,35 +61,37 @@ class CalcioLiveStandingsCard extends LitElement {
           <table>
             <thead>
               <tr>
-                <th>Pos</th>
-                <th>Squadra</th>
-                <th>Punti</th>
-                <th>V</th>
-                <th>P</th>
-                <th>S</th>
-                <th>GF</th>
-                <th>GS</th>
-                <th>+/-</th>
+                <th class="small-column">Pos</th>
+                <th class="team-column">Squadra</th>
+                <th class="small-column">Punti</th>
+                <th class="small-column">V</th>
+                <th class="small-column">P</th>
+                <th class="small-column">S</th>
+                <th class="small-column">GF</th>
+                <th class="small-column">GS</th>
+                <th class="small-column">+/-</th>
               </tr>
             </thead>
           </table>
-          <div class="table-container" style="max-height: ${maxVisible * 45}px; overflow-y: auto;">
+          <div class="table-container" style="--max-teams-visible: ${maxVisible};">
             <table>
               <tbody>
-                ${standings.map((team, index) => html`
+                ${standings.slice(0, standings.length).map((team, index) => html`
                   <tr>
-                    <td>${team.rank ?? '-'}</td>
-                    <td>
-                      <img class="team-crest" src="${team.team_logo}" alt="${team.team_name}" />
-                      ${team.team_name}
+                    <td class="small-column">${team.rank ?? '-'}</td>
+                    <td class="team-column">
+                      <div class="team-name">
+                        <img class="team-crest" src="${team.team_logo}" alt="${team.team_name}" />
+                        ${team.team_name}
+                      </div>
                     </td>
-                    <td class="points">${team.points}</td>
-                    <td class="won">${team.wins}</td>
-                    <td class="draw">${team.draws}</td>
-                    <td class="lost">${team.losses}</td>
-                    <td>${team.goals_for}</td>
-                    <td>${team.goals_against}</td>
-                    <td>${team.goal_difference}</td>
+                    <td class="points small-column">${team.points}</td>
+                    <td class="won small-column">${team.wins}</td>
+                    <td class="draw small-column">${team.draws}</td>
+                    <td class="lost small-column">${team.losses}</td>
+                    <td class="small-column">${team.goals_for}</td>
+                    <td class="small-column">${team.goals_against}</td>
+                    <td class="small-column">${team.goal_difference}</td>
                   </tr>
                 `)}
               </tbody>
@@ -99,6 +101,7 @@ class CalcioLiveStandingsCard extends LitElement {
       </ha-card>
     `;
   }
+  
 
   static get styles() {
     return css`
@@ -130,6 +133,7 @@ class CalcioLiveStandingsCard extends LitElement {
       .table-container {
         width: 100%;
         overflow-y: auto;
+        max-height: calc(var(--max-teams-visible, 10) * 40px);
       }
       table {
         width: 100%;
@@ -145,10 +149,16 @@ class CalcioLiveStandingsCard extends LitElement {
       th {
         background-color: var(--primary-background-color);
         color: var(--primary-text-color);
+        text-align: center;
       }
       td {
         vertical-align: middle;
-        text-align: left;
+        text-align: center;
+      }
+      .team-name {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
       }
       .team-crest {
         width: 24px;
@@ -174,6 +184,13 @@ class CalcioLiveStandingsCard extends LitElement {
         background-color: #ddd;
         border: none;
         margin: 2px 0;
+      }
+      .team-column {
+        width: 180px;
+        text-align: left;
+      }
+      .small-column {
+        width: 40px;
       }
     `;
   }
