@@ -28,17 +28,18 @@ class CalcioLiveTodayMatchesCard extends LitElement {
     return 3;
   }
 
+  // Funzione aggiornata per gestire il risultato e il tempo del match
   getMatchStatusText(match) {
+    if (match.completed) {
+      return `${match.home_score} - ${match.away_score} (Full Time)`; // Match completato
+    }
+    if (match.period === 1 || match.period === 2) {
+      return `${match.home_score} - ${match.away_score} (${match.clock})`; // Match in corso, mostra il punteggio e il tempo
+    }
     if (match.status === 'Scheduled') {
-      return `${match.date}`;
+      return `${match.date}`; // Partita programmata
     }
-    if (match.status === 'In-Play') {
-      return `${match.home_score} - ${match.away_score} (${match.clock})`;
-    }
-    if (match.status === 'Full Time') {
-      return `${match.home_score} - ${match.away_score}`;
-    }
-    return 'Dati non disponibili';
+    return 'Dati non disponibili'; // Fallback se i dati non sono disponibili
   }
 
   showDetails(match) {
@@ -56,8 +57,8 @@ class CalcioLiveTodayMatchesCard extends LitElement {
     const redCards = [];
 
     details.forEach(event => {
-      if (event.includes('Goal')) {
-        goals.push(event);
+      if (event.includes('Goal') || event.includes('Penalty - Scored')) {
+        goals.push(event); // Aggiungi i gol all'elenco
       } else if (event.includes('Yellow Card')) {
         yellowCards.push(event);
       } else if (event.includes('Red Card')) {
@@ -68,12 +69,13 @@ class CalcioLiveTodayMatchesCard extends LitElement {
     return { goals, yellowCards, redCards };
   }
 
+  // Funzione che gestisce il rendering degli eventi della partita
   renderMatchDetails(details, clock) {
     if (!details || details.length === 0) {
       return html`<p>Nessun dettaglio disponibile.</p>`;
     }
 
-    const { goals, yellowCards, redCards } = this.separateEvents(details);
+    const { goals, yellowCards, redCards } = this.separateEvents(details); // Separa gli eventi
 
     return html`
       ${clock ? html`<p><strong>Clock finale:</strong> ${clock}</p>` : ''}
@@ -82,7 +84,7 @@ class CalcioLiveTodayMatchesCard extends LitElement {
             <div class="event-section">
               <h5 class="event-title">Goal</h5>
               <ul class="goal-details">
-                ${goals.map(goal => html`<li>${goal}</li>`)}
+                ${goals.map(goal => html`<li>${goal}</li>`)} <!-- Mostra i gol nel popup -->
               </ul>
             </div>`
         : ''}
@@ -203,7 +205,7 @@ class CalcioLiveTodayMatchesCard extends LitElement {
                 <div class="match-info">
                   <div class="team-name">${match.home_team}</div>
                   <div class="match-result">
-                    ${this.getMatchStatusText(match)}
+                    ${this.getMatchStatusText(match)} <!-- Mostra lo stato e il risultato -->
                   </div>
                   <div class="team-name">${match.away_team}</div>
                 </div>
