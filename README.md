@@ -14,6 +14,7 @@ Non dimenticare di seguirmi sui social:
 
 
 ## Video Guida
+Il video è basato sulla versione 2.0.1, nella versione 2.1.0 è stata introdotta la parte grafica.
 
 [Guarda il video su YouTube](https://www.youtube.com/watch?v=K-FAJmwsGXs)
 
