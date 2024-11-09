@@ -1,7 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 
 class CalcioLiveTodayMatchesCard extends LitElement {
-  // Proprietà della card
   static get properties() {
     return {
       hass: {},
@@ -11,7 +10,6 @@ class CalcioLiveTodayMatchesCard extends LitElement {
     };
   }
 
-  // Definisci il setConfig come al solito
   setConfig(config) {
       if (!config.entity) {
         throw new Error("Devi definire un'entità");
@@ -22,23 +20,20 @@ class CalcioLiveTodayMatchesCard extends LitElement {
       this.maxEventsTotal = config.max_events_total ? config.max_events_total : 50;
       this.showFinishedMatches = config.show_finished_matches !== undefined ? config.show_finished_matches : true;
       this.hideHeader = config.hide_header !== undefined ? config.hide_header : false;
-      this.hidePastDays = config.hide_past_days !== undefined ? config.hide_past_days : 0;  // Nuova opzione
+      this.hidePastDays = config.hide_past_days !== undefined ? config.hide_past_days : 0;
       this.activeMatch = null;
       this.showPopup = false;
   }
   
 
-  // Dimensione della card
   getCardSize() {
     return 3;
   }
 
-  // Supporta l'editor della configurazione della card
   static getConfigElement() {
     return document.createElement("calcio-live-matches-editor");
   }
 
-  // Indica che supporta la configurazione grafica
   static getStubConfig() {
     return {
       entity: "sensor.calcio_live",
@@ -51,32 +46,27 @@ class CalcioLiveTodayMatchesCard extends LitElement {
   }
   
   _parseMatchDate(dateStr) {
-    // La data è nel formato 'DD/MM/YYYY HH:MM', dividiamola
-    const [datePart, timePart] = dateStr.split(' ');  // Dividiamo tra la parte di data e quella di tempo
-    const [day, month, year] = datePart.split('/').map(Number);  // Estraiamo giorno, mese e anno
+    const [datePart, timePart] = dateStr.split(' ');
+    const [day, month, year] = datePart.split('/').map(Number);
   
-    // Estraiamo ore e minuti dalla parte del tempo
     const [hours, minutes] = timePart ? timePart.split(':').map(Number) : [0, 0];
 
-    // Creiamo un nuovo oggetto Date con i valori estratti
     const matchDate = new Date(year, month - 1, day, hours, minutes);
 
-    console.log(`Parsed match date: ${matchDate}`);  // Aggiungiamo un log per verificare la data
     return matchDate;
   }
   
-  // Funzione aggiornata per gestire il risultato e il tempo del match
   getMatchStatusText(match) {
     if (match.completed) {
-      return `${match.home_score} - ${match.away_score} (Full Time)`; // Match completato
+      return `${match.home_score} - ${match.away_score} (Full Time)`;
     }
     if (match.period === 1 || match.period === 2) {
-      return `${match.home_score} - ${match.away_score} (${match.clock})`; // Match in corso, mostra il punteggio e il tempo
+      return `${match.home_score} - ${match.away_score} (${match.clock})`;
     }
     if (match.status === 'Scheduled') {
-      return `${match.date}`; // Partita programmata
+      return `${match.date}`;
     }
-    return 'Dati non disponibili'; // Fallback se i dati non sono disponibili
+    return 'Dati non disponibili';
   }
 
   showDetails(match) {
@@ -95,7 +85,7 @@ class CalcioLiveTodayMatchesCard extends LitElement {
 
     details.forEach(event => {
       if (event.includes('Goal') || event.includes('Penalty - Scored')) {
-        goals.push(event); // Aggiungi i gol all'elenco
+        goals.push(event);
       } else if (event.includes('Yellow Card')) {
         yellowCards.push(event);
       } else if (event.includes('Red Card')) {
@@ -106,13 +96,12 @@ class CalcioLiveTodayMatchesCard extends LitElement {
     return { goals, yellowCards, redCards };
   }
 
-  // Funzione che gestisce il rendering degli eventi della partita
   renderMatchDetails(details, clock) {
     if (!details || details.length === 0) {
       return html`<p>Nessun dettaglio disponibile.</p>`;
     }
 
-    const { goals, yellowCards, redCards } = this.separateEvents(details); // Separa gli eventi
+    const { goals, yellowCards, redCards } = this.separateEvents(details);
 
     return html`
       ${clock ? html`<p><strong>Clock finale:</strong> ${clock}</p>` : ''}
@@ -121,7 +110,7 @@ class CalcioLiveTodayMatchesCard extends LitElement {
             <div class="event-section">
               <h5 class="event-title">Goal</h5>
               <ul class="goal-details">
-                ${goals.map(goal => html`<li>${goal}</li>`)} <!-- Mostra i gol nel popup -->
+                ${goals.map(goal => html`<li>${goal}</li>`)}
               </ul>
             </div>`
         : ''}
@@ -156,18 +145,15 @@ class CalcioLiveTodayMatchesCard extends LitElement {
         <div class="popup-content" @click="${(e) => e.stopPropagation()}">
           <h3 class="popup-title">Dettagli Partita</h3>
         
-          <!-- Loghi delle squadre -->
           <div class="popup-logos">
             <img class="popup-logo" src="${this.activeMatch.home_logo}" alt="${this.activeMatch.home_team}" />
             <span class="popup-vs">vs</span>
             <img class="popup-logo" src="${this.activeMatch.away_logo}" alt="${this.activeMatch.away_team}" />
           </div>
         
-          <!-- Informazioni sulle squadre -->
           <p><strong>Formazione Casa:</strong> <span class="home-stat">${this.activeMatch.home_form}</span></p>
           <p><strong>Formazione Trasferta:</strong> <span class="away-stat">${this.activeMatch.away_form}</span></p>
         
-          <!-- Altre informazioni (statistiche) -->
           <p><strong>Statistiche Casa:</strong></p>
           <ul>
             <li>Possesso Palla: <span class="stat-value">${this.activeMatch.home_statistics?.possessionPct ?? 'N/A'}%</span></li>
@@ -209,22 +195,19 @@ class CalcioLiveTodayMatchesCard extends LitElement {
       const leagueInfo = stateObj.attributes.league_info ? stateObj.attributes.league_info[0] : null;
       const teamLogo = stateObj.attributes.team_logo || null;
 
-      // Filtro partite finite
       if (!this.showFinishedMatches) {
         matches = matches.filter((match) => match.status !== "Full Time");
       }
 
-      // Filtro partite più vecchie di N giorni
       const currentDate = new Date();
       if (this.hidePastDays > 0) {
         const daysAgo = new Date(currentDate);
         daysAgo.setDate(daysAgo.getDate() - this.hidePastDays);
 
-        console.log(`Current date: ${currentDate}, Filter date (days ago): ${daysAgo}`);  // Log per verificare il filtro
+        console.log(`Current date: ${currentDate}, Filter date (days ago): ${daysAgo}`);
 
         matches = matches.filter((match) => {
-          const matchDate = this._parseMatchDate(match.date);  // Usa la funzione per fare il parsing della data
-          console.log(`Comparing match date ${matchDate} with filter date ${daysAgo}`);
+          const matchDate = this._parseMatchDate(match.date);
           return matchDate >= daysAgo;
         });
       }
@@ -241,7 +224,6 @@ class CalcioLiveTodayMatchesCard extends LitElement {
         <ha-card>
           ${!this.hideHeader ? html`
           <div class="header">
-            <!-- Se il logo della competizione esiste, visualizzalo -->
             ${leagueInfo && leagueInfo.logo_href ? html`
             <div class="league-header">
               <img class="league-logo" src="${leagueInfo.logo_href}" alt="Logo ${leagueInfo.abbreviation}" />
@@ -251,7 +233,6 @@ class CalcioLiveTodayMatchesCard extends LitElement {
               </div>
             </div>` : ''}
 
-            <!-- Se il logo del team esiste, visualizzalo -->
             ${teamLogo ? html`
             <div class="team-header">
               <img class="team-logo" src="${teamLogo}" alt="Logo del Team" />
@@ -274,7 +255,7 @@ class CalcioLiveTodayMatchesCard extends LitElement {
                   <div class="match-info">
                     <div class="team-name">${match.home_team}</div>
                     <div class="match-result">
-                      ${this.getMatchStatusText(match)} <!-- Mostra lo stato e il risultato -->
+                      ${this.getMatchStatusText(match)}
                     </div>
                     <div class="team-name">${match.away_team}</div>
                   </div>

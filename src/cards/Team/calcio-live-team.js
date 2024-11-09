@@ -33,24 +33,25 @@ class CalcioLiveTeamNextCard extends LitElement {
     };
   }
 
-  // Funzione aggiornata per gestire il risultato e il tempo del match
   getMatchStatusText(match) {
     if (match.completed) {
-      return `${match.home_score} - ${match.away_score} (Full Time)`; // Match completato
+      return `${match.home_score} - ${match.away_score} (Full Time)`;
     }
     if (match.period === 1 || match.period === 2) {
-      return `${match.home_score} - ${match.away_score} (${match.clock})`; // Match in corso, mostra il punteggio e il tempo
+      return `${match.home_score} - ${match.away_score} (${match.clock})`;
     }
     if (match.status === 'Scheduled') {
-      return `${match.date}`; // Partita programmata
+      return `${match.date}`;
     }
-    return 'Dati non disponibili'; // Fallback se i dati non sono disponibili
+    return 'Dati non disponibili';
   }
 
   showDetails(match) {
+    console.log("Dettagli partita:", match);
     this.activeMatch = match;
     this.showPopup = true;
   }
+  
 
   closePopup() {
     this.showPopup = false;
@@ -63,7 +64,7 @@ class CalcioLiveTeamNextCard extends LitElement {
 
     details.forEach(event => {
       if (event.includes('Goal') || event.includes('Penalty - Scored')) {
-        goals.push(event); // Aggiungi i gol all'elenco
+        goals.push(event);
       } else if (event.includes('Yellow Card')) {
         yellowCards.push(event);
       } else if (event.includes('Red Card')) {
@@ -74,13 +75,81 @@ class CalcioLiveTeamNextCard extends LitElement {
     return { goals, yellowCards, redCards };
   }
 
-  // Funzione che gestisce il rendering degli eventi della partita
-  renderMatchDetails(details, clock) {
+  renderMatchDetails(details, clock, match) {
     if (!details || details.length === 0) {
       return html`<p>Nessun dettaglio disponibile.</p>`;
     }
-    return match.status === 'Scheduled' ? `${match.date}` : 'Dati non disponibili';
+
+    // Gestione degli stati della partita
+    const matchState = match.status || 'Stato sconosciuto';
+    let stateText;
+
+    switch (matchState) {
+      case 'First Half':
+        stateText = `Primo Tempo (${clock})`;
+        break;
+      case 'Second Half':
+        stateText = `Secondo Tempo (${clock})`;
+        break;
+      case 'Halftime':
+        stateText = `Intervallo`;
+        break;
+      case 'Scheduled':
+        stateText = `Programmata per il ${match.date}`;
+        break;
+      case 'Full Time':
+        stateText = `Tempo Regolamentare Concluso`;
+        break;
+      case 'Extra Time':
+        stateText = `Tempi Supplementari (${clock})`;
+        break;
+      case 'Penalties':
+        stateText = `Calci di Rigore (${clock})`;
+        break;
+      default:
+        stateText = `Stato: ${matchState}`;
+    }
+
+    return html`
+      <p><strong>Stato Partita:</strong> ${stateText}</p>
+      ${this.renderMatchEvents(details)}
+    `;
   }
+
+  renderMatchEvents(details) {
+    const { goals, yellowCards, redCards } = this.separateEvents(details);
+
+    return html`
+      ${goals.length > 0
+        ? html`
+            <div class="event-section">
+              <h5 class="event-title">Goal</h5>
+              <ul class="goal-details">
+                ${goals.map(goal => html`<li>${goal}</li>`)}
+              </ul>
+            </div>`
+        : ''}
+      ${yellowCards.length > 0
+        ? html`
+            <div class="event-section">
+              <h5 class="event-title">Cartellini Gialli</h5>
+              <ul class="yellow-card-details">
+                ${yellowCards.map(card => html`<li>${card}</li>`)}
+              </ul>
+            </div>`
+        : ''}
+      ${redCards.length > 0
+        ? html`
+            <div class="event-section">
+              <h5 class="event-title">Cartellini Rossi</h5>
+              <ul class="red-card-details">
+                ${redCards.map(card => html`<li>${card}</li>`)}
+              </ul>
+            </div>`
+        : ''}
+    `;
+  }
+  
 
   renderPopup() {
     if (!this.showPopup || !this.activeMatch) {
@@ -92,18 +161,15 @@ class CalcioLiveTeamNextCard extends LitElement {
         <div class="popup-content" @click="${(e) => e.stopPropagation()}">
           <h3 class="popup-title">Dettagli Partita</h3>
         
-          <!-- Loghi delle squadre -->
           <div class="popup-logos">
             <img class="popup-logo" src="${this.activeMatch.home_logo}" alt="${this.activeMatch.home_team}" />
             <span class="popup-vs">vs</span>
             <img class="popup-logo" src="${this.activeMatch.away_logo}" alt="${this.activeMatch.away_team}" />
           </div>
         
-          <!-- Informazioni sulle squadre -->
           <p><strong>Formazione Casa:</strong> <span class="home-stat">${this.activeMatch.home_form}</span></p>
           <p><strong>Formazione Trasferta:</strong> <span class="away-stat">${this.activeMatch.away_form}</span></p>
         
-          <!-- Altre informazioni (statistiche) -->
           <p><strong>Statistiche Casa:</strong></p>
           <ul>
             <li>Possesso Palla: <span class="stat-value">${this.activeMatch.home_statistics?.possessionPct ?? 'N/A'}%</span></li>
@@ -122,7 +188,7 @@ class CalcioLiveTeamNextCard extends LitElement {
           </ul>
 
           <h4 class="popup-subtitle">Eventi Partita</h4>
-          ${this.renderMatchDetails(this.activeMatch.match_details, this.activeMatch.clock)}
+          ${this.renderMatchDetails(this.activeMatch.match_details, this.activeMatch.clock, this.activeMatch)}
           <button @click="${this.closePopup}" class="close-button">Chiudi</button>
         </div>
       </div>
@@ -141,12 +207,12 @@ class CalcioLiveTeamNextCard extends LitElement {
       return html`<ha-card>Entità sconosciuta: ${entityId}</ha-card>`;
     }
 
-    // Estrai le informazioni necessarie dalla prima (e unica) partita
-    const match = stateObj.attributes.matches ? stateObj.attributes.matches[0] : null;
-
-    if (!match) {
+    if (!stateObj.attributes.matches || stateObj.attributes.matches.length === 0) {
       return html`<ha-card>Nessuna partita disponibile</ha-card>`;
     }
+
+    const match = stateObj.attributes.matches[0];
+    
 
 
     return html`
@@ -198,7 +264,6 @@ class CalcioLiveTeamNextCard extends LitElement {
           overflow: hidden;
         }
 
-        /* Sezione background loghi */
         .background-logos {
           position: absolute;
           top: -20px;
