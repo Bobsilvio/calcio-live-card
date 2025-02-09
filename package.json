@@ -1,6 +1,6 @@
 {
   "name": "calcio-live-card",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "main": "webpack.config.js",
   "scripts": {
     "build": "webpack"

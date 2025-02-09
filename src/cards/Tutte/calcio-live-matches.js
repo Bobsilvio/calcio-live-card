@@ -313,8 +313,8 @@ class CalcioLiveTodayMatchesCard extends LitElement {
           text-align: center;
         }
         .team-logo {
-          width: 80px;
-          height: 80px;
+          width: 75px;
+          height: 75px;
           margin-left: 15px;
         }
         .separator-line {
@@ -331,10 +331,6 @@ class CalcioLiveTodayMatchesCard extends LitElement {
         }
         .match-date {
           color: orange;
-        }
-        .team-logo {
-          width: 90px;
-          height: 90px;
         }
         .match-wrapper {
           margin-bottom: 16px;
