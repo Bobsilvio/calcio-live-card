@@ -30,65 +30,62 @@ Queste sono le sue card, ho deciso di separare le card per dare modo di sceglier
     ![HACS](images/hacs.png)
 
 ## Utilizzo delle card
-Ci sono 4 tipi di card e vi riporto degli esempi
-Ricordatevi che il sensore prende il nome dal campionato o dal team, lo fa in automatico quindi dovete solo cliccare e vedere il suo nome.
 
-E' possibile inoltre ridurre sia il numero di righe da visualizzare e sia il numero di eventi totali, quindi se voglio visualizzare 5 eventi e 10 totali,
-vedro i primi 5 sempre e i restanti 5 tramite scroll.
+Ci sono 4 tipi di card e vi riporto degli esempi, dico 4 perchè una card è la stessa in base al sensore che si seleziona, ovvero quella di tutte le partite del campionato o del team.
+---
 
-Inoltre per le card è possibile nascondere l'intestazione iniziale per ridurre ulteriormente la card.
+### Classifica
+---
 
-<!-- Squadra Card -->
-<table>
-  <tr>
-    <td>
-      <strong>Squadra Card Prossima di Campionato:</strong><br>
-      <pre>type: custom:calcio-live-team-next<br>entity: sensor.calciolive_team_110_internazionale_next</pre>
-    </td>
-  </tr>
-  <tr>
-    <td><img src="images/squadra_prossima.png" alt="SQUADRA-CARD" width="500"></td>
-  </tr>
-</table>
+| **Impostazione**         | **Descrizione**                                                                 |
+|---------------------------|---------------------------------------------------------------------------------|
+| **sensor**                | Il filtro avviene in automatico, bisogna solo selezionarlo.                    |
+| **hide header**           | Nasconde la barra superiore con le intestazioni (per risparmiare spazio).      |
+| **max events visible**    | Il numero di partite visibili nella card (escluse nello scroll).               |
 
-<table>
-  <tr>
-    <td>
-      <strong>Squadra Card Concluse Campionato:</strong><br>
-      <pre>type: custom:calcio-live-team-matches<br>entity: sensor.calciolive_team_110_internazionale<br>max_events_visible: 5<br>max_events_total: 10<br>hide_header: false
-</pre>
-    </td>
-  </tr>
-  <tr>
-    <td><img src="images/squadra_concluse.png" alt="SQUADRA-CARD-CONCLUSE" width="500"></td>
-  </tr>
-</table>
+<img src="images/classifica.png" alt="Classifica" width="400">
+---
 
-<!-- Classifica Card -->
-<table>
-  <tr>
-    <td>
-      <strong>Classifica Card:</strong><br>
-      <pre>type: custom:calcio-live-classifica<br>entity: sensor.calciolive_serie_a_classifica<br>max_teams_visible: 10<br>hide_header: false</pre>
-    </td>
-  </tr>
-  <tr>
-    <td><img src="images/classifica.png" alt="CLASSIFICA-CARD" width="500"></td>
-  </tr>
-</table>
+### Campionato
+---
 
-<!-- Match Day Card -->
-<table>
-  <tr>
-    <td>
-      <strong>Match Week:</strong><br>
-      <pre>type: custom:calcio-live-today-matches<br>entity: sensor.calciolive_serie_a_match_day<br>max_events_visible: 5<br>max_events_total: 10<br>show_finished_matches: true<BR>hide_header: false</pre>
-    </td>
-  </tr>
-  <tr>
-    <td><img src="images/prossime_campionato.png" alt="MATCH-WEEK" width="500"></td>
-  </tr>
-</table>
+| **Impostazione**         | **Descrizione**                                                                 |
+|---------------------------|---------------------------------------------------------------------------------|
+| **sensor**                | Il filtro avviene in automatico, bisogna solo selezionarlo.                    |
+| **show finished matches** | Mostra le partite concluse quando è attivato (altrimenti solo quelle future).  |
+| **hide header**           | Nasconde la barra superiore con le intestazioni (per risparmiare spazio).      |
+| **max events visible**    | Il numero di partite visibili nella card (escluse nello scroll).               |
+| **max events total**      | Il numero totale di partite (comprese nello scroll).                           |
+
+Quindi se imposto visible a 5 e total a 10, vedrò solo 5 nella card e altre 5 scrollando la card.
+
+<img src="images/campionato.png" alt="Campionato" width="400">
+---
+
+### Squadra tutte
+---
+
+| **Impostazione**         | **Descrizione**                                                                 |
+|---------------------------|---------------------------------------------------------------------------------|
+| **sensor**                | Il filtro avviene in automatico, bisogna solo selezionarlo.                    |
+| **show finished matches** | Mostra le partite concluse quando è attivato (altrimenti solo quelle future).  |
+| **hide header**           | Nasconde la barra superiore con le intestazioni (per risparmiare spazio).      |
+| **max events visible**    | Il numero di partite visibili nella card (escluse nello scroll).               |
+| **max events total**      | Il numero totale di partite (comprese nello scroll).                           |
+| **hide matches older**    | Nasconde le partite più vecchie dei giorni impostati.                          |
+
+<img src="images/squadra-tutte.png" alt="Squadra-tutte" width="400">
+---
+
+### Squadra Singola
+---
+
+| **Impostazione**         | **Descrizione**                                                                 |
+|---------------------------|---------------------------------------------------------------------------------|
+| **sensor**                | Il filtro avviene in automatico, bisogna solo selezionarlo.                    |
+
+<img src="images/squadra.png" alt="squadra" width="400">
+---
 
 ## Informazioni
 Questa è la mia prima card e sicuramente c'è tanto lavoro da fare, se vi piace, potete ricambiare seguendomi nei social:
