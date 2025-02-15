@@ -66,6 +66,10 @@ class CalcioLiveTodayMatchesCard extends LitElement {
     if (match.status === 'Scheduled') {
       return `${match.date}`;
     }
+    // Aggiungi un controllo per 'season_info' se i dati non sono disponibili
+    if (match.season_info) {
+      return `${match.season_info}`;
+    }
     return 'Dati non disponibili';
   }
 
