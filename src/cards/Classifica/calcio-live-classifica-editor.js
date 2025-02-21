@@ -6,6 +6,7 @@ class CalcioLiveClassificaCardEditor extends LitElement {
       _config: { type: Object },
       hass: { type: Object },
       entities: { type: Array },
+      groups: { type: Array },
     };
   }
 
@@ -13,6 +14,7 @@ class CalcioLiveClassificaCardEditor extends LitElement {
     super();
     this._entity = '';
     this.entities = [];
+    this.groups = [];
   }
 
   static get styles() {
@@ -55,6 +57,7 @@ class CalcioLiveClassificaCardEditor extends LitElement {
     }
     if (changedProperties.has('_config') && this._config && this._config.entity) {
       this._entity = this._config.entity;
+      this._fetchGroups();
     }
   }
 
@@ -83,7 +86,22 @@ class CalcioLiveClassificaCardEditor extends LitElement {
         .sort();
     }
   }
+
+  _fetchGroups() {
+    const entityId = this._config.entity;
+    if (this.hass && entityId) {
+      const stateObj = this.hass.states[entityId];
+      if (stateObj && stateObj.attributes.standings_groups) {
+        // Otteniamo i gruppi dall'attributo standings_groups
+        this.groups = stateObj.attributes.standings_groups.map((group) => group.name);
+      } else {
+        this.groups = [];
+      }
+    }
+  }
   
+  
+
   _valueChanged(ev) {
     if (!this._config) return;
     const target = ev.target;
@@ -94,6 +112,15 @@ class CalcioLiveClassificaCardEditor extends LitElement {
       this.configChanged(newConfig);
     }
   }
+
+  _groupChanged(ev) {
+    if (!this._config) return;
+    const selectedGroup = ev.target.value;
+    const newConfig = { ...this._config, selected_group: selectedGroup };
+
+    this.configChanged(newConfig);
+  }
+  
 
   render() {
       if (!this._config || !this.hass) {
@@ -118,6 +145,23 @@ class CalcioLiveClassificaCardEditor extends LitElement {
           </ha-select>
               
         <h3>Settings:</h3>
+              
+        <div class="option">
+          <ha-select
+            label="Select Group"
+            .value=${this._config.selected_group || ''}
+            .configValue=${'selected_group'}
+            @change=${this._groupChanged}
+            @closed=${(ev) => ev.stopPropagation()} 
+          >
+            ${this.groups.length
+              ? this.groups.map((group) => html`
+                  <ha-list-item .value=${group}>${group}</ha-list-item>
+                `)
+              : html`<ha-list-item .value="">Nessun gruppo disponibile</ha-list-item>`}
+          </ha-select>
+        </div>
+
         </div>
           <div class="option">
           <ha-switch

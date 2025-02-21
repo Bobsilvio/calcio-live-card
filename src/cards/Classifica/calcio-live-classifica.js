@@ -7,6 +7,7 @@ class CalcioLiveStandingsCard extends LitElement {
       _config: {},
       maxTeamsVisible: { type: Number },
       hideHeader: { type: Boolean },
+      selectedGroup: { type: String },
     };
   }
 
@@ -17,6 +18,7 @@ class CalcioLiveStandingsCard extends LitElement {
     this._config = config;
     this.maxTeamsVisible = config.max_teams_visible ? config.max_teams_visible : 10;
     this.hideHeader = config.hide_header || false;
+    this.selectedGroup = config.selected_group || '';
   }
 
   getCardSize() {
@@ -32,6 +34,7 @@ class CalcioLiveStandingsCard extends LitElement {
       entity: "sensor.calcio_live",
       max_teams_visible: 10,
       hide_header: false,
+      selected_group: '',
     };
   }
   
@@ -52,7 +55,19 @@ class CalcioLiveStandingsCard extends LitElement {
     const seasonStart = stateObj.attributes.season_start || '';
     const seasonEnd = stateObj.attributes.season_end || '';
 
-    const maxVisible = Math.min(this.maxTeamsVisible, standings.length);
+    // Filtra la classifica in base al gruppo selezionato, se esiste
+    const standingsGroup = stateObj.attributes.standings_groups.find(
+      (group) => group.name === this.selectedGroup
+    );
+    let filteredStandings = standingsGroup ? standingsGroup.standings : [];
+
+    // Filtra le squadre che hanno un rank valido (non null o undefined)
+    filteredStandings = filteredStandings.filter(team => team.rank != null && team.rank !== undefined);
+
+    // Ordina le squadre in base alla posizione (rank)
+    filteredStandings = filteredStandings.sort((a, b) => a.rank - b.rank);
+
+    const maxVisible = Math.min(this.maxTeamsVisible, filteredStandings.length);
 
     return html`
       <ha-card>
@@ -88,7 +103,7 @@ class CalcioLiveStandingsCard extends LitElement {
           <div class="table-container" style="--max-teams-visible: ${maxVisible};">
             <table>
               <tbody>
-                ${standings.slice(0, standings.length).map((team, index) => html`
+                ${filteredStandings.slice(0, filteredStandings.length).map((team, index) => html`
                   <tr>
                     <td class="small-column">${team.rank ?? '-'}</td>
                     <td class="team-column">
@@ -113,7 +128,6 @@ class CalcioLiveStandingsCard extends LitElement {
       </ha-card>
     `;
   }
-  
 
   static get styles() {
     return css`
@@ -209,7 +223,6 @@ class CalcioLiveStandingsCard extends LitElement {
 }
 
 customElements.define("calcio-live-classifica", CalcioLiveStandingsCard);
-
 
 window.customCards = window.customCards || [];
 window.customCards.push({
