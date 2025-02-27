@@ -54,7 +54,7 @@ class CalcioLiveStandingsCard extends LitElement {
     const seasonName = stateObj.attributes.season || '';
     const seasonStart = stateObj.attributes.season_start || '';
     const seasonEnd = stateObj.attributes.season_end || '';
-
+    
     // Filtra la classifica in base al gruppo selezionato, se esiste
     const standingsGroup = stateObj.attributes.standings_groups.find(
       (group) => group.name === this.selectedGroup
@@ -64,8 +64,27 @@ class CalcioLiveStandingsCard extends LitElement {
     // Filtra le squadre che hanno un rank valido (non null o undefined)
     filteredStandings = filteredStandings.filter(team => team.rank != null && team.rank !== undefined);
 
-    // Ordina le squadre in base alla posizione (rank)
-    filteredStandings = filteredStandings.sort((a, b) => a.rank - b.rank);
+    // Ordinamento classifica (MSL sopratutto)
+    if (seasonName.includes("MLS")) {
+      filteredStandings = filteredStandings.sort((a, b) => {
+        if (b.points !== a.points) {
+          return b.points - a.points;
+        }
+        if (b.goal_difference !== a.goal_difference) {
+          return b.goal_difference - a.goal_difference;
+        }
+        return b.goals_for - a.goals_for;
+      });
+
+      // Riassegna il rank in ordine corretto
+      filteredStandings.forEach((team, index) => {
+        team.rank = index + 1;
+      });
+    } else {
+      filteredStandings = filteredStandings.sort((a, b) => a.rank - b.rank);
+    }
+    
+    
 
     const maxVisible = Math.min(this.maxTeamsVisible, filteredStandings.length);
 

@@ -202,7 +202,9 @@ class CalcioLiveTodayMatchesCard extends LitElement {
       if (!this.showFinishedMatches) {
         matches = matches.filter((match) => match.status !== "Full Time");
       }
-
+      
+      matches = matches.sort((a, b) => new Date(a.date) - new Date(b.date));
+      
       const currentDate = new Date();
       if (this.hidePastDays > 0) {
         const daysAgo = new Date(currentDate);
