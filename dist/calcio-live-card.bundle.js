@@ -13,25 +13,23 @@
               </div>
             `}
         <div class="card-content">
-          <table>
-            <thead>
-              <tr>
-                <th class="small-column">Pos</th>
-                <th class="team-column">Squadra</th>
-                <th class="small-column">Punti</th>
-                <th class="small-column">V</th>
-                <th class="small-column">P</th>
-                <th class="small-column">S</th>
-                <th class="small-column">GF</th>
-                <th class="small-column">GS</th>
-                <th class="small-column">+/-</th>
-              </tr>
-            </thead>
-          </table>
           <div class="table-container" style="--max-teams-visible: ${o};">
             <table>
+              <thead>
+                <tr>
+                  <th class="small-column">Pos</th>
+                  <th class="team-column">Squadra</th>
+                  <th class="small-column">Punti</th>
+                  <th class="small-column">V</th>
+                  <th class="small-column">P</th>
+                  <th class="small-column">S</th>
+                  <th class="small-column">GF</th>
+                  <th class="small-column">GS</th>
+                  <th class="small-column">+/-</th>
+                </tr>
+              </thead>
               <tbody>
-                ${a.slice(0,a.length).map(((t,e)=>I`
+                ${a.map((t=>I`
                   <tr>
                     <td class="small-column">${t.rank??"-"}</td>
                     <td class="team-column">

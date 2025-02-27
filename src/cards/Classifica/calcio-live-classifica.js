@@ -104,25 +104,23 @@ class CalcioLiveStandingsCard extends LitElement {
               </div>
             `}
         <div class="card-content">
-          <table>
-            <thead>
-              <tr>
-                <th class="small-column">Pos</th>
-                <th class="team-column">Squadra</th>
-                <th class="small-column">Punti</th>
-                <th class="small-column">V</th>
-                <th class="small-column">P</th>
-                <th class="small-column">S</th>
-                <th class="small-column">GF</th>
-                <th class="small-column">GS</th>
-                <th class="small-column">+/-</th>
-              </tr>
-            </thead>
-          </table>
           <div class="table-container" style="--max-teams-visible: ${maxVisible};">
             <table>
+              <thead>
+                <tr>
+                  <th class="small-column">Pos</th>
+                  <th class="team-column">Squadra</th>
+                  <th class="small-column">Punti</th>
+                  <th class="small-column">V</th>
+                  <th class="small-column">P</th>
+                  <th class="small-column">S</th>
+                  <th class="small-column">GF</th>
+                  <th class="small-column">GS</th>
+                  <th class="small-column">+/-</th>
+                </tr>
+              </thead>
               <tbody>
-                ${filteredStandings.slice(0, filteredStandings.length).map((team, index) => html`
+                ${filteredStandings.map((team) => html`
                   <tr>
                     <td class="small-column">${team.rank ?? '-'}</td>
                     <td class="team-column">
