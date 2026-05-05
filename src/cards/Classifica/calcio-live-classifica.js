@@ -115,6 +115,30 @@ class CalcioLiveStandingsCard extends LitElement {
     };
   }
 
+  _translatePhase(phase) {
+    if (!phase) return '';
+
+    const map = {
+      'regular-season': this._t('phase.regular_season'),
+      'group stage': this._t('phase.group_stage'),
+      'playoffs': this._t('phase.playoffs'),
+    };
+
+    return map[phase.toLowerCase()] || phase;
+  }
+
+  _shouldShowPhase(seasonName, phase) {
+    if (!phase) return false;
+
+    const lower = phase.toLowerCase();
+
+    // Hide generic league phase labels that are not useful in the UI
+    if (lower === 'regular-season') return false;
+
+    // Keep tournament phases/groups visible
+    return true;
+  }
+
   _zoneClass(rank, total) {
     if (rank === 1) return 'zone-cl rank-first';
     if (rank <= 4) return 'zone-cl';
@@ -159,7 +183,12 @@ class CalcioLiveStandingsCard extends LitElement {
         ${this.hideHeader ? '' : html`
           <div class="top-bar">
             <h2>${stateObj.state}</h2>
-            <div class="sub">${seasonName} ${standingsGroup && standingsGroup.name ? `· ${standingsGroup.name}` : ''}</div>
+		<div class="sub">
+		  ${seasonName}
+		  ${this._shouldShowPhase(seasonName, standingsGroup && standingsGroup.name)
+		    ? ` · ${this._translatePhase(standingsGroup.name)}`
+		    : ''}
+		</div>
           </div>
         `}
 

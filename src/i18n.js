@@ -49,6 +49,10 @@ const TRANSLATIONS = {
     'event.substitution': 'Substitution',
     'event.var': 'VAR',
 
+    'phase.regular_season': 'Regular season',
+    'phase.group_stage': 'Group stage',
+    'phase.playoffs': 'Playoffs',
+
     // Form pills
     'form.W': 'W',
     'form.D': 'D',
@@ -166,6 +170,10 @@ const TRANSLATIONS = {
     'event.red_card': 'Rode kaart',
     'event.substitution': 'Wissel',
     'event.var': 'VAR',
+
+    'phase.regular_season': 'Competitie',
+    'phase.group_stage': 'Groepsfase',
+    'phase.playoffs': 'Play-offs',
 
     'form.W': 'W',
     'form.D': 'G',
