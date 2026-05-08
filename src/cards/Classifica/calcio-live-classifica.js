@@ -227,6 +227,28 @@ class CalcioLiveStandingsCard extends LitElement {
     return false;
   }
 
+  _translatePhase(phase) {
+    if (!phase) return '';
+
+    const map = {
+      'regular-season': this._t('phase.regular_season'),
+      'group stage': this._t('phase.group_stage'),
+      'playoffs': this._t('phase.playoffs'),
+    };
+
+    return map[String(phase).toLowerCase()] || phase;
+  }
+
+  _shouldShowPhase(phase) {
+    if (!phase) return false;
+
+    const lower = String(phase).toLowerCase();
+
+    if (lower === 'regular-season') return false;
+
+    return true;
+  }
+
   _zoneClass(rank, total) {
     const zones = this._getZoneConfig();
 
@@ -285,7 +307,12 @@ class CalcioLiveStandingsCard extends LitElement {
         ${this.hideHeader ? '' : html`
           <div class="top-bar">
             <h2>${stateObj.state}</h2>
-            <div class="sub">${seasonName} ${standingsGroup && standingsGroup.name ? `· ${standingsGroup.name}` : ''}</div>
+            <div class="sub">
+	       ${seasonName}
+	       ${this._shouldShowPhase(standingsGroup && standingsGroup.name)
+	        ? ` · ${this._translatePhase(standingsGroup.name)}`
+	        : ''}
+	    </div>
           </div>
         `}
 

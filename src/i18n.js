@@ -105,6 +105,10 @@ const TRANSLATIONS = {
     'zone.relegation': 'Relegation',
     'zone.conference': 'Conference League',
 
+    'phase.regular_season': 'Regular season',
+    'phase.group_stage': 'Group stage',
+    'phase.playoffs': 'Playoffs',
+
     // Standings table
     'col.pos': '#',
     'col.team': 'Team',
@@ -218,6 +222,10 @@ const TRANSLATIONS = {
 
     'news.empty': 'Geen nieuws beschikbaar',
     'news.articles': '{n} artikelen',
+
+    'phase.regular_season': 'Competitie',
+    'phase.group_stage': 'Groepsfase',
+    'phase.playoffs': 'Play-offs',
 
     'zone.champions': 'Champions League',
     'zone.europa': 'Europa League',
