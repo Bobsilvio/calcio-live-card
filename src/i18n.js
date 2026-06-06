@@ -104,6 +104,9 @@ const TRANSLATIONS = {
     'zone.europa': 'Europa',
     'zone.relegation': 'Relegation',
     'zone.conference': 'Conference League',
+    'zone.qualified': 'Qualified',
+    'zone.third_place_playoff': 'Best 3rd',
+    'zone.eliminated': 'Eliminated',
 
     'phase.regular_season': 'Regular season',
     'phase.group_stage': 'Group stage',
@@ -231,6 +234,9 @@ const TRANSLATIONS = {
     'zone.europa': 'Europa League',
     'zone.conference': 'Conference League',
     'zone.relegation': 'Degradatie',
+    'zone.qualified': 'Gekwalificeerd',
+    'zone.third_place_playoff': 'Beste 3e',
+    'zone.eliminated': 'Uitgeschakeld',
 
     'col.pos': '#',
     'col.team': 'Team',
@@ -339,7 +345,11 @@ const TRANSLATIONS = {
 
     'zone.champions': 'Champions',
     'zone.europa': 'Europa',
+    'zone.conference': 'Conference League',
     'zone.relegation': 'Retrocessione',
+    'zone.qualified': 'Qualificate',
+    'zone.third_place_playoff': 'Migliori 3°',
+    'zone.eliminated': 'Eliminate',
 
     'col.pos': '#',
     'col.team': 'Squadra',
@@ -447,6 +457,9 @@ const TRANSLATIONS = {
     'zone.champions': 'Champions',
     'zone.europa': 'Europa',
     'zone.relegation': 'Relégation',
+    'zone.qualified': 'Qualifiées',
+    'zone.third_place_playoff': 'Meilleurs 3es',
+    'zone.eliminated': 'Éliminées',
 
     'col.pos': '#',
     'col.team': 'Équipe',
@@ -554,6 +567,9 @@ const TRANSLATIONS = {
     'zone.champions': 'Champions',
     'zone.europa': 'Europa',
     'zone.relegation': 'Descenso',
+    'zone.qualified': 'Clasificadas',
+    'zone.third_place_playoff': 'Mejores 3°',
+    'zone.eliminated': 'Eliminadas',
 
     'col.pos': '#',
     'col.team': 'Equipo',

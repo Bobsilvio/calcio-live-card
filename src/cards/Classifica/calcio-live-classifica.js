@@ -4,9 +4,18 @@ import { t, resolveLang } from "../../i18n.js";
 // Helper per generare un range inclusivo
 const range = (a, b) => Array.from({ length: b - a + 1 }, (_, i) => a + i);
 
+// Etichette di default per le 4 zone (i18n keys).
+const DEFAULT_ZONE_LABELS = {
+  champions: 'zone.champions',
+  europa: 'zone.europa',
+  conference: 'zone.conference',
+  relegation: 'zone.relegation',
+};
+
 // Preset zone classifica per competizione. Ogni preset definisce:
 // - match(code, entity): funzione che decide se applicare il preset
 // - champions / europa / conference / relegation: range posizioni o "bottomN"
+// - labels (opzionale): override i18n key per ogni zona; null = nascondi in legenda
 // L'utente può sovrascrivere con `zone_config` o sceglierne uno con `zone_preset`.
 const ZONE_PRESETS = {
   // Italian Serie A (20 squadre): 1-4 CL, 5 EL, 6 CnL, ult. 3 retrocesse
@@ -59,6 +68,41 @@ const ZONE_PRESETS = {
   uecl_league_phase: {
     match: (code, entity) => code === 'uefa.europa.conf' || entity.includes('uefa_conference'),
     champions: range(1, 8), europa: range(9, 24), conference: [], relegation: 'bottom12',
+  },
+  // FIFA World Cup — fase a gironi: top 2 qualificate agli ottavi,
+  // 3° posto può accedere come miglior terza (Mondiale 2026: 8 migliori terze),
+  // ultima eliminata
+  world_cup: {
+    match: (code, entity) => code === 'fifa.world' || entity.includes('fifa_world_cup') || entity.includes('world_cup'),
+    champions: [1, 2], europa: [3], conference: [], relegation: 'bottom1',
+    labels: {
+      champions: 'zone.qualified',
+      europa: 'zone.third_place_playoff',
+      conference: null,
+      relegation: 'zone.eliminated',
+    },
+  },
+  // UEFA European Championship — fase a gironi: top 2 + migliori 4 terze agli ottavi
+  uefa_euro: {
+    match: (code, entity) => code === 'uefa.euro' || entity.includes('uefa_euro') || entity.includes('european_championship'),
+    champions: [1, 2], europa: [3], conference: [], relegation: 'bottom1',
+    labels: {
+      champions: 'zone.qualified',
+      europa: 'zone.third_place_playoff',
+      conference: null,
+      relegation: 'zone.eliminated',
+    },
+  },
+  // Copa America — fase a gironi: top 2 ai quarti, altre eliminate
+  copa_america: {
+    match: (code, entity) => code === 'conmebol.america' || entity.includes('copa_america') || entity.includes('conmebol_america'),
+    champions: [1, 2], europa: [], conference: [], relegation: 'bottom2',
+    labels: {
+      champions: 'zone.qualified',
+      europa: null,
+      conference: null,
+      relegation: 'zone.eliminated',
+    },
   },
 };
 
@@ -202,6 +246,24 @@ class CalcioLiveStandingsCard extends LitElement {
     return { champions: [], europa: [], conference: [], relegation: null };
   }
 
+  _getZoneLabels() {
+    const zones = this._getZoneConfig();
+    const overrides = zones.labels || {};
+    return {
+      champions: overrides.champions !== undefined ? overrides.champions : DEFAULT_ZONE_LABELS.champions,
+      europa: overrides.europa !== undefined ? overrides.europa : DEFAULT_ZONE_LABELS.europa,
+      conference: overrides.conference !== undefined ? overrides.conference : DEFAULT_ZONE_LABELS.conference,
+      relegation: overrides.relegation !== undefined ? overrides.relegation : DEFAULT_ZONE_LABELS.relegation,
+    };
+  }
+
+  _hasZonePositions(zonePositions) {
+    if (!zonePositions) return false;
+    if (Array.isArray(zonePositions)) return zonePositions.length > 0;
+    if (typeof zonePositions === 'string') return /^bottom\d+$/.test(zonePositions);
+    return false;
+  }
+
   _inferPresetFromEntity() {
     const entity = (this._config.entity || '').toLowerCase();
     const stateObj = this.hass && this._config.entity ? this.hass.states[this._config.entity] : null;
@@ -271,6 +333,25 @@ class CalcioLiveStandingsCard extends LitElement {
     return 'zone-default';
   }
 
+  _sortStandings(standings, seasonName) {
+    let s = (standings || []).filter(t => t.rank != null);
+    if (seasonName.includes("MLS")) {
+      s = s.slice().sort((a, b) => {
+        if (b.points !== a.points) return b.points - a.points;
+        if (b.goal_difference !== a.goal_difference) return b.goal_difference - a.goal_difference;
+        return b.goals_for - a.goals_for;
+      });
+      s.forEach((t, i) => { t.rank = i + 1; });
+    } else {
+      s = s.slice().sort((a, b) => a.rank - b.rank);
+    }
+    return s;
+  }
+
+  _currentGroup(standingsGroups) {
+    return standingsGroups.find(g => g.name === this.selectedGroup) || standingsGroups[0];
+  }
+
   render() {
     if (!this.hass || !this._config) return html``;
     const entityId = this._config.entity;
@@ -279,20 +360,9 @@ class CalcioLiveStandingsCard extends LitElement {
 
     const seasonName = stateObj.attributes.season || '';
     const standingsGroups = stateObj.attributes.standings_groups || [];
-    const standingsGroup = standingsGroups.find(g => g.name === this.selectedGroup) || standingsGroups[0];
-    let filteredStandings = standingsGroup ? standingsGroup.standings : [];
-    filteredStandings = filteredStandings.filter(t => t.rank != null);
-
-    if (seasonName.includes("MLS")) {
-      filteredStandings = filteredStandings.slice().sort((a, b) => {
-        if (b.points !== a.points) return b.points - a.points;
-        if (b.goal_difference !== a.goal_difference) return b.goal_difference - a.goal_difference;
-        return b.goals_for - a.goals_for;
-      });
-      filteredStandings.forEach((t, i) => { t.rank = i + 1; });
-    } else {
-      filteredStandings = filteredStandings.slice().sort((a, b) => a.rank - b.rank);
-    }
+    const showAllGroups = !this.selectedGroup && standingsGroups.length > 1;
+    const standingsGroup = this._currentGroup(standingsGroups);
+    const filteredStandings = this._sortStandings(standingsGroup ? standingsGroup.standings : [], seasonName);
 
     const total = filteredStandings.length;
     const maxVisible = Math.min(this.maxTeamsVisible, total);
@@ -308,69 +378,153 @@ class CalcioLiveStandingsCard extends LitElement {
           <div class="top-bar">
             <h2>${stateObj.state}</h2>
             <div class="sub">
-	       ${seasonName}
-	       ${this._shouldShowPhase(standingsGroup && standingsGroup.name)
-	        ? ` · ${this._translatePhase(standingsGroup.name)}`
-	        : ''}
-	    </div>
+              ${seasonName}
+              ${showAllGroups
+                ? ` · ${this._t('phase.group_stage')}`
+                : (this._shouldShowPhase(standingsGroup && standingsGroup.name)
+                    ? ` · ${this._translatePhase(standingsGroup.name)}`
+                    : '')}
+            </div>
           </div>
         `}
 
-        <div class="table-wrap" style="max-height: ${tableHeight}px;">
-          <table class="standings-table">
-            <thead>
-              <tr>
-                <th>${this._t('col.pos')}</th>
-                <th class="team-col">${this._t('col.team')}</th>
-                <th>${this._t('col.played')}</th>
-                <th>${this._t('col.wins')}</th>
-                <th>${this._t('col.draws')}</th>
-                <th>${this._t('col.losses')}</th>
-                <th>${this._t('col.gd')}</th>
-                <th>${this._t('col.points')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${filteredStandings.map(team => {
-                const num = (v) => {
-                  if (v === null || v === undefined || v === '') return null;
-                  const n = parseInt(String(v).replace('+', ''), 10);
-                  return isNaN(n) ? null : n;
-                };
-                const w = num(team.wins);
-                const d = num(team.draws);
-                const l = num(team.losses);
-                const gd = num(team.goal_difference);
-                const played = (w !== null && d !== null && l !== null) ? (w + d + l) : null;
-                const gdClass = gd === null ? '' : (gd > 0 ? 'gd-pos' : (gd < 0 ? 'gd-neg' : ''));
-                const gdLabel = gd === null ? '-' : (gd > 0 ? `+${gd}` : `${gd}`);
-                return html`
-                  <tr class="${this._zoneClass(team.rank, total)}">
-                    <td><div class="rank-cell"><div class="rank-num">${team.rank}</div></div></td>
-                    <td class="team-cell">
-                      <img src="${team.team_logo}" alt="${team.team_name}" />
-                      <span class="tname">${team.team_name}</span>
-                    </td>
-                    <td>${played ?? '-'}</td>
-                    <td>${w ?? '-'}</td>
-                    <td>${d ?? '-'}</td>
-                    <td>${l ?? '-'}</td>
-                    <td class="${gdClass}">${gdLabel}</td>
-                    <td class="points-cell">${team.points ?? '-'}</td>
-                  </tr>
-                `;
-              })}
-            </tbody>
-          </table>
-        </div>
+        ${showAllGroups
+          ? this._renderGroupsGrid(standingsGroups, seasonName)
+          : html`
+            <div class="table-wrap" style="max-height: ${tableHeight}px;">
+              ${this._renderFullTable(filteredStandings, total)}
+            </div>
+          `}
 
-        <div class="legend">
-          <div class="legend-item"><span class="legend-dot cl"></span>${this._t('zone.champions')}</div>
-          <div class="legend-item"><span class="legend-dot el"></span>${this._t('zone.europa')}</div>
-          <div class="legend-item"><span class="legend-dot conf"></span>${this._t('zone.conference')}</div>
-          <div class="legend-item"><span class="legend-dot rel"></span>${this._t('zone.relegation')}</div>
-        </div>
+        ${this._renderLegend()}
       </ha-card>
+    `;
+  }
+
+  _renderFullTable(standings, total) {
+    return html`
+      <table class="standings-table">
+        <thead>
+          <tr>
+            <th>${this._t('col.pos')}</th>
+            <th class="team-col">${this._t('col.team')}</th>
+            <th>${this._t('col.played')}</th>
+            <th>${this._t('col.wins')}</th>
+            <th>${this._t('col.draws')}</th>
+            <th>${this._t('col.losses')}</th>
+            <th>${this._t('col.gd')}</th>
+            <th>${this._t('col.points')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${standings.map(team => {
+            const num = (v) => {
+              if (v === null || v === undefined || v === '') return null;
+              const n = parseInt(String(v).replace('+', ''), 10);
+              return isNaN(n) ? null : n;
+            };
+            const w = num(team.wins);
+            const d = num(team.draws);
+            const l = num(team.losses);
+            const gd = num(team.goal_difference);
+            const played = (w !== null && d !== null && l !== null) ? (w + d + l) : null;
+            const gdClass = gd === null ? '' : (gd > 0 ? 'gd-pos' : (gd < 0 ? 'gd-neg' : ''));
+            const gdLabel = gd === null ? '-' : (gd > 0 ? `+${gd}` : `${gd}`);
+            return html`
+              <tr class="${this._zoneClass(team.rank, total)}">
+                <td><div class="rank-cell"><div class="rank-num">${team.rank}</div></div></td>
+                <td class="team-cell">
+                  <img src="${team.team_logo}" alt="${team.team_name}" />
+                  <span class="tname">${team.team_name}</span>
+                </td>
+                <td>${played ?? '-'}</td>
+                <td>${w ?? '-'}</td>
+                <td>${d ?? '-'}</td>
+                <td>${l ?? '-'}</td>
+                <td class="${gdClass}">${gdLabel}</td>
+                <td class="points-cell">${team.points ?? '-'}</td>
+              </tr>
+            `;
+          })}
+        </tbody>
+      </table>
+    `;
+  }
+
+  _renderCompactTable(standings, total) {
+    return html`
+      <table class="standings-table compact">
+        <thead>
+          <tr>
+            <th>${this._t('col.pos')}</th>
+            <th class="team-col">${this._t('col.team')}</th>
+            <th>${this._t('col.gd')}</th>
+            <th>${this._t('col.points')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${standings.map(team => {
+            const num = (v) => {
+              if (v === null || v === undefined || v === '') return null;
+              const n = parseInt(String(v).replace('+', ''), 10);
+              return isNaN(n) ? null : n;
+            };
+            const gd = num(team.goal_difference);
+            const gdClass = gd === null ? '' : (gd > 0 ? 'gd-pos' : (gd < 0 ? 'gd-neg' : ''));
+            const gdLabel = gd === null ? '-' : (gd > 0 ? `+${gd}` : `${gd}`);
+            return html`
+              <tr class="${this._zoneClass(team.rank, total)}">
+                <td><div class="rank-cell"><div class="rank-num">${team.rank}</div></div></td>
+                <td class="team-cell">
+                  <img src="${team.team_logo}" alt="${team.team_name}" />
+                  <span class="tname">${team.team_name}</span>
+                </td>
+                <td class="${gdClass}">${gdLabel}</td>
+                <td class="points-cell">${team.points ?? '-'}</td>
+              </tr>
+            `;
+          })}
+        </tbody>
+      </table>
+    `;
+  }
+
+  _renderLegend() {
+    const zones = this._getZoneConfig();
+    const labels = this._getZoneLabels();
+    const items = [
+      { key: 'champions', dot: 'cl', positions: zones.champions, label: labels.champions },
+      { key: 'europa', dot: 'el', positions: zones.europa, label: labels.europa },
+      { key: 'conference', dot: 'conf', positions: zones.conference, label: labels.conference },
+      { key: 'relegation', dot: 'rel', positions: zones.relegation, label: labels.relegation },
+    ].filter(item => item.label && this._hasZonePositions(item.positions));
+
+    if (!items.length) return '';
+
+    return html`
+      <div class="legend">
+        ${items.map(item => html`
+          <div class="legend-item">
+            <span class="legend-dot ${item.dot}"></span>${this._t(item.label)}
+          </div>
+        `)}
+      </div>
+    `;
+  }
+
+  _renderGroupsGrid(standingsGroups, seasonName) {
+    return html`
+      <div class="groups-grid">
+        ${standingsGroups.map(g => {
+          const sorted = this._sortStandings(g.standings || [], seasonName);
+          return html`
+            <div class="group-cell">
+              <div class="group-title">${g.name}</div>
+              ${this._renderCompactTable(sorted, sorted.length)}
+            </div>
+          `;
+        })}
+      </div>
     `;
   }
 
@@ -552,6 +706,59 @@ class CalcioLiveStandingsCard extends LitElement {
       }
       .gd-pos { color: var(--cl-green); font-weight: 800 !important; }
       .gd-neg { color: var(--cl-live); font-weight: 800 !important; }
+
+      .groups-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 12px;
+        padding: 12px;
+      }
+      .group-cell {
+        background: var(--cl-card-2);
+        border: 1px solid var(--cl-divider);
+        border-radius: 14px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+      .group-title {
+        padding: 10px 14px;
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--primary-text-color);
+        background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(236,72,153,0.06));
+        border-bottom: 1px solid var(--cl-divider);
+      }
+      .standings-table.compact {
+        font-size: 12px;
+      }
+      .standings-table.compact thead th {
+        padding: 8px 4px;
+        font-size: 9px;
+        letter-spacing: 0.08em;
+      }
+      .standings-table.compact tbody td {
+        padding: 7px 4px;
+        font-size: 12px;
+      }
+      .standings-table.compact .rank-num {
+        width: 20px; height: 20px;
+        font-size: 10px;
+        border-radius: 6px;
+      }
+      .standings-table.compact .team-cell { gap: 7px; }
+      .standings-table.compact .team-cell img {
+        width: 18px; height: 18px;
+      }
+      .standings-table.compact .team-cell .tname {
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .standings-table.compact .points-cell {
+        font-size: 13px !important;
+      }
 
       .legend {
         display: flex; flex-wrap: wrap;
