@@ -107,6 +107,9 @@ const TRANSLATIONS = {
     'zone.qualified': 'Qualified',
     'zone.third_place_playoff': 'Best 3rd',
     'zone.eliminated': 'Eliminated',
+    'hero.groups': 'groups',
+    'hero.teams': 'teams',
+    'hero.not_started': 'Not started',
 
     'phase.regular_season': 'Regular season',
     'phase.group_stage': 'Group stage',
@@ -237,6 +240,9 @@ const TRANSLATIONS = {
     'zone.qualified': 'Gekwalificeerd',
     'zone.third_place_playoff': 'Beste 3e',
     'zone.eliminated': 'Uitgeschakeld',
+    'hero.groups': 'groepen',
+    'hero.teams': 'teams',
+    'hero.not_started': 'Niet gestart',
 
     'col.pos': '#',
     'col.team': 'Team',
@@ -350,6 +356,9 @@ const TRANSLATIONS = {
     'zone.qualified': 'Qualificate',
     'zone.third_place_playoff': 'Migliori 3°',
     'zone.eliminated': 'Eliminate',
+    'hero.groups': 'gironi',
+    'hero.teams': 'squadre',
+    'hero.not_started': 'Non iniziato',
 
     'col.pos': '#',
     'col.team': 'Squadra',
@@ -460,6 +469,9 @@ const TRANSLATIONS = {
     'zone.qualified': 'Qualifiées',
     'zone.third_place_playoff': 'Meilleurs 3es',
     'zone.eliminated': 'Éliminées',
+    'hero.groups': 'groupes',
+    'hero.teams': 'équipes',
+    'hero.not_started': 'Pas commencé',
 
     'col.pos': '#',
     'col.team': 'Équipe',
@@ -570,6 +582,9 @@ const TRANSLATIONS = {
     'zone.qualified': 'Clasificadas',
     'zone.third_place_playoff': 'Mejores 3°',
     'zone.eliminated': 'Eliminadas',
+    'hero.groups': 'grupos',
+    'hero.teams': 'equipos',
+    'hero.not_started': 'No iniciado',
 
     'col.pos': '#',
     'col.team': 'Equipo',

@@ -75,6 +75,8 @@ const ZONE_PRESETS = {
   world_cup: {
     match: (code, entity) => code === 'fifa.world' || entity.includes('fifa_world_cup') || entity.includes('world_cup'),
     champions: [1, 2], europa: [3], conference: [], relegation: 'bottom1',
+    kind: 'cup_group',
+    hero: { icon: '🏆', accent: 'world_cup' },
     labels: {
       champions: 'zone.qualified',
       europa: 'zone.third_place_playoff',
@@ -86,6 +88,8 @@ const ZONE_PRESETS = {
   uefa_euro: {
     match: (code, entity) => code === 'uefa.euro' || entity.includes('uefa_euro') || entity.includes('european_championship'),
     champions: [1, 2], europa: [3], conference: [], relegation: 'bottom1',
+    kind: 'cup_group',
+    hero: { icon: '⭐', accent: 'uefa_euro' },
     labels: {
       champions: 'zone.qualified',
       europa: 'zone.third_place_playoff',
@@ -97,6 +101,8 @@ const ZONE_PRESETS = {
   copa_america: {
     match: (code, entity) => code === 'conmebol.america' || entity.includes('copa_america') || entity.includes('conmebol_america'),
     champions: [1, 2], europa: [], conference: [], relegation: 'bottom2',
+    kind: 'cup_group',
+    hero: { icon: '🏆', accent: 'copa_america' },
     labels: {
       champions: 'zone.qualified',
       europa: null,
@@ -311,11 +317,29 @@ class CalcioLiveStandingsCard extends LitElement {
     return true;
   }
 
+  _isCupGroupStage() {
+    const zones = this._getZoneConfig();
+    return zones && zones.kind === 'cup_group';
+  }
+
+  _groupHasNoMatches(standings) {
+    if (!standings || !standings.length) return false;
+    const num = (v) => {
+      if (v === null || v === undefined || v === '') return 0;
+      const n = parseInt(String(v).replace('+', ''), 10);
+      return isNaN(n) ? 0 : n;
+    };
+    return standings.every(t => num(t.wins) + num(t.draws) + num(t.losses) === 0);
+  }
+
   _zoneClass(rank, total) {
     const zones = this._getZoneConfig();
 
     if (this._positionInZone(rank, total, zones.champions)) {
-      return rank === 1 ? 'zone-cl rank-first' : 'zone-cl';
+      // Nei tornei a gironi (Mondiale/Euro/Copa) #1 e #2 hanno lo stesso
+      // status (qualificate): non distinguere graficamente la 1ª posizione.
+      if (rank === 1 && !this._isCupGroupStage()) return 'zone-cl rank-first';
+      return 'zone-cl';
     }
 
     if (this._positionInZone(rank, total, zones.europa)) {
@@ -374,19 +398,7 @@ class CalcioLiveStandingsCard extends LitElement {
           <div class="event-toast variant-${this._toastVariant}" .innerHTML=${this._toastMessage}></div>
         ` : ''}
 
-        ${this.hideHeader ? '' : html`
-          <div class="top-bar">
-            <h2>${stateObj.state}</h2>
-            <div class="sub">
-              ${seasonName}
-              ${showAllGroups
-                ? ` · ${this._t('phase.group_stage')}`
-                : (this._shouldShowPhase(standingsGroup && standingsGroup.name)
-                    ? ` · ${this._translatePhase(standingsGroup.name)}`
-                    : '')}
-            </div>
-          </div>
-        `}
+        ${this.hideHeader ? '' : this._renderHeader(stateObj, seasonName, standingsGroup, standingsGroups, showAllGroups)}
 
         ${showAllGroups
           ? this._renderGroupsGrid(standingsGroups, seasonName)
@@ -489,6 +501,45 @@ class CalcioLiveStandingsCard extends LitElement {
     `;
   }
 
+  _renderHeader(stateObj, seasonName, standingsGroup, standingsGroups, showAllGroups) {
+    const zones = this._getZoneConfig();
+    const isCupGroup = this._isCupGroupStage();
+    const hero = zones && zones.hero ? zones.hero : null;
+
+    // Sub: niente "N/A" sporco. Solo phase se disponibile.
+    const phaseLabel = showAllGroups
+      ? this._t('phase.group_stage')
+      : (this._shouldShowPhase(standingsGroup && standingsGroup.name)
+          ? this._translatePhase(standingsGroup.name)
+          : '');
+    const hasSeason = seasonName && seasonName.toLowerCase() !== 'n/a';
+    const subParts = [];
+    if (hasSeason) subParts.push(seasonName);
+    if (phaseLabel) subParts.push(phaseLabel);
+
+    // Conteggio gironi e squadre totali (utile su tornei a gironi)
+    let totalTeams = 0;
+    if (showAllGroups) {
+      for (const g of standingsGroups) {
+        totalTeams += (g.standings || []).filter(t => t.rank != null).length;
+      }
+    }
+
+    return html`
+      <div class="top-bar ${isCupGroup ? 'top-bar-cup' : ''} ${hero ? `accent-${hero.accent}` : ''}">
+        ${hero && hero.icon ? html`<div class="hero-icon">${hero.icon}</div>` : ''}
+        <h2>${stateObj.state}</h2>
+        <div class="sub">${subParts.join(' · ')}</div>
+        ${showAllGroups && isCupGroup ? html`
+          <div class="hero-badges">
+            <span class="badge">${standingsGroups.length} ${this._t('hero.groups')}</span>
+            <span class="badge">${totalTeams} ${this._t('hero.teams')}</span>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }
+
   _renderLegend() {
     const zones = this._getZoneConfig();
     const labels = this._getZoneLabels();
@@ -513,13 +564,18 @@ class CalcioLiveStandingsCard extends LitElement {
   }
 
   _renderGroupsGrid(standingsGroups, seasonName) {
+    const isCupGroup = this._isCupGroupStage();
     return html`
-      <div class="groups-grid">
+      <div class="groups-grid ${isCupGroup ? 'groups-grid-cup' : ''}">
         ${standingsGroups.map(g => {
           const sorted = this._sortStandings(g.standings || [], seasonName);
+          const notStarted = this._groupHasNoMatches(sorted);
           return html`
-            <div class="group-cell">
-              <div class="group-title">${g.name}</div>
+            <div class="group-cell ${notStarted ? 'group-cell-pending' : ''}">
+              <div class="group-title">
+                <span>${g.name}</span>
+                ${notStarted ? html`<span class="group-pending-badge">${this._t('hero.not_started')}</span>` : ''}
+              </div>
               ${this._renderCompactTable(sorted, sorted.length)}
             </div>
           `;
@@ -573,6 +629,67 @@ class CalcioLiveStandingsCard extends LitElement {
         font-size: 90px;
         opacity: 0.06;
         transform: rotate(15deg);
+      }
+      .top-bar-cup {
+        padding: 28px 22px 22px;
+        background:
+          radial-gradient(circle at 20% 20%, rgba(99,102,241,0.30), transparent 55%),
+          radial-gradient(circle at 80% 60%, rgba(236,72,153,0.20), transparent 50%),
+          linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0));
+      }
+      .top-bar-cup::before { display: none; }
+      .top-bar-cup .hero-icon {
+        position: absolute;
+        right: 14px; top: 14px;
+        font-size: 56px;
+        line-height: 1;
+        opacity: 0.95;
+        filter: drop-shadow(0 4px 12px rgba(0,0,0,0.45));
+      }
+      .top-bar-cup h2 {
+        font-size: 24px;
+        letter-spacing: -0.04em;
+      }
+      .top-bar-cup .sub {
+        font-size: 13px;
+        margin-top: 6px;
+        letter-spacing: 0.02em;
+      }
+      .top-bar.accent-world_cup {
+        background:
+          radial-gradient(circle at 20% 20%, rgba(251,191,36,0.22), transparent 55%),
+          radial-gradient(circle at 80% 60%, rgba(99,102,241,0.18), transparent 55%),
+          linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0));
+      }
+      .top-bar.accent-uefa_euro {
+        background:
+          radial-gradient(circle at 20% 20%, rgba(59,130,246,0.30), transparent 55%),
+          radial-gradient(circle at 80% 60%, rgba(251,191,36,0.18), transparent 55%),
+          linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0));
+      }
+      .top-bar.accent-copa_america {
+        background:
+          radial-gradient(circle at 20% 20%, rgba(16,185,129,0.25), transparent 55%),
+          radial-gradient(circle at 80% 60%, rgba(245,158,11,0.20), transparent 55%),
+          linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0));
+      }
+      .hero-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 12px;
+      }
+      .hero-badges .badge {
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.10);
+        border: 1px solid rgba(255,255,255,0.12);
+        color: var(--primary-text-color);
+        backdrop-filter: blur(8px);
       }
       .top-bar h2 {
         margin: 0;
@@ -730,6 +847,28 @@ class CalcioLiveStandingsCard extends LitElement {
         color: var(--primary-text-color);
         background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(236,72,153,0.06));
         border-bottom: 1px solid var(--cl-divider);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .group-pending-badge {
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 2px 7px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.08);
+        color: var(--secondary-text-color);
+        border: 1px solid var(--cl-divider);
+      }
+      .groups-grid-cup .group-cell {
+        border-left: 3px solid var(--cl-accent);
+      }
+      .groups-grid-cup .group-cell-pending {
+        border-left-color: var(--cl-divider);
+        opacity: 0.92;
       }
       .standings-table.compact {
         font-size: 12px;
