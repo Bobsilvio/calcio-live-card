@@ -33,6 +33,23 @@ class CalcioLiveTeamNextCard extends LitElement {
     return t(key, resolveLang(this.hass, this._config), vars);
   }
 
+  _translatePhase(phase) {
+    if (!phase) return '';
+    const map = {
+      'regular-season': this._t('phase.regular_season'),
+      'group stage': this._t('phase.group_stage'),
+      'playoffs': this._t('phase.playoffs'),
+    };
+    return map[String(phase).toLowerCase()] || phase;
+  }
+
+  _shouldShowPhase(phase) {
+    if (!phase) return false;
+    const lower = String(phase).toLowerCase();
+    if (lower === 'regular-season') return false;
+    return true;
+  }
+
   connectedCallback() {
     super.connectedCallback();
     this._subscribeToEvents();
