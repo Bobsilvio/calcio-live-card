@@ -38,6 +38,7 @@ class CalcioLiveTodayMatchesCard extends LitElement {
     this.showFinishedMatches = config.show_finished_matches !== undefined ? config.show_finished_matches : true;
     this.hideHeader = config.hide_header !== undefined ? config.hide_header : false;
     this.hidePastDays = config.hide_past_days !== undefined ? config.hide_past_days : 0;
+    this.reverseOrder = config.reverse_order === true;
     this.showEventToasts = config.show_event_toasts === true;
     this.activeMatch = null;
     this.showPopup = false;
@@ -264,7 +265,14 @@ class CalcioLiveTodayMatchesCard extends LitElement {
     if (!this.showFinishedMatches) {
       matches = matches.filter((m) => m.status !== "Full Time");
     }
-    matches = matches.slice().sort((a, b) => new Date(a.date) - new Date(b.date));
+    // Le date sono nel formato "dd/mm/yyyy hh:mm": new Date() non le parsa
+    // (restituisce Invalid Date), quindi usiamo _parseMatchDate. reverse_order
+    // ordina dalla più recente alla più vecchia.
+    matches = matches.slice().sort((a, b) => {
+      const da = this._parseMatchDate(a.date) || new Date(0);
+      const db = this._parseMatchDate(b.date) || new Date(0);
+      return this.reverseOrder ? db - da : da - db;
+    });
 
     if (this.hidePastDays > 0) {
       const cutoff = new Date();

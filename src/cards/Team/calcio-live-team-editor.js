@@ -152,6 +152,14 @@ class CalcioLiveTeamNextCardEditor extends LitElement {
           </select>
         </div>
         <div>
+          <label class="field-label">Score Size · Dimensione punteggio</label>
+          <select data-config-value="score_size" @change=${this._selectChanged}>
+            <option value="normal" ?selected=${(this._config.score_size || 'normal') === 'normal'}>Normal</option>
+            <option value="big" ?selected=${this._config.score_size === 'big'}>Big</option>
+            <option value="huge" ?selected=${this._config.score_size === 'huge'}>Huge</option>
+          </select>
+        </div>
+        <div>
           <label class="field-label">Language · Lingua</label>
           <select data-config-value="language" @change=${this._selectChanged}>
             <option value="" ?selected=${!this._config.language}>Auto (HA locale)</option>

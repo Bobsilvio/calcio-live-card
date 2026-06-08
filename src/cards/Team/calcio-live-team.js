@@ -22,6 +22,8 @@ class CalcioLiveTeamNextCard extends LitElement {
     }
     this._config = config;
     applySkin(this, config);
+    const scoreSize = ['big', 'huge'].includes(config.score_size) ? config.score_size : 'normal';
+    this.setAttribute('data-score', scoreSize);
     this.showPopup = false;
     this.activeMatch = null;
     this.showEventToasts = config.show_event_toasts === true;
@@ -951,6 +953,11 @@ class CalcioLiveTeamNextCard extends LitElement {
         font-weight: 700;
         margin: 0 4px;
       }
+      /* score_size: big / huge — ingrandisce il punteggio */
+      :host([data-score="big"]) .score-numbers { font-size: 68px; }
+      :host([data-score="huge"]) .score-numbers { font-size: 92px; }
+      :host([data-score="big"]) .score-vs { font-size: 38px; }
+      :host([data-score="huge"]) .score-vs { font-size: 48px; }
       .score-vs {
         font-size: 30px;
         font-weight: 800;

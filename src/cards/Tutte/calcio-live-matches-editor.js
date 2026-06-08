@@ -172,6 +172,15 @@ class CalcioLiveTodayMatchesEditor extends LitElement {
         </div>
 
         <div class="option">
+          <label>Newest Matches First</label>
+          <ha-switch
+            .checked=${this._config.reverse_order === true}
+            data-config-value="reverse_order"
+            @change=${this._switchChanged}
+          ></ha-switch>
+        </div>
+
+        <div class="option">
           <label>Show Event Toasts (in-card)</label>
           <ha-switch
             .checked=${this._config.show_event_toasts === true}
