@@ -34,6 +34,21 @@ jobs:
             echo "exists=false" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Setup Node
+        if: steps.check.outputs.exists == 'false'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install deps
+        if: steps.check.outputs.exists == 'false'
+        run: npm ci
+
+      - name: Build bundle
+        if: steps.check.outputs.exists == 'false'
+        run: npm run build
+
       - name: Build release notes from last commit
         if: steps.check.outputs.exists == 'false'
         id: notes
