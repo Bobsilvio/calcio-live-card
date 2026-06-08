@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 import { t, resolveLang } from "../../i18n.js";
+import { skinStyles, applySkin } from "../../skins.js";
 
 class CalcioLiveTeamNextCard extends LitElement {
   static get properties() {
@@ -20,6 +21,7 @@ class CalcioLiveTeamNextCard extends LitElement {
       throw new Error("Entity required");
     }
     this._config = config;
+    applySkin(this, config);
     this.showPopup = false;
     this.activeMatch = null;
     this.showEventToasts = config.show_event_toasts === true;
@@ -639,7 +641,7 @@ class CalcioLiveTeamNextCard extends LitElement {
   }
 
   static get styles() {
-    return css`
+    return [skinStyles, css`
       :host {
         --cl-accent: #6366f1;
         --cl-accent-2: #ec4899;
@@ -659,11 +661,13 @@ class CalcioLiveTeamNextCard extends LitElement {
         border-radius: 20px;
         padding: 0;
         box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+        background: var(--cl-bg);
+        color: var(--cl-text);
       }
       ha-card.empty {
         padding: 24px;
         text-align: center;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
       }
 
       .bg-logos {
@@ -734,7 +738,7 @@ class CalcioLiveTeamNextCard extends LitElement {
         gap: 10px;
         font-size: 12px;
         font-weight: 700;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
         letter-spacing: -0.01em;
         min-width: 0;
       }
@@ -782,7 +786,7 @@ class CalcioLiveTeamNextCard extends LitElement {
       .status-badge.scheduled {
         background: var(--cl-card-2);
         border: 1px solid var(--cl-glass-border);
-        color: var(--primary-text-color);
+        color: var(--cl-text);
       }
       @keyframes badge-pulse {
         0%, 100% { box-shadow: 0 4px 16px var(--cl-live-glow); }
@@ -839,7 +843,7 @@ class CalcioLiveTeamNextCard extends LitElement {
         line-height: 1.2;
         max-width: 110px;
         letter-spacing: -0.01em;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
       }
       .form-pills {
         display: flex; gap: 3px;
@@ -873,7 +877,7 @@ class CalcioLiveTeamNextCard extends LitElement {
         border-radius: 10px;
         font-size: 10px;
         font-weight: 700;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         max-width: 150px;
       }
       .top-scorer .ts-label {
@@ -896,7 +900,7 @@ class CalcioLiveTeamNextCard extends LitElement {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
         font-size: 11px;
         font-weight: 700;
       }
@@ -936,7 +940,7 @@ class CalcioLiveTeamNextCard extends LitElement {
         letter-spacing: -0.04em;
         font-variant-numeric: tabular-nums;
         line-height: 0.95;
-        background: linear-gradient(180deg, var(--primary-text-color) 30%, var(--cl-accent));
+        background: linear-gradient(180deg, var(--cl-text) 30%, var(--cl-accent));
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -951,7 +955,7 @@ class CalcioLiveTeamNextCard extends LitElement {
         font-size: 30px;
         font-weight: 800;
         letter-spacing: 0.08em;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         opacity: 0.6;
       }
       @keyframes score-pop {
@@ -1000,7 +1004,7 @@ class CalcioLiveTeamNextCard extends LitElement {
         text-transform: uppercase;
         letter-spacing: 0.1em;
         font-size: 9px;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
       }
       .stat-bar-track {
         height: 6px;
@@ -1071,7 +1075,7 @@ class CalcioLiveTeamNextCard extends LitElement {
       }
       .meta-item {
         display: flex; align-items: center; gap: 6px;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         font-size: 11px;
         font-weight: 600;
       }
@@ -1100,7 +1104,7 @@ class CalcioLiveTeamNextCard extends LitElement {
         top: 12px;
         left: 50%;
         transform: translateX(-50%);
-        background: #0b0f1a;
+        background: var(--cl-toast-bg);
         color: #ffffff;
         padding: 10px 18px;
         border-radius: 14px;
@@ -1188,7 +1192,7 @@ class CalcioLiveTeamNextCard extends LitElement {
         content: '';
         position: absolute;
         inset: 0;
-        background: radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 40%, transparent 70%);
+        background: radial-gradient(ellipse at center, var(--cl-overlay-strong) 0%, var(--cl-overlay-soft) 40%, transparent 70%);
         animation: banner-backdrop 1.6s ease-out forwards;
       }
       @keyframes banner-backdrop {
@@ -1251,7 +1255,7 @@ class CalcioLiveTeamNextCard extends LitElement {
           opacity: 0;
         }
       }
-    `;
+    `];
   }
 }
 

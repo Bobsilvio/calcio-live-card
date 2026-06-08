@@ -116,6 +116,13 @@ class CalcioLiveTimelineEditor extends LitElement {
           ></ha-switch>
         </div>
         <div>
+          <label class="field-label">Skin</label>
+          <select data-config-value="skin" @change=${this._selectChanged}>
+            <option value="dark" ?selected=${(this._config.skin || 'dark') === 'dark'}>Dark</option>
+            <option value="light" ?selected=${this._config.skin === 'light'}>Light</option>
+          </select>
+        </div>
+        <div>
           <label class="field-label">Language · Lingua</label>
           <select data-config-value="language" @change=${this._selectChanged}>
             <option value="" ?selected=${!this._config.language}>Auto (HA locale)</option>

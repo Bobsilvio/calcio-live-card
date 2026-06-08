@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 import { t, resolveLang } from "../../i18n.js";
+import { skinStyles, applySkin } from "../../skins.js";
 
 class CalcioLiveNewsCard extends LitElement {
   static get properties() {
@@ -12,6 +13,7 @@ class CalcioLiveNewsCard extends LitElement {
   setConfig(config) {
     if (!config.entity) throw new Error("Entity required");
     this._config = config;
+    applySkin(this, config);
     this.maxArticles = config.max_articles ? config.max_articles : 5;
     this.hideHeader = config.hide_header === true;
     this.hideImages = config.hide_images === true;
@@ -93,7 +95,7 @@ class CalcioLiveNewsCard extends LitElement {
   }
 
   static get styles() {
-    return css`
+    return [skinStyles, css`
       :host {
         --cl-accent: #6366f1;
         --cl-accent-2: #ec4899;
@@ -106,11 +108,13 @@ class CalcioLiveNewsCard extends LitElement {
         border-radius: 20px;
         padding: 0;
         box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+        background: var(--cl-bg);
+        color: var(--cl-text);
       }
       ha-card.empty {
         padding: 24px;
         text-align: center;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
       }
       .hero-bg {
         position: absolute; inset: 0; z-index: 0;
@@ -145,11 +149,11 @@ class CalcioLiveNewsCard extends LitElement {
         font-size: 18px;
         font-weight: 900;
         letter-spacing: -0.02em;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
       }
       .header-text .subtitle {
         font-size: 11px;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         margin-top: 2px;
         font-weight: 600;
       }
@@ -196,7 +200,7 @@ class CalcioLiveNewsCard extends LitElement {
         font-weight: 700;
         letter-spacing: 0.04em;
         text-transform: uppercase;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
       }
       .news-meta .cat {
         color: var(--cl-accent);
@@ -211,7 +215,7 @@ class CalcioLiveNewsCard extends LitElement {
         font-size: 14px;
         font-weight: 800;
         line-height: 1.3;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
         letter-spacing: -0.01em;
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -221,14 +225,14 @@ class CalcioLiveNewsCard extends LitElement {
       .news-desc {
         font-size: 12px;
         font-weight: 500;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         line-height: 1.4;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
       }
-    `;
+    `];
   }
 }
 

@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 import { t, resolveLang } from "../../i18n.js";
+import { skinStyles, applySkin } from "../../skins.js";
 
 class CalcioLiveTimelineCard extends LitElement {
   static get properties() {
@@ -12,6 +13,7 @@ class CalcioLiveTimelineCard extends LitElement {
   setConfig(config) {
     if (!config.entity) throw new Error("Entity required");
     this._config = config;
+    applySkin(this, config);
     this.hideHeader = config.hide_header === true;
     this.reverseOrder = config.reverse_order === true;
   }
@@ -116,7 +118,7 @@ class CalcioLiveTimelineCard extends LitElement {
   }
 
   static get styles() {
-    return css`
+    return [skinStyles, css`
       :host {
         --cl-accent: #6366f1;
         --cl-accent-2: #ec4899;
@@ -133,11 +135,13 @@ class CalcioLiveTimelineCard extends LitElement {
         border-radius: 20px;
         padding: 0;
         box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+        background: var(--cl-bg);
+        color: var(--cl-text);
       }
       ha-card.empty {
         padding: 24px;
         text-align: center;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
       }
       .empty-state {
         display: flex; flex-direction: column;
@@ -145,8 +149,8 @@ class CalcioLiveTimelineCard extends LitElement {
         padding: 24px;
       }
       .empty-icon { font-size: 38px; opacity: 0.4; }
-      .empty-title { font-weight: 800; color: var(--primary-text-color); }
-      .empty-sub { font-size: 12px; color: var(--secondary-text-color); }
+      .empty-title { font-weight: 800; color: var(--cl-text); }
+      .empty-sub { font-size: 12px; color: var(--cl-text-2); }
 
       .hero-bg {
         position: absolute; inset: 0; z-index: 0;
@@ -172,12 +176,12 @@ class CalcioLiveTimelineCard extends LitElement {
       .header-text .title {
         font-size: 18px; font-weight: 900;
         letter-spacing: -0.02em;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
       }
       .header-text .subtitle {
         display: flex; align-items: center; gap: 6px;
         font-size: 12px;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         margin-top: 2px;
         font-weight: 700;
       }
@@ -199,7 +203,7 @@ class CalcioLiveTimelineCard extends LitElement {
         text-align: right;
         font-size: 11px;
         font-weight: 700;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         font-variant-numeric: tabular-nums;
         padding: 8px 0;
       }
@@ -224,7 +228,7 @@ class CalcioLiveTimelineCard extends LitElement {
         z-index: 1;
         width: 26px; height: 26px;
         border-radius: 50%;
-        background: var(--card-background-color, #1a1f2e);
+        background: var(--cl-bg);
         border: 2px solid var(--cl-divider);
         display: flex; align-items: center; justify-content: center;
         font-size: 12px;
@@ -275,7 +279,7 @@ class CalcioLiveTimelineCard extends LitElement {
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
       }
       .tl-row.type-goal .tl-label { color: var(--cl-gold); }
       .tl-row.type-yellow .tl-label { color: #f59e0b; }
@@ -284,7 +288,7 @@ class CalcioLiveTimelineCard extends LitElement {
       .tl-team {
         font-size: 10px;
         font-weight: 700;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -293,18 +297,18 @@ class CalcioLiveTimelineCard extends LitElement {
       .tl-athletes {
         font-size: 13px;
         font-weight: 700;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
         margin-top: 3px;
         line-height: 1.3;
       }
       .tl-text {
         font-size: 11px;
         font-weight: 500;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         margin-top: 3px;
         line-height: 1.4;
       }
-    `;
+    `];
   }
 }
 

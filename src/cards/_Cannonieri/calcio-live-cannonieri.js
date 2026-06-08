@@ -1,4 +1,5 @@
 import { LitElement, html, css } from "lit-element";
+import { skinStyles, applySkin } from "../../skins.js";
 
 class CalcioLiveCannonieriCard extends LitElement {
   static get properties() {
@@ -16,6 +17,7 @@ class CalcioLiveCannonieriCard extends LitElement {
       throw new Error("Devi definire un'entità");
     }
     this._config = config;
+    applySkin(this, config);
     this.maxEventsVisible = config.max_events_visible ? config.max_events_visible : 5
     this.maxEventsTotal = config.max_events_total ? config.max_events_total : 10;
     this.hideHeader = config.hide_header || false;
@@ -98,11 +100,13 @@ class CalcioLiveCannonieriCard extends LitElement {
   }
 
   static get styles() {
-    return css`
+    return [skinStyles, css`
       ha-card {
         padding: 16px;
         box-sizing: border-box;
         width: 100%;
+        background: var(--cl-bg);
+        color: var(--cl-text);
       }
       .card-header {
         margin-bottom: 2px;
@@ -126,7 +130,7 @@ class CalcioLiveCannonieriCard extends LitElement {
         font-size: 1.5em;
       }
       .season-dates {
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         font-size: 14px;
       }
       .scroll-content {
@@ -168,7 +172,7 @@ class CalcioLiveCannonieriCard extends LitElement {
       }
       .goals {
         font-size: 14px;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
       }
       .goals-number {
         font-weight: bold;
@@ -176,7 +180,7 @@ class CalcioLiveCannonieriCard extends LitElement {
       }
       .played-matches {
         font-size: 12px;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
       }
       .matches-number {
         font-weight: bold;
@@ -185,11 +189,11 @@ class CalcioLiveCannonieriCard extends LitElement {
       .separator {
         width: 100%;
         height: 1px;
-        background-color: #ddd;
+        background-color: var(--cl-divider);
         border: none;
         margin: 2px 0;
       }
-    `;
+    `];
   }
 }
 

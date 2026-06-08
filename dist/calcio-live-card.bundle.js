@@ -1,5 +1,61 @@
 /*! For license information please see calcio-live-card.bundle.js.LICENSE.txt */
-(()=>{"use strict";const e=globalThis,t=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,i=Symbol(),a=new WeakMap;class n{constructor(e,t,a){if(this._$cssResult$=!0,a!==i)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=e,this.t=t}get styleSheet(){let e=this.o;const i=this.t;if(t&&void 0===e){const t=void 0!==i&&1===i.length;t&&(e=a.get(i)),void 0===e&&((this.o=e=new CSSStyleSheet).replaceSync(this.cssText),t&&a.set(i,e))}return e}toString(){return this.cssText}}const s=(e,...t)=>{const a=1===e.length?e[0]:t.reduce(((t,i,a)=>t+(e=>{if(!0===e._$cssResult$)return e.cssText;if("number"==typeof e)return e;throw Error("Value passed to 'css' function must be a 'css' function result: "+e+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(i)+e[a+1]),e[0]);return new n(a,e,i)},o=(i,a)=>{if(t)i.adoptedStyleSheets=a.map((e=>e instanceof CSSStyleSheet?e:e.styleSheet));else for(const t of a){const a=document.createElement("style"),n=e.litNonce;void 0!==n&&a.setAttribute("nonce",n),a.textContent=t.cssText,i.appendChild(a)}},r=t?e=>e:e=>e instanceof CSSStyleSheet?(e=>{let t="";for(const i of e.cssRules)t+=i.cssText;return(e=>new n("string"==typeof e?e:e+"",void 0,i))(t)})(e):e,{is:l,defineProperty:c,getOwnPropertyDescriptor:d,getOwnPropertyNames:p,getOwnPropertySymbols:h,getPrototypeOf:g}=Object,u=globalThis,m=u.trustedTypes,f=m?m.emptyScript:"",v=u.reactiveElementPolyfillSupport,b=(e,t)=>e,x={toAttribute(e,t){switch(t){case Boolean:e=e?f:null;break;case Object:case Array:e=null==e?e:JSON.stringify(e)}return e},fromAttribute(e,t){let i=e;switch(t){case Boolean:i=null!==e;break;case Number:i=null===e?null:Number(e);break;case Object:case Array:try{i=JSON.parse(e)}catch(e){i=null}}return i}},_=(e,t)=>!l(e,t),y={attribute:!0,type:String,converter:x,reflect:!1,hasChanged:_};Symbol.metadata??=Symbol("metadata"),u.litPropertyMetadata??=new WeakMap;class w extends HTMLElement{static addInitializer(e){this._$Ei(),(this.l??=[]).push(e)}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(e,t=y){if(t.state&&(t.attribute=!1),this._$Ei(),this.elementProperties.set(e,t),!t.noAccessor){const i=Symbol(),a=this.getPropertyDescriptor(e,i,t);void 0!==a&&c(this.prototype,e,a)}}static getPropertyDescriptor(e,t,i){const{get:a,set:n}=d(this.prototype,e)??{get(){return this[t]},set(e){this[t]=e}};return{get(){return a?.call(this)},set(t){const s=a?.call(this);n.call(this,t),this.requestUpdate(e,s,i)},configurable:!0,enumerable:!0}}static getPropertyOptions(e){return this.elementProperties.get(e)??y}static _$Ei(){if(this.hasOwnProperty(b("elementProperties")))return;const e=g(this);e.finalize(),void 0!==e.l&&(this.l=[...e.l]),this.elementProperties=new Map(e.elementProperties)}static finalize(){if(this.hasOwnProperty(b("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(b("properties"))){const e=this.properties,t=[...p(e),...h(e)];for(const i of t)this.createProperty(i,e[i])}const e=this[Symbol.metadata];if(null!==e){const t=litPropertyMetadata.get(e);if(void 0!==t)for(const[e,i]of t)this.elementProperties.set(e,i)}this._$Eh=new Map;for(const[e,t]of this.elementProperties){const i=this._$Eu(e,t);void 0!==i&&this._$Eh.set(i,e)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(e){const t=[];if(Array.isArray(e)){const i=new Set(e.flat(1/0).reverse());for(const e of i)t.unshift(r(e))}else void 0!==e&&t.push(r(e));return t}static _$Eu(e,t){const i=t.attribute;return!1===i?void 0:"string"==typeof i?i:"string"==typeof e?e.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev()}_$Ev(){this._$ES=new Promise((e=>this.enableUpdating=e)),this._$AL=new Map,this._$E_(),this.requestUpdate(),this.constructor.l?.forEach((e=>e(this)))}addController(e){(this._$EO??=new Set).add(e),void 0!==this.renderRoot&&this.isConnected&&e.hostConnected?.()}removeController(e){this._$EO?.delete(e)}_$E_(){const e=new Map,t=this.constructor.elementProperties;for(const i of t.keys())this.hasOwnProperty(i)&&(e.set(i,this[i]),delete this[i]);e.size>0&&(this._$Ep=e)}createRenderRoot(){const e=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return o(e,this.constructor.elementStyles),e}connectedCallback(){this.renderRoot??=this.createRenderRoot(),this.enableUpdating(!0),this._$EO?.forEach((e=>e.hostConnected?.()))}enableUpdating(e){}disconnectedCallback(){this._$EO?.forEach((e=>e.hostDisconnected?.()))}attributeChangedCallback(e,t,i){this._$AK(e,i)}_$EC(e,t){const i=this.constructor.elementProperties.get(e),a=this.constructor._$Eu(e,i);if(void 0!==a&&!0===i.reflect){const n=(void 0!==i.converter?.toAttribute?i.converter:x).toAttribute(t,i.type);this._$Em=e,null==n?this.removeAttribute(a):this.setAttribute(a,n),this._$Em=null}}_$AK(e,t){const i=this.constructor,a=i._$Eh.get(e);if(void 0!==a&&this._$Em!==a){const e=i.getPropertyOptions(a),n="function"==typeof e.converter?{fromAttribute:e.converter}:void 0!==e.converter?.fromAttribute?e.converter:x;this._$Em=a,this[a]=n.fromAttribute(t,e.type),this._$Em=null}}requestUpdate(e,t,i){if(void 0!==e){if(i??=this.constructor.getPropertyOptions(e),!(i.hasChanged??_)(this[e],t))return;this.P(e,t,i)}!1===this.isUpdatePending&&(this._$ES=this._$ET())}P(e,t,i){this._$AL.has(e)||this._$AL.set(e,t),!0===i.reflect&&this._$Em!==e&&(this._$Ej??=new Set).add(e)}async _$ET(){this.isUpdatePending=!0;try{await this._$ES}catch(e){Promise.reject(e)}const e=this.scheduleUpdate();return null!=e&&await e,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??=this.createRenderRoot(),this._$Ep){for(const[e,t]of this._$Ep)this[e]=t;this._$Ep=void 0}const e=this.constructor.elementProperties;if(e.size>0)for(const[t,i]of e)!0!==i.wrapped||this._$AL.has(t)||void 0===this[t]||this.P(t,this[t],i)}let e=!1;const t=this._$AL;try{e=this.shouldUpdate(t),e?(this.willUpdate(t),this._$EO?.forEach((e=>e.hostUpdate?.())),this.update(t)):this._$EU()}catch(t){throw e=!1,this._$EU(),t}e&&this._$AE(t)}willUpdate(e){}_$AE(e){this._$EO?.forEach((e=>e.hostUpdated?.())),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(e)),this.updated(e)}_$EU(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(e){return!0}update(e){this._$Ej&&=this._$Ej.forEach((e=>this._$EC(e,this[e]))),this._$EU()}updated(e){}firstUpdated(e){}}w.elementStyles=[],w.shadowRootOptions={mode:"open"},w[b("elementProperties")]=new Map,w[b("finalized")]=new Map,v?.({ReactiveElement:w}),(u.reactiveElementVersions??=[]).push("2.0.4");const $=globalThis,k=$.trustedTypes,C=k?k.createPolicy("lit-html",{createHTML:e=>e}):void 0,z="$lit$",E=`lit$${Math.random().toFixed(9).slice(2)}$`,S="?"+E,A=`<${S}>`,T=document,P=()=>T.createComment(""),M=e=>null===e||"object"!=typeof e&&"function"!=typeof e,L=Array.isArray,j="[ \t\n\f\r]",N=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,H=/-->/g,V=/>/g,O=RegExp(`>|${j}(?:([^\\s"'>=/]+)(${j}*=${j}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,"g"),D=/'/g,R=/"/g,U=/^(?:script|style|textarea|title)$/i,I=e=>(t,...i)=>({_$litType$:e,strings:t,values:i}),q=I(1),F=I(2),B=(I(3),Symbol.for("lit-noChange")),G=Symbol.for("lit-nothing"),W=new WeakMap,Z=T.createTreeWalker(T,129);function J(e,t){if(!L(e)||!e.hasOwnProperty("raw"))throw Error("invalid template strings array");return void 0!==C?C.createHTML(t):t}class K{constructor({strings:e,_$litType$:t},i){let a;this.parts=[];let n=0,s=0;const o=e.length-1,r=this.parts,[l,c]=((e,t)=>{const i=e.length-1,a=[];let n,s=2===t?"<svg>":3===t?"<math>":"",o=N;for(let t=0;t<i;t++){const i=e[t];let r,l,c=-1,d=0;for(;d<i.length&&(o.lastIndex=d,l=o.exec(i),null!==l);)d=o.lastIndex,o===N?"!--"===l[1]?o=H:void 0!==l[1]?o=V:void 0!==l[2]?(U.test(l[2])&&(n=RegExp("</"+l[2],"g")),o=O):void 0!==l[3]&&(o=O):o===O?">"===l[0]?(o=n??N,c=-1):void 0===l[1]?c=-2:(c=o.lastIndex-l[2].length,r=l[1],o=void 0===l[3]?O:'"'===l[3]?R:D):o===R||o===D?o=O:o===H||o===V?o=N:(o=O,n=void 0);const p=o===O&&e[t+1].startsWith("/>")?" ":"";s+=o===N?i+A:c>=0?(a.push(r),i.slice(0,c)+z+i.slice(c)+E+p):i+E+(-2===c?t:p)}return[J(e,s+(e[i]||"<?>")+(2===t?"</svg>":3===t?"</math>":"")),a]})(e,t);if(this.el=K.createElement(l,i),Z.currentNode=this.el.content,2===t||3===t){const e=this.el.content.firstChild;e.replaceWith(...e.childNodes)}for(;null!==(a=Z.nextNode())&&r.length<o;){if(1===a.nodeType){if(a.hasAttributes())for(const e of a.getAttributeNames())if(e.endsWith(z)){const t=c[s++],i=a.getAttribute(e).split(E),o=/([.?@])?(.*)/.exec(t);r.push({type:1,index:n,name:o[2],strings:i,ctor:"."===o[1]?te:"?"===o[1]?ie:"@"===o[1]?ae:ee}),a.removeAttribute(e)}else e.startsWith(E)&&(r.push({type:6,index:n}),a.removeAttribute(e));if(U.test(a.tagName)){const e=a.textContent.split(E),t=e.length-1;if(t>0){a.textContent=k?k.emptyScript:"";for(let i=0;i<t;i++)a.append(e[i],P()),Z.nextNode(),r.push({type:2,index:++n});a.append(e[t],P())}}}else if(8===a.nodeType)if(a.data===S)r.push({type:2,index:n});else{let e=-1;for(;-1!==(e=a.data.indexOf(E,e+1));)r.push({type:7,index:n}),e+=E.length-1}n++}}static createElement(e,t){const i=T.createElement("template");return i.innerHTML=e,i}}function Y(e,t,i=e,a){if(t===B)return t;let n=void 0!==a?i.o?.[a]:i.l;const s=M(t)?void 0:t._$litDirective$;return n?.constructor!==s&&(n?._$AO?.(!1),void 0===s?n=void 0:(n=new s(e),n._$AT(e,i,a)),void 0!==a?(i.o??=[])[a]=n:i.l=n),void 0!==n&&(t=Y(e,n._$AS(e,t.values),n,a)),t}class Q{constructor(e,t){this._$AV=[],this._$AN=void 0,this._$AD=e,this._$AM=t}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(e){const{el:{content:t},parts:i}=this._$AD,a=(e?.creationScope??T).importNode(t,!0);Z.currentNode=a;let n=Z.nextNode(),s=0,o=0,r=i[0];for(;void 0!==r;){if(s===r.index){let t;2===r.type?t=new X(n,n.nextSibling,this,e):1===r.type?t=new r.ctor(n,r.name,r.strings,this,e):6===r.type&&(t=new ne(n,this,e)),this._$AV.push(t),r=i[++o]}s!==r?.index&&(n=Z.nextNode(),s++)}return Z.currentNode=T,a}p(e){let t=0;for(const i of this._$AV)void 0!==i&&(void 0!==i.strings?(i._$AI(e,i,t),t+=i.strings.length-2):i._$AI(e[t])),t++}}class X{get _$AU(){return this._$AM?._$AU??this.v}constructor(e,t,i,a){this.type=2,this._$AH=G,this._$AN=void 0,this._$AA=e,this._$AB=t,this._$AM=i,this.options=a,this.v=a?.isConnected??!0}get parentNode(){let e=this._$AA.parentNode;const t=this._$AM;return void 0!==t&&11===e?.nodeType&&(e=t.parentNode),e}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(e,t=this){e=Y(this,e,t),M(e)?e===G||null==e||""===e?(this._$AH!==G&&this._$AR(),this._$AH=G):e!==this._$AH&&e!==B&&this._(e):void 0!==e._$litType$?this.$(e):void 0!==e.nodeType?this.T(e):(e=>L(e)||"function"==typeof e?.[Symbol.iterator])(e)?this.k(e):this._(e)}O(e){return this._$AA.parentNode.insertBefore(e,this._$AB)}T(e){this._$AH!==e&&(this._$AR(),this._$AH=this.O(e))}_(e){this._$AH!==G&&M(this._$AH)?this._$AA.nextSibling.data=e:this.T(T.createTextNode(e)),this._$AH=e}$(e){const{values:t,_$litType$:i}=e,a="number"==typeof i?this._$AC(e):(void 0===i.el&&(i.el=K.createElement(J(i.h,i.h[0]),this.options)),i);if(this._$AH?._$AD===a)this._$AH.p(t);else{const e=new Q(a,this),i=e.u(this.options);e.p(t),this.T(i),this._$AH=e}}_$AC(e){let t=W.get(e.strings);return void 0===t&&W.set(e.strings,t=new K(e)),t}k(e){L(this._$AH)||(this._$AH=[],this._$AR());const t=this._$AH;let i,a=0;for(const n of e)a===t.length?t.push(i=new X(this.O(P()),this.O(P()),this,this.options)):i=t[a],i._$AI(n),a++;a<t.length&&(this._$AR(i&&i._$AB.nextSibling,a),t.length=a)}_$AR(e=this._$AA.nextSibling,t){for(this._$AP?.(!1,!0,t);e&&e!==this._$AB;){const t=e.nextSibling;e.remove(),e=t}}setConnected(e){void 0===this._$AM&&(this.v=e,this._$AP?.(e))}}class ee{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(e,t,i,a,n){this.type=1,this._$AH=G,this._$AN=void 0,this.element=e,this.name=t,this._$AM=a,this.options=n,i.length>2||""!==i[0]||""!==i[1]?(this._$AH=Array(i.length-1).fill(new String),this.strings=i):this._$AH=G}_$AI(e,t=this,i,a){const n=this.strings;let s=!1;if(void 0===n)e=Y(this,e,t,0),s=!M(e)||e!==this._$AH&&e!==B,s&&(this._$AH=e);else{const a=e;let o,r;for(e=n[0],o=0;o<n.length-1;o++)r=Y(this,a[i+o],t,o),r===B&&(r=this._$AH[o]),s||=!M(r)||r!==this._$AH[o],r===G?e=G:e!==G&&(e+=(r??"")+n[o+1]),this._$AH[o]=r}s&&!a&&this.j(e)}j(e){e===G?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,e??"")}}class te extends ee{constructor(){super(...arguments),this.type=3}j(e){this.element[this.name]=e===G?void 0:e}}class ie extends ee{constructor(){super(...arguments),this.type=4}j(e){this.element.toggleAttribute(this.name,!!e&&e!==G)}}class ae extends ee{constructor(e,t,i,a,n){super(e,t,i,a,n),this.type=5}_$AI(e,t=this){if((e=Y(this,e,t,0)??G)===B)return;const i=this._$AH,a=e===G&&i!==G||e.capture!==i.capture||e.once!==i.once||e.passive!==i.passive,n=e!==G&&(i===G||a);a&&this.element.removeEventListener(this.name,this,i),n&&this.element.addEventListener(this.name,this,e),this._$AH=e}handleEvent(e){"function"==typeof this._$AH?this._$AH.call(this.options?.host??this.element,e):this._$AH.handleEvent(e)}}class ne{constructor(e,t,i){this.element=e,this.type=6,this._$AN=void 0,this._$AM=t,this.options=i}get _$AU(){return this._$AM._$AU}_$AI(e){Y(this,e)}}const se=$.litHtmlPolyfillSupport;se?.(K,X),($.litHtmlVersions??=[]).push("3.2.0");class oe extends w{constructor(){super(...arguments),this.renderOptions={host:this},this.o=void 0}createRenderRoot(){const e=super.createRenderRoot();return this.renderOptions.renderBefore??=e.firstChild,e}update(e){const t=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(e),this.o=((e,t,i)=>{const a=i?.renderBefore??t;let n=a._$litPart$;if(void 0===n){const e=i?.renderBefore??null;a._$litPart$=n=new X(t.insertBefore(P(),e),e,void 0,i??{})}return n._$AI(e),n})(t,this.renderRoot,this.renderOptions)}connectedCallback(){super.connectedCallback(),this.o?.setConnected(!0)}disconnectedCallback(){super.disconnectedCallback(),this.o?.setConnected(!1)}render(){return B}}oe._$litElement$=!0,oe.finalized=!0,globalThis.litElementHydrateSupport?.({LitElement:oe});const re=globalThis.litElementPolyfillSupport;re?.({LitElement:oe}),(globalThis.litElementVersions??=[]).push("4.1.0");const le={en:{"card.bracket":"Bracket","card.lineup":"Lineups","card.timeline":"Timeline","card.news":"News","card.standings":"Standings","round.final":"Final","round.semifinals":"Semifinals","round.quarterfinals":"Quarterfinals","round.r16":"Round of 16","round.r32":"Round of 32","round.knockout_playoffs":"Knockout Playoffs","round.preliminary":"Preliminary Round","round.short.semifinals":"Semis","round.short.quarterfinals":"Quarters","round.short.r16":"R16","bracket.empty.title":"Bracket not available","bracket.empty.sub":"Knockout stage starts soon","bracket.tbd":"TBD","bracket.tied_agg":"Tied agg.","bracket.agg":"Agg.","status.live":"Live","status.finished":"Finished","status.scheduled":"Scheduled","status.full_time":"Full Time","status.halftime":"Halftime","status.first_half":"1st Half","status.second_half":"2nd Half","status.kickoff":"Kickoff","status.end":"End","event.goal":"Goal","event.yellow_card":"Yellow Card","event.red_card":"Red Card","event.substitution":"Substitution","event.var":"VAR","event.header":"Header","event.shot":"Shot","event.penalty":"Penalty","event.free_kick":"Free kick","form.W":"W","form.D":"D","form.L":"L","team.details":"Details","team.possession":"Possession","team.shots":"Shots","team.on_target":"On target","team.fouls":"Fouls","team.spectators":"spectators","team.top_scorer":"Top scorer","team.next_match":"Next match","team.in":"In","team.no_match":"No match available","team.unknown_entity":"Unknown entity","time.today":"Today","time.yesterday":"Yesterday","time.tomorrow":"Tomorrow","time.now":"now","time.in_n_min":"in {n} min","time.in_n_h":"in {n} h","time.in_n_d":"in {n} d","time.n_min_ago":"{n} min ago","time.n_h_ago":"{n} h ago","time.n_d_ago":"{n} d ago","lineup.bench":"Bench","lineup.empty.title":"Lineups not available","lineup.empty.sub":"Lineups are published shortly before kick-off","timeline.empty.title":"No events yet","timeline.empty.sub":"Events appear during the match","timeline.event":"Event","timeline.penalty":"Penalty","news.empty":"No news available","news.articles":"{n} articles","zone.champions":"Champions","zone.europa":"Europa","zone.relegation":"Relegation","zone.conference":"Conference League","zone.qualified":"Qualified","zone.third_place_playoff":"Best 3rd","zone.eliminated":"Eliminated","hero.groups":"groups","hero.teams":"teams","hero.not_started":"Not started","phase.regular_season":"Regular season","phase.group_stage":"Group stage","phase.playoffs":"Playoffs","col.pos":"#","col.team":"Team","col.played":"P","col.wins":"W","col.draws":"D","col.losses":"L","col.gd":"+/-","col.points":"Pts","generic.no_match":"No match available","generic.matches_count":"{n} matches","generic.unknown_entity":"Unknown entity","generic.close":"Close","generic.unknown":"Unknown","popup.match_details":"Match details","popup.lineups":"Lineups","popup.timeline":"Timeline","popup.h2h":"Head-to-head","popup.no_events":"No events available","month.1":"Jan","month.2":"Feb","month.3":"Mar","month.4":"Apr","month.5":"May","month.6":"Jun","month.7":"Jul","month.8":"Aug","month.9":"Sep","month.10":"Oct","month.11":"Nov","month.12":"Dec"},nl:{"card.bracket":"Schema","card.lineup":"Opstellingen","card.timeline":"Tijdlijn","card.news":"Nieuws","card.standings":"Stand","round.final":"Finale","round.semifinals":"Halve finales","round.quarterfinals":"Kwartfinales","round.r16":"Achtste finales","round.r32":"Zestiende finales","round.knockout_playoffs":"Knock-out play-offs","round.preliminary":"Voorronde","round.short.semifinals":"Halve finales","round.short.quarterfinals":"Kwart","round.short.r16":"8e finale","bracket.empty.title":"Schema niet beschikbaar","bracket.empty.sub":"De knock-outfase begint binnenkort","bracket.tbd":"N.t.b.","bracket.tied_agg":"Gelijk totaal","bracket.agg":"Totaal","status.live":"Live","status.finished":"Afgelopen","status.scheduled":"Gepland","status.full_time":"Einde wedstrijd","status.halftime":"Rust","status.first_half":"1e helft","status.second_half":"2e helft","status.kickoff":"Aftrap","status.end":"Einde","event.goal":"Doelpunt","event.yellow_card":"Gele kaart","event.red_card":"Rode kaart","event.substitution":"Wissel","event.var":"VAR","event.header":"Kopbal","event.shot":"Schot","event.penalty":"Penalty","event.free_kick":"Vrije trap","form.W":"W","form.D":"G","form.L":"V","team.details":"Details","team.possession":"Balbezit","team.shots":"Schoten","team.on_target":"Op doel","team.fouls":"Overtredingen","team.spectators":"toeschouwers","team.top_scorer":"Topscorer","team.next_match":"Volgende wedstrijd","team.in":"Over","team.no_match":"Geen wedstrijd beschikbaar","team.unknown_entity":"Onbekende entiteit","time.today":"Vandaag","time.yesterday":"Gisteren","time.tomorrow":"Morgen","time.now":"nu","time.in_n_min":"over {n} min","time.in_n_h":"over {n} uur","time.in_n_d":"over {n} dagen","time.n_min_ago":"{n} min geleden","time.n_h_ago":"{n} uur geleden","time.n_d_ago":"{n} dagen geleden","lineup.bench":"Bank","lineup.empty.title":"Opstellingen niet beschikbaar","lineup.empty.sub":"Opstellingen worden kort voor de aftrap gepubliceerd","timeline.empty.title":"Nog geen gebeurtenissen","timeline.empty.sub":"Gebeurtenissen verschijnen tijdens de wedstrijd","timeline.event":"Gebeurtenis","timeline.penalty":"Penalty","news.empty":"Geen nieuws beschikbaar","news.articles":"{n} artikelen","phase.regular_season":"Competitie","phase.group_stage":"Groepsfase","phase.playoffs":"Play-offs","zone.champions":"Champions League","zone.europa":"Europa League","zone.conference":"Conference League","zone.relegation":"Degradatie","zone.qualified":"Gekwalificeerd","zone.third_place_playoff":"Beste 3e","zone.eliminated":"Uitgeschakeld","hero.groups":"groepen","hero.teams":"teams","hero.not_started":"Niet gestart","col.pos":"#","col.team":"Team","col.played":"G","col.wins":"W","col.draws":"G","col.losses":"V","col.gd":"+/-","col.points":"Pnt","generic.no_match":"Geen wedstrijd beschikbaar","generic.matches_count":"{n} wedstrijden","generic.unknown_entity":"Onbekende entiteit","generic.close":"Sluiten","generic.unknown":"Onbekend","popup.match_details":"Wedstrijddetails","popup.lineups":"Opstellingen","popup.timeline":"Tijdlijn","popup.h2h":"Onderlinge duels","popup.no_events":"Geen gebeurtenissen beschikbaar","month.1":"Jan","month.2":"Feb","month.3":"Mrt","month.4":"Apr","month.5":"Mei","month.6":"Jun","month.7":"Jul","month.8":"Aug","month.9":"Sep","month.10":"Okt","month.11":"Nov","month.12":"Dec"},it:{"card.bracket":"Tabellone","card.lineup":"Formazioni","card.timeline":"Cronologia","card.news":"Notizie","card.standings":"Classifica","round.final":"Finale","round.semifinals":"Semifinali","round.quarterfinals":"Quarti di finale","round.r16":"Ottavi di finale","round.r32":"Sedicesimi","round.knockout_playoffs":"Spareggi KO","round.preliminary":"Turno preliminare","round.short.semifinals":"Semi","round.short.quarterfinals":"Quarti","round.short.r16":"Ottavi","bracket.empty.title":"Tabellone non disponibile","bracket.empty.sub":"La fase a eliminazione diretta inizierà presto","bracket.tbd":"Da def.","bracket.tied_agg":"Pari aggreg.","bracket.agg":"Aggreg.","status.live":"Diretta","status.finished":"Finita","status.scheduled":"Programmata","status.full_time":"Termine","status.halftime":"Intervallo","status.first_half":"Primo Tempo","status.second_half":"Secondo Tempo","status.kickoff":"Inizio","status.end":"Fine","event.goal":"Goal","event.yellow_card":"Cartellino giallo","event.red_card":"Cartellino rosso","event.substitution":"Sostituzione","event.var":"VAR","form.W":"V","form.D":"N","form.L":"P","team.details":"Dettagli","team.possession":"Possesso","team.shots":"Tiri","team.on_target":"In porta","team.fouls":"Falli","team.spectators":"spettatori","team.top_scorer":"Capocannoniere","team.next_match":"Prossima partita","team.in":"A","team.no_match":"Nessuna partita disponibile","team.unknown_entity":"Entità sconosciuta","time.today":"Oggi","time.yesterday":"Ieri","time.tomorrow":"Domani","time.now":"ora","time.in_n_min":"tra {n} min","time.in_n_h":"tra {n} h","time.in_n_d":"tra {n} g","time.n_min_ago":"{n} min fa","time.n_h_ago":"{n} h fa","time.n_d_ago":"{n} g fa","lineup.bench":"Panchina","lineup.empty.title":"Formazioni non disponibili","lineup.empty.sub":"Le formazioni vengono pubblicate poco prima del fischio d'inizio","timeline.empty.title":"Nessun evento ancora","timeline.empty.sub":"Gli eventi compaiono durante la partita","timeline.event":"Evento","timeline.penalty":"Rigore","news.empty":"Nessuna notizia disponibile","news.articles":"{n} articoli","zone.champions":"Champions","zone.europa":"Europa","zone.conference":"Conference League","zone.relegation":"Retrocessione","zone.qualified":"Qualificate","zone.third_place_playoff":"Migliori 3°","zone.eliminated":"Eliminate","hero.groups":"gironi","hero.teams":"squadre","hero.not_started":"Non iniziato","col.pos":"#","col.team":"Squadra","col.played":"P","col.wins":"V","col.draws":"N","col.losses":"S","col.gd":"+/-","col.points":"Pt","generic.no_match":"Nessuna partita disponibile","generic.matches_count":"{n} partite","generic.unknown_entity":"Entità sconosciuta","generic.close":"Chiudi","popup.match_details":"Dettagli partita","popup.lineups":"Formazioni","popup.timeline":"Cronologia","popup.h2h":"Precedenti","popup.no_events":"Nessun evento disponibile","month.1":"Gen","month.2":"Feb","month.3":"Mar","month.4":"Apr","month.5":"Mag","month.6":"Giu","month.7":"Lug","month.8":"Ago","month.9":"Set","month.10":"Ott","month.11":"Nov","month.12":"Dic"},fr:{"card.bracket":"Tableau","card.lineup":"Compositions","card.timeline":"Chronologie","card.news":"Actualités","card.standings":"Classement","round.final":"Finale","round.semifinals":"Demi-finales","round.quarterfinals":"Quarts de finale","round.r16":"Huitièmes de finale","round.r32":"Seizièmes","round.knockout_playoffs":"Barrages","round.preliminary":"Tour préliminaire","round.short.semifinals":"Demis","round.short.quarterfinals":"Quarts","round.short.r16":"8èmes","bracket.empty.title":"Tableau non disponible","bracket.empty.sub":"La phase à élimination directe commencera bientôt","bracket.tbd":"À déf.","bracket.tied_agg":"Score cumulé égal","bracket.agg":"Cumul","status.live":"En direct","status.finished":"Terminé","status.scheduled":"Programmé","status.full_time":"Temps régl.","status.halftime":"Mi-temps","status.first_half":"1ère mi-temps","status.second_half":"2ème mi-temps","status.kickoff":"Coup d'envoi","status.end":"Fin","event.goal":"But","event.yellow_card":"Carton jaune","event.red_card":"Carton rouge","event.substitution":"Remplacement","event.var":"VAR","form.W":"V","form.D":"N","form.L":"D","team.details":"Détails","team.possession":"Possession","team.shots":"Tirs","team.on_target":"Cadrés","team.fouls":"Fautes","team.spectators":"spectateurs","team.top_scorer":"Meilleur buteur","team.next_match":"Prochain match","team.in":"À","team.no_match":"Aucun match disponible","team.unknown_entity":"Entité inconnue","time.today":"Aujourd'hui","time.yesterday":"Hier","time.tomorrow":"Demain","time.now":"maintenant","time.in_n_min":"dans {n} min","time.in_n_h":"dans {n} h","time.in_n_d":"dans {n} j","time.n_min_ago":"il y a {n} min","time.n_h_ago":"il y a {n} h","time.n_d_ago":"il y a {n} j","lineup.bench":"Banc","lineup.empty.title":"Compositions non disponibles","lineup.empty.sub":"Les compositions sont publiées peu avant le coup d'envoi","timeline.empty.title":"Aucun événement","timeline.empty.sub":"Les événements apparaissent pendant le match","timeline.event":"Événement","timeline.penalty":"Penalty","news.empty":"Aucune actualité disponible","news.articles":"{n} articles","zone.champions":"Champions","zone.europa":"Europa","zone.relegation":"Relégation","zone.qualified":"Qualifiées","zone.third_place_playoff":"Meilleurs 3es","zone.eliminated":"Éliminées","hero.groups":"groupes","hero.teams":"équipes","hero.not_started":"Pas commencé","col.pos":"#","col.team":"Équipe","col.played":"J","col.wins":"G","col.draws":"N","col.losses":"P","col.gd":"+/-","col.points":"Pts","generic.no_match":"Aucun match disponible","generic.matches_count":"{n} matchs","generic.unknown_entity":"Entité inconnue","generic.close":"Fermer","popup.match_details":"Détails du match","popup.lineups":"Compositions","popup.timeline":"Chronologie","popup.h2h":"Confrontations","popup.no_events":"Aucun événement disponible","month.1":"Janv","month.2":"Févr","month.3":"Mars","month.4":"Avr","month.5":"Mai","month.6":"Juin","month.7":"Juil","month.8":"Août","month.9":"Sept","month.10":"Oct","month.11":"Nov","month.12":"Déc"},es:{"card.bracket":"Cuadro","card.lineup":"Alineaciones","card.timeline":"Cronología","card.news":"Noticias","card.standings":"Clasificación","round.final":"Final","round.semifinals":"Semifinales","round.quarterfinals":"Cuartos de final","round.r16":"Octavos de final","round.r32":"Dieciseisavos","round.knockout_playoffs":"Eliminatorias previas","round.preliminary":"Ronda preliminar","round.short.semifinals":"Semis","round.short.quarterfinals":"Cuartos","round.short.r16":"Octavos","bracket.empty.title":"Cuadro no disponible","bracket.empty.sub":"La fase eliminatoria comenzará pronto","bracket.tbd":"Por def.","bracket.tied_agg":"Empate global","bracket.agg":"Global","status.live":"En vivo","status.finished":"Finalizado","status.scheduled":"Programado","status.full_time":"Final","status.halftime":"Descanso","status.first_half":"Primer tiempo","status.second_half":"Segundo tiempo","status.kickoff":"Saque inicial","status.end":"Fin","event.goal":"Gol","event.yellow_card":"Tarjeta amarilla","event.red_card":"Tarjeta roja","event.substitution":"Sustitución","event.var":"VAR","form.W":"V","form.D":"E","form.L":"D","team.details":"Detalles","team.possession":"Posesión","team.shots":"Tiros","team.on_target":"Al arco","team.fouls":"Faltas","team.spectators":"espectadores","team.top_scorer":"Goleador","team.next_match":"Próximo partido","team.in":"En","team.no_match":"Ningún partido disponible","team.unknown_entity":"Entidad desconocida","time.today":"Hoy","time.yesterday":"Ayer","time.tomorrow":"Mañana","time.now":"ahora","time.in_n_min":"en {n} min","time.in_n_h":"en {n} h","time.in_n_d":"en {n} d","time.n_min_ago":"hace {n} min","time.n_h_ago":"hace {n} h","time.n_d_ago":"hace {n} d","lineup.bench":"Banquillo","lineup.empty.title":"Alineaciones no disponibles","lineup.empty.sub":"Las alineaciones se publican poco antes del saque inicial","timeline.empty.title":"Aún no hay eventos","timeline.empty.sub":"Los eventos aparecen durante el partido","timeline.event":"Evento","timeline.penalty":"Penalti","news.empty":"No hay noticias disponibles","news.articles":"{n} artículos","zone.champions":"Champions","zone.europa":"Europa","zone.relegation":"Descenso","zone.qualified":"Clasificadas","zone.third_place_playoff":"Mejores 3°","zone.eliminated":"Eliminadas","hero.groups":"grupos","hero.teams":"equipos","hero.not_started":"No iniciado","col.pos":"#","col.team":"Equipo","col.played":"PJ","col.wins":"G","col.draws":"E","col.losses":"P","col.gd":"+/-","col.points":"Pts","generic.no_match":"Ningún partido disponible","generic.matches_count":"{n} partidos","generic.unknown_entity":"Entidad desconocida","generic.close":"Cerrar","popup.match_details":"Detalles del partido","popup.lineups":"Alineaciones","popup.timeline":"Cronología","popup.h2h":"Enfrentamientos","popup.no_events":"Sin eventos disponibles","month.1":"Ene","month.2":"Feb","month.3":"Mar","month.4":"Abr","month.5":"May","month.6":"Jun","month.7":"Jul","month.8":"Ago","month.9":"Sep","month.10":"Oct","month.11":"Nov","month.12":"Dic"}},ce=["en","it","fr","es","nl"];function de(e,t){const i=[];t&&"string"==typeof t.language&&i.push(t.language),e&&e.locale&&e.locale.language&&i.push(e.locale.language),e&&e.language&&i.push(e.language);for(const e of i){if(!e)continue;const t=String(e).toLowerCase().split("-")[0];if(ce.includes(t))return t}return"en"}function pe(e,t,i){let a=(le[t]||le.en)[e];return void 0===a&&(a=le.en[e]),void 0===a?e:(i&&Object.keys(i).forEach((e=>{a=a.replace(new RegExp("\\{"+e+"\\}","g"),i[e])})),a)}const he=(e,t)=>Array.from({length:t-e+1},((t,i)=>e+i)),ge={serie_a:{match:(e,t)=>"ita.1"===e||t.includes("italian_serie_a"),champions:[1,2,3,4],europa:[5],conference:[6],relegation:"bottom3"},premier_league:{match:(e,t)=>"eng.1"===e||t.includes("english_premier"),champions:[1,2,3,4,5],europa:[6],conference:[7],relegation:"bottom3"},laliga:{match:(e,t)=>"esp.1"===e||t.includes("spanish_la_liga")||t.includes("spanish_laliga"),champions:[1,2,3,4],europa:[5],conference:[6],relegation:"bottom3"},bundesliga:{match:(e,t)=>"ger.1"===e||t.includes("german_bundesliga"),champions:[1,2,3,4],europa:[5],conference:[6],relegation:[17,18]},ligue_1:{match:(e,t)=>"fra.1"===e||t.includes("french_ligue_1"),champions:[1,2,3],europa:[4],conference:[5],relegation:[17,18]},eredivisie:{match:(e,t)=>"ned.1"===e||t.includes("dutch_eredivisie"),champions:[1,2],europa:[3],conference:[4,5],relegation:[17,18]},primeira_liga:{match:(e,t)=>"por.1"===e||t.includes("portuguese_primeira"),champions:[1,2],europa:[3],conference:[4],relegation:[17,18]},ucl_league_phase:{match:(e,t)=>"uefa.champions"===e||t.includes("uefa_champions_league"),champions:he(1,8),europa:he(9,24),conference:[],relegation:"bottom12"},uel_league_phase:{match:(e,t)=>"uefa.europa"===e||t.includes("uefa_europa_league"),champions:he(1,8),europa:he(9,24),conference:[],relegation:"bottom12"},uecl_league_phase:{match:(e,t)=>"uefa.europa.conf"===e||t.includes("uefa_conference"),champions:he(1,8),europa:he(9,24),conference:[],relegation:"bottom12"},world_cup:{match:(e,t)=>"fifa.world"===e||t.includes("fifa_world_cup")||t.includes("world_cup"),champions:[1,2],europa:[3],conference:[],relegation:"bottom1",kind:"cup_group",hero:{icon:"🏆",accent:"world_cup"},labels:{champions:"zone.qualified",europa:"zone.third_place_playoff",conference:null,relegation:"zone.eliminated"}},uefa_euro:{match:(e,t)=>"uefa.euro"===e||t.includes("uefa_euro")||t.includes("european_championship"),champions:[1,2],europa:[3],conference:[],relegation:"bottom1",kind:"cup_group",hero:{icon:"⭐",accent:"uefa_euro"},labels:{champions:"zone.qualified",europa:"zone.third_place_playoff",conference:null,relegation:"zone.eliminated"}},copa_america:{match:(e,t)=>"conmebol.america"===e||t.includes("copa_america")||t.includes("conmebol_america"),champions:[1,2],europa:[],conference:[],relegation:"bottom2",kind:"cup_group",hero:{icon:"🏆",accent:"copa_america"},labels:{champions:"zone.qualified",europa:null,conference:null,relegation:"zone.eliminated"}}};customElements.define("calcio-live-classifica",class extends oe{static get properties(){return{hass:{},_config:{},maxTeamsVisible:{type:Number},hideHeader:{type:Boolean},selectedGroup:{type:String},_eventSubscriptions:{type:Array},_toastMessage:{type:String},_toastVisible:{type:Boolean},_toastVariant:{type:String}}}setConfig(e){if(!e.entity)throw new Error("Entity required");this._config=e,this.maxTeamsVisible=e.max_teams_visible?e.max_teams_visible:10,this.hideHeader=e.hide_header||!1,this.selectedGroup=e.selected_group||"",this.showEventToasts=!0===e.show_event_toasts,this._toastMessage="",this._toastVisible=!1,this._toastVariant="goal",this._toastTimer=null}_t(e,t){return pe(e,de(this.hass,this._config),t)}connectedCallback(){super.connectedCallback(),this._subscribeToEvents()}disconnectedCallback(){super.disconnectedCallback(),this._eventSubscriptions&&Array.isArray(this._eventSubscriptions)&&(this._eventSubscriptions.forEach((e=>{"function"==typeof e&&e()})),this._eventSubscriptions=[])}_subscribeToEvents(){this.hass&&this.hass.connection&&(this._eventSubscriptions=[],["calcio_live_goal","calcio_live_yellow_card","calcio_live_red_card"].forEach((e=>{this.hass.connection.subscribeEvents(this._handleCalcioLiveEvent.bind(this),e).then((e=>{"function"==typeof e&&this._eventSubscriptions.push(e)}))})))}_eventBelongsToThisCard(e){if(!this.hass||!this._config)return!1;const t=this._config.entity||"",i=e.competition_code;if(!i)return!1;const a=i.replace(/\./g,"_").toLowerCase();return t.toLowerCase().includes(a)}_handleCalcioLiveEvent(e){const t=e.event_type,i=e.data;this._eventBelongsToThisCard(i)&&this.showEventToasts&&this._showEventToast(t,i)}_showEventToast(e,t){let i="",a="goal";"calcio_live_goal"===e?(i=`<strong>GOAL!</strong> ${t.player} · ${t.home_team} ${t.home_score} - ${t.away_score} ${t.away_team}`,a="goal"):"calcio_live_yellow_card"===e?(i=`🟨 <strong>Cartellino Giallo</strong> · ${t.player}${t.minute?` (${t.minute}')`:""}`,a="yellow"):"calcio_live_red_card"===e?(i=`🟥 <strong>Cartellino Rosso</strong> · ${t.player}${t.minute?` (${t.minute}')`:""}`,a="red"):"calcio_live_match_finished"===e&&(i=`<strong>Finita!</strong> ${t.home_team} ${t.home_score} - ${t.away_score} ${t.away_team}`,a="finished"),i&&(this._toastMessage=i,this._toastVariant=a,this._toastVisible=!0,this._toastTimer&&clearTimeout(this._toastTimer),this._toastTimer=setTimeout((()=>{this._toastVisible=!1,this.requestUpdate()}),4e3),this.requestUpdate())}getCardSize(){return 5}static getConfigElement(){return document.createElement("calcio-live-classifica-editor")}static getStubConfig(){return{entity:"sensor.calcio_live",max_teams_visible:10,hide_header:!1,selected_group:"",show_event_toasts:!1}}_getZoneConfig(){if(this._config.zone_config)return this._config.zone_config;if(this._config.zone_preset&&ge[this._config.zone_preset])return ge[this._config.zone_preset];return this._inferPresetFromEntity()||{champions:[],europa:[],conference:[],relegation:null}}_getZoneLabels(){const e=this._getZoneConfig().labels||{};return{champions:void 0!==e.champions?e.champions:"zone.champions",europa:void 0!==e.europa?e.europa:"zone.europa",conference:void 0!==e.conference?e.conference:"zone.conference",relegation:void 0!==e.relegation?e.relegation:"zone.relegation"}}_hasZonePositions(e){return!!e&&(Array.isArray(e)?e.length>0:"string"==typeof e&&/^bottom\d+$/.test(e))}_inferPresetFromEntity(){const e=(this._config.entity||"").toLowerCase(),t=this.hass&&this._config.entity?this.hass.states[this._config.entity]:null,i=t&&t.attributes?String(t.attributes.competition_code||"").toLowerCase():"";for(const[,t]of Object.entries(ge))if(t.match&&t.match(i,e))return t;return null}_positionInZone(e,t,i){if(!i)return!1;const a=String(i).match(/^bottom(\d+)$/);if(a){const i=parseInt(a[1],10);return t&&e>t-i}return!!Array.isArray(i)&&i.includes(Number(e))}_translatePhase(e){return e?{"regular-season":this._t("phase.regular_season"),"group stage":this._t("phase.group_stage"),playoffs:this._t("phase.playoffs")}[String(e).toLowerCase()]||e:""}_shouldShowPhase(e){return!!e&&"regular-season"!==String(e).toLowerCase()}_isCupGroupStage(){const e=this._getZoneConfig();return e&&"cup_group"===e.kind}_groupHasNoMatches(e){if(!e||!e.length)return!1;const t=e=>{if(null==e||""===e)return 0;const t=parseInt(String(e).replace("+",""),10);return isNaN(t)?0:t};return e.every((e=>t(e.wins)+t(e.draws)+t(e.losses)===0))}_zoneClass(e,t){const i=this._getZoneConfig();return this._positionInZone(e,t,i.champions)?1!==e||this._isCupGroupStage()?"zone-cl":"zone-cl rank-first":this._positionInZone(e,t,i.europa)?"zone-el":this._positionInZone(e,t,i.conference)?"zone-conf":this._positionInZone(e,t,i.relegation)?"zone-rel":"zone-default"}_sortStandings(e,t){let i=(e||[]).filter((e=>null!=e.rank));return t.includes("MLS")?(i=i.slice().sort(((e,t)=>t.points!==e.points?t.points-e.points:t.goal_difference!==e.goal_difference?t.goal_difference-e.goal_difference:t.goals_for-e.goals_for)),i.forEach(((e,t)=>{e.rank=t+1}))):i=i.slice().sort(((e,t)=>e.rank-t.rank)),i}_currentGroup(e){return e.find((e=>e.name===this.selectedGroup))||e[0]}render(){if(!this.hass||!this._config)return q``;const e=this._config.entity,t=this.hass.states[e];if(!t)return q`<ha-card class="empty">${this._t("generic.unknown_entity")}: ${e}</ha-card>`;const i=t.attributes.season||"",a=t.attributes.standings_groups||[],n=!this.selectedGroup&&a.length>1,s=this._currentGroup(a),o=this._sortStandings(s?s.standings:[],i),r=o.length,l=48*Math.min(this.maxTeamsVisible,r)+50;return q`
+(()=>{"use strict";const e=globalThis,t=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,i=Symbol(),a=new WeakMap;class n{constructor(e,t,a){if(this._$cssResult$=!0,a!==i)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=e,this.t=t}get styleSheet(){let e=this.o;const i=this.t;if(t&&void 0===e){const t=void 0!==i&&1===i.length;t&&(e=a.get(i)),void 0===e&&((this.o=e=new CSSStyleSheet).replaceSync(this.cssText),t&&a.set(i,e))}return e}toString(){return this.cssText}}const s=(e,...t)=>{const a=1===e.length?e[0]:t.reduce(((t,i,a)=>t+(e=>{if(!0===e._$cssResult$)return e.cssText;if("number"==typeof e)return e;throw Error("Value passed to 'css' function must be a 'css' function result: "+e+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(i)+e[a+1]),e[0]);return new n(a,e,i)},o=(i,a)=>{if(t)i.adoptedStyleSheets=a.map((e=>e instanceof CSSStyleSheet?e:e.styleSheet));else for(const t of a){const a=document.createElement("style"),n=e.litNonce;void 0!==n&&a.setAttribute("nonce",n),a.textContent=t.cssText,i.appendChild(a)}},r=t?e=>e:e=>e instanceof CSSStyleSheet?(e=>{let t="";for(const i of e.cssRules)t+=i.cssText;return(e=>new n("string"==typeof e?e:e+"",void 0,i))(t)})(e):e,{is:l,defineProperty:c,getOwnPropertyDescriptor:d,getOwnPropertyNames:p,getOwnPropertySymbols:h,getPrototypeOf:g}=Object,u=globalThis,f=u.trustedTypes,m=f?f.emptyScript:"",v=u.reactiveElementPolyfillSupport,b=(e,t)=>e,x={toAttribute(e,t){switch(t){case Boolean:e=e?m:null;break;case Object:case Array:e=null==e?e:JSON.stringify(e)}return e},fromAttribute(e,t){let i=e;switch(t){case Boolean:i=null!==e;break;case Number:i=null===e?null:Number(e);break;case Object:case Array:try{i=JSON.parse(e)}catch(e){i=null}}return i}},_=(e,t)=>!l(e,t),y={attribute:!0,type:String,converter:x,reflect:!1,hasChanged:_};Symbol.metadata??=Symbol("metadata"),u.litPropertyMetadata??=new WeakMap;class w extends HTMLElement{static addInitializer(e){this._$Ei(),(this.l??=[]).push(e)}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(e,t=y){if(t.state&&(t.attribute=!1),this._$Ei(),this.elementProperties.set(e,t),!t.noAccessor){const i=Symbol(),a=this.getPropertyDescriptor(e,i,t);void 0!==a&&c(this.prototype,e,a)}}static getPropertyDescriptor(e,t,i){const{get:a,set:n}=d(this.prototype,e)??{get(){return this[t]},set(e){this[t]=e}};return{get(){return a?.call(this)},set(t){const s=a?.call(this);n.call(this,t),this.requestUpdate(e,s,i)},configurable:!0,enumerable:!0}}static getPropertyOptions(e){return this.elementProperties.get(e)??y}static _$Ei(){if(this.hasOwnProperty(b("elementProperties")))return;const e=g(this);e.finalize(),void 0!==e.l&&(this.l=[...e.l]),this.elementProperties=new Map(e.elementProperties)}static finalize(){if(this.hasOwnProperty(b("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(b("properties"))){const e=this.properties,t=[...p(e),...h(e)];for(const i of t)this.createProperty(i,e[i])}const e=this[Symbol.metadata];if(null!==e){const t=litPropertyMetadata.get(e);if(void 0!==t)for(const[e,i]of t)this.elementProperties.set(e,i)}this._$Eh=new Map;for(const[e,t]of this.elementProperties){const i=this._$Eu(e,t);void 0!==i&&this._$Eh.set(i,e)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(e){const t=[];if(Array.isArray(e)){const i=new Set(e.flat(1/0).reverse());for(const e of i)t.unshift(r(e))}else void 0!==e&&t.push(r(e));return t}static _$Eu(e,t){const i=t.attribute;return!1===i?void 0:"string"==typeof i?i:"string"==typeof e?e.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev()}_$Ev(){this._$ES=new Promise((e=>this.enableUpdating=e)),this._$AL=new Map,this._$E_(),this.requestUpdate(),this.constructor.l?.forEach((e=>e(this)))}addController(e){(this._$EO??=new Set).add(e),void 0!==this.renderRoot&&this.isConnected&&e.hostConnected?.()}removeController(e){this._$EO?.delete(e)}_$E_(){const e=new Map,t=this.constructor.elementProperties;for(const i of t.keys())this.hasOwnProperty(i)&&(e.set(i,this[i]),delete this[i]);e.size>0&&(this._$Ep=e)}createRenderRoot(){const e=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return o(e,this.constructor.elementStyles),e}connectedCallback(){this.renderRoot??=this.createRenderRoot(),this.enableUpdating(!0),this._$EO?.forEach((e=>e.hostConnected?.()))}enableUpdating(e){}disconnectedCallback(){this._$EO?.forEach((e=>e.hostDisconnected?.()))}attributeChangedCallback(e,t,i){this._$AK(e,i)}_$EC(e,t){const i=this.constructor.elementProperties.get(e),a=this.constructor._$Eu(e,i);if(void 0!==a&&!0===i.reflect){const n=(void 0!==i.converter?.toAttribute?i.converter:x).toAttribute(t,i.type);this._$Em=e,null==n?this.removeAttribute(a):this.setAttribute(a,n),this._$Em=null}}_$AK(e,t){const i=this.constructor,a=i._$Eh.get(e);if(void 0!==a&&this._$Em!==a){const e=i.getPropertyOptions(a),n="function"==typeof e.converter?{fromAttribute:e.converter}:void 0!==e.converter?.fromAttribute?e.converter:x;this._$Em=a,this[a]=n.fromAttribute(t,e.type),this._$Em=null}}requestUpdate(e,t,i){if(void 0!==e){if(i??=this.constructor.getPropertyOptions(e),!(i.hasChanged??_)(this[e],t))return;this.P(e,t,i)}!1===this.isUpdatePending&&(this._$ES=this._$ET())}P(e,t,i){this._$AL.has(e)||this._$AL.set(e,t),!0===i.reflect&&this._$Em!==e&&(this._$Ej??=new Set).add(e)}async _$ET(){this.isUpdatePending=!0;try{await this._$ES}catch(e){Promise.reject(e)}const e=this.scheduleUpdate();return null!=e&&await e,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??=this.createRenderRoot(),this._$Ep){for(const[e,t]of this._$Ep)this[e]=t;this._$Ep=void 0}const e=this.constructor.elementProperties;if(e.size>0)for(const[t,i]of e)!0!==i.wrapped||this._$AL.has(t)||void 0===this[t]||this.P(t,this[t],i)}let e=!1;const t=this._$AL;try{e=this.shouldUpdate(t),e?(this.willUpdate(t),this._$EO?.forEach((e=>e.hostUpdate?.())),this.update(t)):this._$EU()}catch(t){throw e=!1,this._$EU(),t}e&&this._$AE(t)}willUpdate(e){}_$AE(e){this._$EO?.forEach((e=>e.hostUpdated?.())),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(e)),this.updated(e)}_$EU(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(e){return!0}update(e){this._$Ej&&=this._$Ej.forEach((e=>this._$EC(e,this[e]))),this._$EU()}updated(e){}firstUpdated(e){}}w.elementStyles=[],w.shadowRootOptions={mode:"open"},w[b("elementProperties")]=new Map,w[b("finalized")]=new Map,v?.({ReactiveElement:w}),(u.reactiveElementVersions??=[]).push("2.0.4");const $=globalThis,k=$.trustedTypes,C=k?k.createPolicy("lit-html",{createHTML:e=>e}):void 0,z="$lit$",E=`lit$${Math.random().toFixed(9).slice(2)}$`,S="?"+E,A=`<${S}>`,T=document,P=()=>T.createComment(""),M=e=>null===e||"object"!=typeof e&&"function"!=typeof e,L=Array.isArray,j="[ \t\n\f\r]",N=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,H=/-->/g,D=/>/g,V=RegExp(`>|${j}(?:([^\\s"'>=/]+)(${j}*=${j}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,"g"),O=/'/g,R=/"/g,U=/^(?:script|style|textarea|title)$/i,I=e=>(t,...i)=>({_$litType$:e,strings:t,values:i}),q=I(1),F=I(2),B=(I(3),Symbol.for("lit-noChange")),G=Symbol.for("lit-nothing"),W=new WeakMap,Z=T.createTreeWalker(T,129);function K(e,t){if(!L(e)||!e.hasOwnProperty("raw"))throw Error("invalid template strings array");return void 0!==C?C.createHTML(t):t}class J{constructor({strings:e,_$litType$:t},i){let a;this.parts=[];let n=0,s=0;const o=e.length-1,r=this.parts,[l,c]=((e,t)=>{const i=e.length-1,a=[];let n,s=2===t?"<svg>":3===t?"<math>":"",o=N;for(let t=0;t<i;t++){const i=e[t];let r,l,c=-1,d=0;for(;d<i.length&&(o.lastIndex=d,l=o.exec(i),null!==l);)d=o.lastIndex,o===N?"!--"===l[1]?o=H:void 0!==l[1]?o=D:void 0!==l[2]?(U.test(l[2])&&(n=RegExp("</"+l[2],"g")),o=V):void 0!==l[3]&&(o=V):o===V?">"===l[0]?(o=n??N,c=-1):void 0===l[1]?c=-2:(c=o.lastIndex-l[2].length,r=l[1],o=void 0===l[3]?V:'"'===l[3]?R:O):o===R||o===O?o=V:o===H||o===D?o=N:(o=V,n=void 0);const p=o===V&&e[t+1].startsWith("/>")?" ":"";s+=o===N?i+A:c>=0?(a.push(r),i.slice(0,c)+z+i.slice(c)+E+p):i+E+(-2===c?t:p)}return[K(e,s+(e[i]||"<?>")+(2===t?"</svg>":3===t?"</math>":"")),a]})(e,t);if(this.el=J.createElement(l,i),Z.currentNode=this.el.content,2===t||3===t){const e=this.el.content.firstChild;e.replaceWith(...e.childNodes)}for(;null!==(a=Z.nextNode())&&r.length<o;){if(1===a.nodeType){if(a.hasAttributes())for(const e of a.getAttributeNames())if(e.endsWith(z)){const t=c[s++],i=a.getAttribute(e).split(E),o=/([.?@])?(.*)/.exec(t);r.push({type:1,index:n,name:o[2],strings:i,ctor:"."===o[1]?te:"?"===o[1]?ie:"@"===o[1]?ae:ee}),a.removeAttribute(e)}else e.startsWith(E)&&(r.push({type:6,index:n}),a.removeAttribute(e));if(U.test(a.tagName)){const e=a.textContent.split(E),t=e.length-1;if(t>0){a.textContent=k?k.emptyScript:"";for(let i=0;i<t;i++)a.append(e[i],P()),Z.nextNode(),r.push({type:2,index:++n});a.append(e[t],P())}}}else if(8===a.nodeType)if(a.data===S)r.push({type:2,index:n});else{let e=-1;for(;-1!==(e=a.data.indexOf(E,e+1));)r.push({type:7,index:n}),e+=E.length-1}n++}}static createElement(e,t){const i=T.createElement("template");return i.innerHTML=e,i}}function Y(e,t,i=e,a){if(t===B)return t;let n=void 0!==a?i.o?.[a]:i.l;const s=M(t)?void 0:t._$litDirective$;return n?.constructor!==s&&(n?._$AO?.(!1),void 0===s?n=void 0:(n=new s(e),n._$AT(e,i,a)),void 0!==a?(i.o??=[])[a]=n:i.l=n),void 0!==n&&(t=Y(e,n._$AS(e,t.values),n,a)),t}class Q{constructor(e,t){this._$AV=[],this._$AN=void 0,this._$AD=e,this._$AM=t}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(e){const{el:{content:t},parts:i}=this._$AD,a=(e?.creationScope??T).importNode(t,!0);Z.currentNode=a;let n=Z.nextNode(),s=0,o=0,r=i[0];for(;void 0!==r;){if(s===r.index){let t;2===r.type?t=new X(n,n.nextSibling,this,e):1===r.type?t=new r.ctor(n,r.name,r.strings,this,e):6===r.type&&(t=new ne(n,this,e)),this._$AV.push(t),r=i[++o]}s!==r?.index&&(n=Z.nextNode(),s++)}return Z.currentNode=T,a}p(e){let t=0;for(const i of this._$AV)void 0!==i&&(void 0!==i.strings?(i._$AI(e,i,t),t+=i.strings.length-2):i._$AI(e[t])),t++}}class X{get _$AU(){return this._$AM?._$AU??this.v}constructor(e,t,i,a){this.type=2,this._$AH=G,this._$AN=void 0,this._$AA=e,this._$AB=t,this._$AM=i,this.options=a,this.v=a?.isConnected??!0}get parentNode(){let e=this._$AA.parentNode;const t=this._$AM;return void 0!==t&&11===e?.nodeType&&(e=t.parentNode),e}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(e,t=this){e=Y(this,e,t),M(e)?e===G||null==e||""===e?(this._$AH!==G&&this._$AR(),this._$AH=G):e!==this._$AH&&e!==B&&this._(e):void 0!==e._$litType$?this.$(e):void 0!==e.nodeType?this.T(e):(e=>L(e)||"function"==typeof e?.[Symbol.iterator])(e)?this.k(e):this._(e)}O(e){return this._$AA.parentNode.insertBefore(e,this._$AB)}T(e){this._$AH!==e&&(this._$AR(),this._$AH=this.O(e))}_(e){this._$AH!==G&&M(this._$AH)?this._$AA.nextSibling.data=e:this.T(T.createTextNode(e)),this._$AH=e}$(e){const{values:t,_$litType$:i}=e,a="number"==typeof i?this._$AC(e):(void 0===i.el&&(i.el=J.createElement(K(i.h,i.h[0]),this.options)),i);if(this._$AH?._$AD===a)this._$AH.p(t);else{const e=new Q(a,this),i=e.u(this.options);e.p(t),this.T(i),this._$AH=e}}_$AC(e){let t=W.get(e.strings);return void 0===t&&W.set(e.strings,t=new J(e)),t}k(e){L(this._$AH)||(this._$AH=[],this._$AR());const t=this._$AH;let i,a=0;for(const n of e)a===t.length?t.push(i=new X(this.O(P()),this.O(P()),this,this.options)):i=t[a],i._$AI(n),a++;a<t.length&&(this._$AR(i&&i._$AB.nextSibling,a),t.length=a)}_$AR(e=this._$AA.nextSibling,t){for(this._$AP?.(!1,!0,t);e&&e!==this._$AB;){const t=e.nextSibling;e.remove(),e=t}}setConnected(e){void 0===this._$AM&&(this.v=e,this._$AP?.(e))}}class ee{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(e,t,i,a,n){this.type=1,this._$AH=G,this._$AN=void 0,this.element=e,this.name=t,this._$AM=a,this.options=n,i.length>2||""!==i[0]||""!==i[1]?(this._$AH=Array(i.length-1).fill(new String),this.strings=i):this._$AH=G}_$AI(e,t=this,i,a){const n=this.strings;let s=!1;if(void 0===n)e=Y(this,e,t,0),s=!M(e)||e!==this._$AH&&e!==B,s&&(this._$AH=e);else{const a=e;let o,r;for(e=n[0],o=0;o<n.length-1;o++)r=Y(this,a[i+o],t,o),r===B&&(r=this._$AH[o]),s||=!M(r)||r!==this._$AH[o],r===G?e=G:e!==G&&(e+=(r??"")+n[o+1]),this._$AH[o]=r}s&&!a&&this.j(e)}j(e){e===G?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,e??"")}}class te extends ee{constructor(){super(...arguments),this.type=3}j(e){this.element[this.name]=e===G?void 0:e}}class ie extends ee{constructor(){super(...arguments),this.type=4}j(e){this.element.toggleAttribute(this.name,!!e&&e!==G)}}class ae extends ee{constructor(e,t,i,a,n){super(e,t,i,a,n),this.type=5}_$AI(e,t=this){if((e=Y(this,e,t,0)??G)===B)return;const i=this._$AH,a=e===G&&i!==G||e.capture!==i.capture||e.once!==i.once||e.passive!==i.passive,n=e!==G&&(i===G||a);a&&this.element.removeEventListener(this.name,this,i),n&&this.element.addEventListener(this.name,this,e),this._$AH=e}handleEvent(e){"function"==typeof this._$AH?this._$AH.call(this.options?.host??this.element,e):this._$AH.handleEvent(e)}}class ne{constructor(e,t,i){this.element=e,this.type=6,this._$AN=void 0,this._$AM=t,this.options=i}get _$AU(){return this._$AM._$AU}_$AI(e){Y(this,e)}}const se=$.litHtmlPolyfillSupport;se?.(J,X),($.litHtmlVersions??=[]).push("3.2.0");class oe extends w{constructor(){super(...arguments),this.renderOptions={host:this},this.o=void 0}createRenderRoot(){const e=super.createRenderRoot();return this.renderOptions.renderBefore??=e.firstChild,e}update(e){const t=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(e),this.o=((e,t,i)=>{const a=i?.renderBefore??t;let n=a._$litPart$;if(void 0===n){const e=i?.renderBefore??null;a._$litPart$=n=new X(t.insertBefore(P(),e),e,void 0,i??{})}return n._$AI(e),n})(t,this.renderRoot,this.renderOptions)}connectedCallback(){super.connectedCallback(),this.o?.setConnected(!0)}disconnectedCallback(){super.disconnectedCallback(),this.o?.setConnected(!1)}render(){return B}}oe._$litElement$=!0,oe.finalized=!0,globalThis.litElementHydrateSupport?.({LitElement:oe});const re=globalThis.litElementPolyfillSupport;re?.({LitElement:oe}),(globalThis.litElementVersions??=[]).push("4.1.0");const le={en:{"card.bracket":"Bracket","card.lineup":"Lineups","card.timeline":"Timeline","card.news":"News","card.standings":"Standings","round.final":"Final","round.semifinals":"Semifinals","round.quarterfinals":"Quarterfinals","round.r16":"Round of 16","round.r32":"Round of 32","round.knockout_playoffs":"Knockout Playoffs","round.preliminary":"Preliminary Round","round.short.semifinals":"Semis","round.short.quarterfinals":"Quarters","round.short.r16":"R16","bracket.empty.title":"Bracket not available","bracket.empty.sub":"Knockout stage starts soon","bracket.tbd":"TBD","bracket.tied_agg":"Tied agg.","bracket.agg":"Agg.","status.live":"Live","status.finished":"Finished","status.scheduled":"Scheduled","status.full_time":"Full Time","status.halftime":"Halftime","status.first_half":"1st Half","status.second_half":"2nd Half","status.kickoff":"Kickoff","status.end":"End","event.goal":"Goal","event.yellow_card":"Yellow Card","event.red_card":"Red Card","event.substitution":"Substitution","event.var":"VAR","event.header":"Header","event.shot":"Shot","event.penalty":"Penalty","event.free_kick":"Free kick","form.W":"W","form.D":"D","form.L":"L","team.details":"Details","team.possession":"Possession","team.shots":"Shots","team.on_target":"On target","team.fouls":"Fouls","team.spectators":"spectators","team.top_scorer":"Top scorer","team.next_match":"Next match","team.in":"In","team.no_match":"No match available","team.unknown_entity":"Unknown entity","time.today":"Today","time.yesterday":"Yesterday","time.tomorrow":"Tomorrow","time.now":"now","time.in_n_min":"in {n} min","time.in_n_h":"in {n} h","time.in_n_d":"in {n} d","time.n_min_ago":"{n} min ago","time.n_h_ago":"{n} h ago","time.n_d_ago":"{n} d ago","lineup.bench":"Bench","lineup.empty.title":"Lineups not available","lineup.empty.sub":"Lineups are published shortly before kick-off","timeline.empty.title":"No events yet","timeline.empty.sub":"Events appear during the match","timeline.event":"Event","timeline.penalty":"Penalty","news.empty":"No news available","news.articles":"{n} articles","zone.champions":"Champions","zone.europa":"Europa","zone.relegation":"Relegation","zone.conference":"Conference League","zone.qualified":"Qualified","zone.third_place_playoff":"Best 3rd","zone.eliminated":"Eliminated","hero.groups":"groups","hero.teams":"teams","hero.not_started":"Not started","phase.regular_season":"Regular season","phase.group_stage":"Group stage","phase.playoffs":"Playoffs","col.pos":"#","col.team":"Team","col.played":"P","col.wins":"W","col.draws":"D","col.losses":"L","col.gd":"+/-","col.points":"Pts","generic.no_match":"No match available","generic.matches_count":"{n} matches","generic.unknown_entity":"Unknown entity","generic.close":"Close","generic.unknown":"Unknown","popup.match_details":"Match details","popup.lineups":"Lineups","popup.timeline":"Timeline","popup.h2h":"Head-to-head","popup.no_events":"No events available","month.1":"Jan","month.2":"Feb","month.3":"Mar","month.4":"Apr","month.5":"May","month.6":"Jun","month.7":"Jul","month.8":"Aug","month.9":"Sep","month.10":"Oct","month.11":"Nov","month.12":"Dec"},nl:{"card.bracket":"Schema","card.lineup":"Opstellingen","card.timeline":"Tijdlijn","card.news":"Nieuws","card.standings":"Stand","round.final":"Finale","round.semifinals":"Halve finales","round.quarterfinals":"Kwartfinales","round.r16":"Achtste finales","round.r32":"Zestiende finales","round.knockout_playoffs":"Knock-out play-offs","round.preliminary":"Voorronde","round.short.semifinals":"Halve finales","round.short.quarterfinals":"Kwart","round.short.r16":"8e finale","bracket.empty.title":"Schema niet beschikbaar","bracket.empty.sub":"De knock-outfase begint binnenkort","bracket.tbd":"N.t.b.","bracket.tied_agg":"Gelijk totaal","bracket.agg":"Totaal","status.live":"Live","status.finished":"Afgelopen","status.scheduled":"Gepland","status.full_time":"Einde wedstrijd","status.halftime":"Rust","status.first_half":"1e helft","status.second_half":"2e helft","status.kickoff":"Aftrap","status.end":"Einde","event.goal":"Doelpunt","event.yellow_card":"Gele kaart","event.red_card":"Rode kaart","event.substitution":"Wissel","event.var":"VAR","event.header":"Kopbal","event.shot":"Schot","event.penalty":"Penalty","event.free_kick":"Vrije trap","form.W":"W","form.D":"G","form.L":"V","team.details":"Details","team.possession":"Balbezit","team.shots":"Schoten","team.on_target":"Op doel","team.fouls":"Overtredingen","team.spectators":"toeschouwers","team.top_scorer":"Topscorer","team.next_match":"Volgende wedstrijd","team.in":"Over","team.no_match":"Geen wedstrijd beschikbaar","team.unknown_entity":"Onbekende entiteit","time.today":"Vandaag","time.yesterday":"Gisteren","time.tomorrow":"Morgen","time.now":"nu","time.in_n_min":"over {n} min","time.in_n_h":"over {n} uur","time.in_n_d":"over {n} dagen","time.n_min_ago":"{n} min geleden","time.n_h_ago":"{n} uur geleden","time.n_d_ago":"{n} dagen geleden","lineup.bench":"Bank","lineup.empty.title":"Opstellingen niet beschikbaar","lineup.empty.sub":"Opstellingen worden kort voor de aftrap gepubliceerd","timeline.empty.title":"Nog geen gebeurtenissen","timeline.empty.sub":"Gebeurtenissen verschijnen tijdens de wedstrijd","timeline.event":"Gebeurtenis","timeline.penalty":"Penalty","news.empty":"Geen nieuws beschikbaar","news.articles":"{n} artikelen","phase.regular_season":"Competitie","phase.group_stage":"Groepsfase","phase.playoffs":"Play-offs","zone.champions":"Champions League","zone.europa":"Europa League","zone.conference":"Conference League","zone.relegation":"Degradatie","zone.qualified":"Gekwalificeerd","zone.third_place_playoff":"Beste 3e","zone.eliminated":"Uitgeschakeld","hero.groups":"groepen","hero.teams":"teams","hero.not_started":"Niet gestart","col.pos":"#","col.team":"Team","col.played":"G","col.wins":"W","col.draws":"G","col.losses":"V","col.gd":"+/-","col.points":"Pnt","generic.no_match":"Geen wedstrijd beschikbaar","generic.matches_count":"{n} wedstrijden","generic.unknown_entity":"Onbekende entiteit","generic.close":"Sluiten","generic.unknown":"Onbekend","popup.match_details":"Wedstrijddetails","popup.lineups":"Opstellingen","popup.timeline":"Tijdlijn","popup.h2h":"Onderlinge duels","popup.no_events":"Geen gebeurtenissen beschikbaar","month.1":"Jan","month.2":"Feb","month.3":"Mrt","month.4":"Apr","month.5":"Mei","month.6":"Jun","month.7":"Jul","month.8":"Aug","month.9":"Sep","month.10":"Okt","month.11":"Nov","month.12":"Dec"},it:{"card.bracket":"Tabellone","card.lineup":"Formazioni","card.timeline":"Cronologia","card.news":"Notizie","card.standings":"Classifica","round.final":"Finale","round.semifinals":"Semifinali","round.quarterfinals":"Quarti di finale","round.r16":"Ottavi di finale","round.r32":"Sedicesimi","round.knockout_playoffs":"Spareggi KO","round.preliminary":"Turno preliminare","round.short.semifinals":"Semi","round.short.quarterfinals":"Quarti","round.short.r16":"Ottavi","bracket.empty.title":"Tabellone non disponibile","bracket.empty.sub":"La fase a eliminazione diretta inizierà presto","bracket.tbd":"Da def.","bracket.tied_agg":"Pari aggreg.","bracket.agg":"Aggreg.","status.live":"Diretta","status.finished":"Finita","status.scheduled":"Programmata","status.full_time":"Termine","status.halftime":"Intervallo","status.first_half":"Primo Tempo","status.second_half":"Secondo Tempo","status.kickoff":"Inizio","status.end":"Fine","event.goal":"Goal","event.yellow_card":"Cartellino giallo","event.red_card":"Cartellino rosso","event.substitution":"Sostituzione","event.var":"VAR","form.W":"V","form.D":"N","form.L":"P","team.details":"Dettagli","team.possession":"Possesso","team.shots":"Tiri","team.on_target":"In porta","team.fouls":"Falli","team.spectators":"spettatori","team.top_scorer":"Capocannoniere","team.next_match":"Prossima partita","team.in":"A","team.no_match":"Nessuna partita disponibile","team.unknown_entity":"Entità sconosciuta","time.today":"Oggi","time.yesterday":"Ieri","time.tomorrow":"Domani","time.now":"ora","time.in_n_min":"tra {n} min","time.in_n_h":"tra {n} h","time.in_n_d":"tra {n} g","time.n_min_ago":"{n} min fa","time.n_h_ago":"{n} h fa","time.n_d_ago":"{n} g fa","lineup.bench":"Panchina","lineup.empty.title":"Formazioni non disponibili","lineup.empty.sub":"Le formazioni vengono pubblicate poco prima del fischio d'inizio","timeline.empty.title":"Nessun evento ancora","timeline.empty.sub":"Gli eventi compaiono durante la partita","timeline.event":"Evento","timeline.penalty":"Rigore","news.empty":"Nessuna notizia disponibile","news.articles":"{n} articoli","zone.champions":"Champions","zone.europa":"Europa","zone.conference":"Conference League","zone.relegation":"Retrocessione","zone.qualified":"Qualificate","zone.third_place_playoff":"Migliori 3°","zone.eliminated":"Eliminate","hero.groups":"gironi","hero.teams":"squadre","hero.not_started":"Non iniziato","col.pos":"#","col.team":"Squadra","col.played":"P","col.wins":"V","col.draws":"N","col.losses":"S","col.gd":"+/-","col.points":"Pt","generic.no_match":"Nessuna partita disponibile","generic.matches_count":"{n} partite","generic.unknown_entity":"Entità sconosciuta","generic.close":"Chiudi","popup.match_details":"Dettagli partita","popup.lineups":"Formazioni","popup.timeline":"Cronologia","popup.h2h":"Precedenti","popup.no_events":"Nessun evento disponibile","month.1":"Gen","month.2":"Feb","month.3":"Mar","month.4":"Apr","month.5":"Mag","month.6":"Giu","month.7":"Lug","month.8":"Ago","month.9":"Set","month.10":"Ott","month.11":"Nov","month.12":"Dic"},fr:{"card.bracket":"Tableau","card.lineup":"Compositions","card.timeline":"Chronologie","card.news":"Actualités","card.standings":"Classement","round.final":"Finale","round.semifinals":"Demi-finales","round.quarterfinals":"Quarts de finale","round.r16":"Huitièmes de finale","round.r32":"Seizièmes","round.knockout_playoffs":"Barrages","round.preliminary":"Tour préliminaire","round.short.semifinals":"Demis","round.short.quarterfinals":"Quarts","round.short.r16":"8èmes","bracket.empty.title":"Tableau non disponible","bracket.empty.sub":"La phase à élimination directe commencera bientôt","bracket.tbd":"À déf.","bracket.tied_agg":"Score cumulé égal","bracket.agg":"Cumul","status.live":"En direct","status.finished":"Terminé","status.scheduled":"Programmé","status.full_time":"Temps régl.","status.halftime":"Mi-temps","status.first_half":"1ère mi-temps","status.second_half":"2ème mi-temps","status.kickoff":"Coup d'envoi","status.end":"Fin","event.goal":"But","event.yellow_card":"Carton jaune","event.red_card":"Carton rouge","event.substitution":"Remplacement","event.var":"VAR","form.W":"V","form.D":"N","form.L":"D","team.details":"Détails","team.possession":"Possession","team.shots":"Tirs","team.on_target":"Cadrés","team.fouls":"Fautes","team.spectators":"spectateurs","team.top_scorer":"Meilleur buteur","team.next_match":"Prochain match","team.in":"À","team.no_match":"Aucun match disponible","team.unknown_entity":"Entité inconnue","time.today":"Aujourd'hui","time.yesterday":"Hier","time.tomorrow":"Demain","time.now":"maintenant","time.in_n_min":"dans {n} min","time.in_n_h":"dans {n} h","time.in_n_d":"dans {n} j","time.n_min_ago":"il y a {n} min","time.n_h_ago":"il y a {n} h","time.n_d_ago":"il y a {n} j","lineup.bench":"Banc","lineup.empty.title":"Compositions non disponibles","lineup.empty.sub":"Les compositions sont publiées peu avant le coup d'envoi","timeline.empty.title":"Aucun événement","timeline.empty.sub":"Les événements apparaissent pendant le match","timeline.event":"Événement","timeline.penalty":"Penalty","news.empty":"Aucune actualité disponible","news.articles":"{n} articles","zone.champions":"Champions","zone.europa":"Europa","zone.relegation":"Relégation","zone.qualified":"Qualifiées","zone.third_place_playoff":"Meilleurs 3es","zone.eliminated":"Éliminées","hero.groups":"groupes","hero.teams":"équipes","hero.not_started":"Pas commencé","col.pos":"#","col.team":"Équipe","col.played":"J","col.wins":"G","col.draws":"N","col.losses":"P","col.gd":"+/-","col.points":"Pts","generic.no_match":"Aucun match disponible","generic.matches_count":"{n} matchs","generic.unknown_entity":"Entité inconnue","generic.close":"Fermer","popup.match_details":"Détails du match","popup.lineups":"Compositions","popup.timeline":"Chronologie","popup.h2h":"Confrontations","popup.no_events":"Aucun événement disponible","month.1":"Janv","month.2":"Févr","month.3":"Mars","month.4":"Avr","month.5":"Mai","month.6":"Juin","month.7":"Juil","month.8":"Août","month.9":"Sept","month.10":"Oct","month.11":"Nov","month.12":"Déc"},es:{"card.bracket":"Cuadro","card.lineup":"Alineaciones","card.timeline":"Cronología","card.news":"Noticias","card.standings":"Clasificación","round.final":"Final","round.semifinals":"Semifinales","round.quarterfinals":"Cuartos de final","round.r16":"Octavos de final","round.r32":"Dieciseisavos","round.knockout_playoffs":"Eliminatorias previas","round.preliminary":"Ronda preliminar","round.short.semifinals":"Semis","round.short.quarterfinals":"Cuartos","round.short.r16":"Octavos","bracket.empty.title":"Cuadro no disponible","bracket.empty.sub":"La fase eliminatoria comenzará pronto","bracket.tbd":"Por def.","bracket.tied_agg":"Empate global","bracket.agg":"Global","status.live":"En vivo","status.finished":"Finalizado","status.scheduled":"Programado","status.full_time":"Final","status.halftime":"Descanso","status.first_half":"Primer tiempo","status.second_half":"Segundo tiempo","status.kickoff":"Saque inicial","status.end":"Fin","event.goal":"Gol","event.yellow_card":"Tarjeta amarilla","event.red_card":"Tarjeta roja","event.substitution":"Sustitución","event.var":"VAR","form.W":"V","form.D":"E","form.L":"D","team.details":"Detalles","team.possession":"Posesión","team.shots":"Tiros","team.on_target":"Al arco","team.fouls":"Faltas","team.spectators":"espectadores","team.top_scorer":"Goleador","team.next_match":"Próximo partido","team.in":"En","team.no_match":"Ningún partido disponible","team.unknown_entity":"Entidad desconocida","time.today":"Hoy","time.yesterday":"Ayer","time.tomorrow":"Mañana","time.now":"ahora","time.in_n_min":"en {n} min","time.in_n_h":"en {n} h","time.in_n_d":"en {n} d","time.n_min_ago":"hace {n} min","time.n_h_ago":"hace {n} h","time.n_d_ago":"hace {n} d","lineup.bench":"Banquillo","lineup.empty.title":"Alineaciones no disponibles","lineup.empty.sub":"Las alineaciones se publican poco antes del saque inicial","timeline.empty.title":"Aún no hay eventos","timeline.empty.sub":"Los eventos aparecen durante el partido","timeline.event":"Evento","timeline.penalty":"Penalti","news.empty":"No hay noticias disponibles","news.articles":"{n} artículos","zone.champions":"Champions","zone.europa":"Europa","zone.relegation":"Descenso","zone.qualified":"Clasificadas","zone.third_place_playoff":"Mejores 3°","zone.eliminated":"Eliminadas","hero.groups":"grupos","hero.teams":"equipos","hero.not_started":"No iniciado","col.pos":"#","col.team":"Equipo","col.played":"PJ","col.wins":"G","col.draws":"E","col.losses":"P","col.gd":"+/-","col.points":"Pts","generic.no_match":"Ningún partido disponible","generic.matches_count":"{n} partidos","generic.unknown_entity":"Entidad desconocida","generic.close":"Cerrar","popup.match_details":"Detalles del partido","popup.lineups":"Alineaciones","popup.timeline":"Cronología","popup.h2h":"Enfrentamientos","popup.no_events":"Sin eventos disponibles","month.1":"Ene","month.2":"Feb","month.3":"Mar","month.4":"Abr","month.5":"May","month.6":"Jun","month.7":"Jul","month.8":"Ago","month.9":"Sep","month.10":"Oct","month.11":"Nov","month.12":"Dic"}},ce=["en","it","fr","es","nl"];function de(e,t){const i=[];t&&"string"==typeof t.language&&i.push(t.language),e&&e.locale&&e.locale.language&&i.push(e.locale.language),e&&e.language&&i.push(e.language);for(const e of i){if(!e)continue;const t=String(e).toLowerCase().split("-")[0];if(ce.includes(t))return t}return"en"}function pe(e,t,i){let a=(le[t]||le.en)[e];return void 0===a&&(a=le.en[e]),void 0===a?e:(i&&Object.keys(i).forEach((e=>{a=a.replace(new RegExp("\\{"+e+"\\}","g"),i[e])})),a)}const he=s`
+  :host {
+    /* Accent palette — identica in dark e light */
+    --cl-accent: #6366f1;
+    --cl-accent-2: #ec4899;
+    --cl-live: #ef4444;
+    --cl-live-glow: rgba(239,68,68,0.5);
+    --cl-green: #10b981;
+    --cl-gold: #fbbf24;
+    --cl-gold-glow: rgba(251,191,36,0.4);
+    --cl-gold-text: #fde047;
+    /* Zone classifica */
+    --cl-cl: #6366f1;
+    --cl-el: #f97316;
+    --cl-rel: #ef4444;
+    --cl-conf: #a855f7;
+  }
+
+  /* ---------- DARK (default) ---------- */
+  :host,
+  :host([data-skin="dark"]) {
+    --cl-bg: #14182a;
+    --cl-surface: rgba(255,255,255,0.05);
+    --cl-surface-2: rgba(255,255,255,0.08);
+    --cl-card-2: rgba(255,255,255,0.05);
+    --cl-divider: rgba(255,255,255,0.08);
+    --cl-glass-border: rgba(255,255,255,0.08);
+    --cl-text: #f4f6fb;
+    --cl-text-2: #aab2c5;
+    --cl-shadow: rgba(0,0,0,0.30);
+    --cl-overlay-strong: rgba(0,0,0,0.55);
+    --cl-overlay-soft: rgba(0,0,0,0.25);
+    --cl-chip-bg: rgba(255,255,255,0.10);
+    --cl-chip-border: rgba(255,255,255,0.12);
+    --cl-toast-bg: #0b0f1a;
+    --cl-num-bg: #0b0f1a;
+  }
+
+  /* ---------- LIGHT ---------- */
+  :host([data-skin="light"]) {
+    --cl-bg: #ffffff;
+    --cl-surface: rgba(15,23,42,0.04);
+    --cl-surface-2: rgba(15,23,42,0.07);
+    --cl-card-2: rgba(15,23,42,0.04);
+    --cl-divider: rgba(15,23,42,0.10);
+    --cl-glass-border: rgba(15,23,42,0.10);
+    --cl-text: #14182a;
+    --cl-text-2: #5b6577;
+    --cl-shadow: rgba(15,23,42,0.12);
+    --cl-overlay-strong: rgba(0,0,0,0.45);
+    --cl-overlay-soft: rgba(0,0,0,0.18);
+    --cl-chip-bg: rgba(15,23,42,0.06);
+    --cl-chip-border: rgba(15,23,42,0.12);
+    --cl-toast-bg: #1a1f33;
+    --cl-num-bg: #1a1f33;
+  }
+`;function ge(e,t){const i=function(e){return"light"===(e&&"string"==typeof e.skin?e.skin.toLowerCase():"dark")?"light":"dark"}(t);return e&&e.setAttribute&&e.setAttribute("data-skin",i),i}const ue=(e,t)=>Array.from({length:t-e+1},((t,i)=>e+i)),fe={serie_a:{match:(e,t)=>"ita.1"===e||t.includes("italian_serie_a"),champions:[1,2,3,4],europa:[5],conference:[6],relegation:"bottom3"},premier_league:{match:(e,t)=>"eng.1"===e||t.includes("english_premier"),champions:[1,2,3,4,5],europa:[6],conference:[7],relegation:"bottom3"},laliga:{match:(e,t)=>"esp.1"===e||t.includes("spanish_la_liga")||t.includes("spanish_laliga"),champions:[1,2,3,4],europa:[5],conference:[6],relegation:"bottom3"},bundesliga:{match:(e,t)=>"ger.1"===e||t.includes("german_bundesliga"),champions:[1,2,3,4],europa:[5],conference:[6],relegation:[17,18]},ligue_1:{match:(e,t)=>"fra.1"===e||t.includes("french_ligue_1"),champions:[1,2,3],europa:[4],conference:[5],relegation:[17,18]},eredivisie:{match:(e,t)=>"ned.1"===e||t.includes("dutch_eredivisie"),champions:[1,2],europa:[3],conference:[4,5],relegation:[17,18]},primeira_liga:{match:(e,t)=>"por.1"===e||t.includes("portuguese_primeira"),champions:[1,2],europa:[3],conference:[4],relegation:[17,18]},ucl_league_phase:{match:(e,t)=>"uefa.champions"===e||t.includes("uefa_champions_league"),champions:ue(1,8),europa:ue(9,24),conference:[],relegation:"bottom12"},uel_league_phase:{match:(e,t)=>"uefa.europa"===e||t.includes("uefa_europa_league"),champions:ue(1,8),europa:ue(9,24),conference:[],relegation:"bottom12"},uecl_league_phase:{match:(e,t)=>"uefa.europa.conf"===e||t.includes("uefa_conference"),champions:ue(1,8),europa:ue(9,24),conference:[],relegation:"bottom12"},world_cup:{match:(e,t)=>"fifa.world"===e||t.includes("fifa_world_cup")||t.includes("world_cup"),champions:[1,2],europa:[3],conference:[],relegation:"bottom1",kind:"cup_group",hero:{icon:"🏆",accent:"world_cup"},labels:{champions:"zone.qualified",europa:"zone.third_place_playoff",conference:null,relegation:"zone.eliminated"}},uefa_euro:{match:(e,t)=>"uefa.euro"===e||t.includes("uefa_euro")||t.includes("european_championship"),champions:[1,2],europa:[3],conference:[],relegation:"bottom1",kind:"cup_group",hero:{icon:"⭐",accent:"uefa_euro"},labels:{champions:"zone.qualified",europa:"zone.third_place_playoff",conference:null,relegation:"zone.eliminated"}},copa_america:{match:(e,t)=>"conmebol.america"===e||t.includes("copa_america")||t.includes("conmebol_america"),champions:[1,2],europa:[],conference:[],relegation:"bottom2",kind:"cup_group",hero:{icon:"🏆",accent:"copa_america"},labels:{champions:"zone.qualified",europa:null,conference:null,relegation:"zone.eliminated"}}};customElements.define("calcio-live-classifica",class extends oe{static get properties(){return{hass:{},_config:{},maxTeamsVisible:{type:Number},hideHeader:{type:Boolean},selectedGroup:{type:String},_eventSubscriptions:{type:Array},_toastMessage:{type:String},_toastVisible:{type:Boolean},_toastVariant:{type:String}}}setConfig(e){if(!e.entity)throw new Error("Entity required");this._config=e,ge(this,e),this.maxTeamsVisible=e.max_teams_visible?e.max_teams_visible:10,this.hideHeader=e.hide_header||!1,this.selectedGroup=e.selected_group||"",this.showEventToasts=!0===e.show_event_toasts,this._toastMessage="",this._toastVisible=!1,this._toastVariant="goal",this._toastTimer=null}_t(e,t){return pe(e,de(this.hass,this._config),t)}connectedCallback(){super.connectedCallback(),this._subscribeToEvents()}disconnectedCallback(){super.disconnectedCallback(),this._eventSubscriptions&&Array.isArray(this._eventSubscriptions)&&(this._eventSubscriptions.forEach((e=>{"function"==typeof e&&e()})),this._eventSubscriptions=[])}_subscribeToEvents(){this.hass&&this.hass.connection&&(this._eventSubscriptions=[],["calcio_live_goal","calcio_live_yellow_card","calcio_live_red_card"].forEach((e=>{this.hass.connection.subscribeEvents(this._handleCalcioLiveEvent.bind(this),e).then((e=>{"function"==typeof e&&this._eventSubscriptions.push(e)}))})))}_eventBelongsToThisCard(e){if(!this.hass||!this._config)return!1;const t=this._config.entity||"",i=e.competition_code;if(!i)return!1;const a=i.replace(/\./g,"_").toLowerCase();return t.toLowerCase().includes(a)}_handleCalcioLiveEvent(e){const t=e.event_type,i=e.data;this._eventBelongsToThisCard(i)&&this.showEventToasts&&this._showEventToast(t,i)}_showEventToast(e,t){let i="",a="goal";"calcio_live_goal"===e?(i=`<strong>GOAL!</strong> ${t.player} · ${t.home_team} ${t.home_score} - ${t.away_score} ${t.away_team}`,a="goal"):"calcio_live_yellow_card"===e?(i=`🟨 <strong>Cartellino Giallo</strong> · ${t.player}${t.minute?` (${t.minute}')`:""}`,a="yellow"):"calcio_live_red_card"===e?(i=`🟥 <strong>Cartellino Rosso</strong> · ${t.player}${t.minute?` (${t.minute}')`:""}`,a="red"):"calcio_live_match_finished"===e&&(i=`<strong>Finita!</strong> ${t.home_team} ${t.home_score} - ${t.away_score} ${t.away_team}`,a="finished"),i&&(this._toastMessage=i,this._toastVariant=a,this._toastVisible=!0,this._toastTimer&&clearTimeout(this._toastTimer),this._toastTimer=setTimeout((()=>{this._toastVisible=!1,this.requestUpdate()}),4e3),this.requestUpdate())}getCardSize(){return 5}static getConfigElement(){return document.createElement("calcio-live-classifica-editor")}static getStubConfig(){return{entity:"sensor.calcio_live",max_teams_visible:10,hide_header:!1,selected_group:"",show_event_toasts:!1}}_getZoneConfig(){if(this._config.zone_config)return this._config.zone_config;if(this._config.zone_preset&&fe[this._config.zone_preset])return fe[this._config.zone_preset];return this._inferPresetFromEntity()||{champions:[],europa:[],conference:[],relegation:null}}_getZoneLabels(){const e=this._getZoneConfig().labels||{};return{champions:void 0!==e.champions?e.champions:"zone.champions",europa:void 0!==e.europa?e.europa:"zone.europa",conference:void 0!==e.conference?e.conference:"zone.conference",relegation:void 0!==e.relegation?e.relegation:"zone.relegation"}}_hasZonePositions(e){return!!e&&(Array.isArray(e)?e.length>0:"string"==typeof e&&/^bottom\d+$/.test(e))}_inferPresetFromEntity(){const e=(this._config.entity||"").toLowerCase(),t=this.hass&&this._config.entity?this.hass.states[this._config.entity]:null,i=t&&t.attributes?String(t.attributes.competition_code||"").toLowerCase():"";for(const[,t]of Object.entries(fe))if(t.match&&t.match(i,e))return t;return null}_positionInZone(e,t,i){if(!i)return!1;const a=String(i).match(/^bottom(\d+)$/);if(a){const i=parseInt(a[1],10);return t&&e>t-i}return!!Array.isArray(i)&&i.includes(Number(e))}_translatePhase(e){return e?{"regular-season":this._t("phase.regular_season"),"group stage":this._t("phase.group_stage"),playoffs:this._t("phase.playoffs")}[String(e).toLowerCase()]||e:""}_shouldShowPhase(e){return!!e&&"regular-season"!==String(e).toLowerCase()}_isCupGroupStage(){const e=this._getZoneConfig();return e&&"cup_group"===e.kind}_groupHasNoMatches(e){if(!e||!e.length)return!1;const t=e=>{if(null==e||""===e)return 0;const t=parseInt(String(e).replace("+",""),10);return isNaN(t)?0:t};return e.every((e=>t(e.wins)+t(e.draws)+t(e.losses)===0))}_zoneClass(e,t){const i=this._getZoneConfig();return this._positionInZone(e,t,i.champions)?1!==e||this._isCupGroupStage()?"zone-cl":"zone-cl rank-first":this._positionInZone(e,t,i.europa)?"zone-el":this._positionInZone(e,t,i.conference)?"zone-conf":this._positionInZone(e,t,i.relegation)?"zone-rel":"zone-default"}_sortStandings(e,t){let i=(e||[]).filter((e=>null!=e.rank));return t.includes("MLS")?(i=i.slice().sort(((e,t)=>t.points!==e.points?t.points-e.points:t.goal_difference!==e.goal_difference?t.goal_difference-e.goal_difference:t.goals_for-e.goals_for)),i.forEach(((e,t)=>{e.rank=t+1}))):i=i.slice().sort(((e,t)=>e.rank-t.rank)),i}_currentGroup(e){return e.find((e=>e.name===this.selectedGroup))||e[0]}render(){if(!this.hass||!this._config)return q``;const e=this._config.entity,t=this.hass.states[e];if(!t)return q`<ha-card class="empty">${this._t("generic.unknown_entity")}: ${e}</ha-card>`;const i=t.attributes.season||"",a=t.attributes.standings_groups||[],n=!this.selectedGroup&&a.length>1,s=this._currentGroup(a),o=this._sortStandings(s?s.standings:[],i),r=o.length,l=48*Math.min(this.maxTeamsVisible,r)+50;return q`
       <ha-card>
         ${this.showEventToasts&&this._toastVisible?q`
           <div class="event-toast variant-${this._toastVariant}" .innerHTML=${this._toastMessage}></div>
@@ -103,33 +159,20 @@
             </div>
           `}))}
       </div>
-    `}static get styles(){return s`
-      :host {
-        --cl-accent: #6366f1;
-        --cl-accent-2: #ec4899;
-        --cl-live: #ef4444;
-        --cl-green: #10b981;
-        --cl-gold: #fbbf24;
-        --cl-gold-glow: rgba(251,191,36,0.4);
-        --cl-gold-text: #fde047;
-        --cl-card-2: rgba(255,255,255,0.05);
-        --cl-divider: rgba(255,255,255,0.08);
-        --cl-cl: #6366f1;
-        --cl-el: #f97316;
-        --cl-rel: #ef4444;
-        --cl-conf: #a855f7;
-      }
+    `}static get styles(){return[he,s`
       ha-card {
         position: relative;
         overflow: hidden;
         border-radius: 20px;
         padding: 0;
-        box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+        background: var(--cl-bg);
+        color: var(--cl-text);
+        box-shadow: 0 4px 24px var(--cl-shadow);
       }
       ha-card.empty {
         padding: 24px;
         text-align: center;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
       }
 
       .top-bar {
@@ -206,7 +249,7 @@
         border-radius: 999px;
         background: rgba(255,255,255,0.10);
         border: 1px solid rgba(255,255,255,0.12);
-        color: var(--primary-text-color);
+        color: var(--cl-text);
         backdrop-filter: blur(8px);
       }
       .top-bar h2 {
@@ -214,13 +257,13 @@
         font-size: 20px;
         font-weight: 900;
         letter-spacing: -0.03em;
-        background: linear-gradient(135deg, var(--primary-text-color), var(--cl-accent));
+        background: linear-gradient(135deg, var(--cl-text), var(--cl-accent));
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
       }
       .top-bar .sub {
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         font-size: 12px;
         margin-top: 4px;
         font-weight: 500;
@@ -244,7 +287,7 @@
         text-align: center;
         font-size: 10px;
         font-weight: 800;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         text-transform: uppercase;
         letter-spacing: 0.1em;
         border-bottom: 1px solid var(--cl-divider);
@@ -266,7 +309,7 @@
         border-bottom: 1px solid var(--cl-divider);
         font-variant-numeric: tabular-nums;
         font-weight: 600;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
       }
       .standings-table tbody tr:last-child td { border-bottom: none; }
       .standings-table tbody td:first-child { padding-left: 14px; text-align: left; }
@@ -315,7 +358,7 @@
       }
       .zone-default .rank-num {
         background: var(--cl-card-2);
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
       }
 
       .team-cell {
@@ -362,7 +405,7 @@
         font-weight: 900;
         letter-spacing: 0.12em;
         text-transform: uppercase;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
         background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(236,72,153,0.06));
         border-bottom: 1px solid var(--cl-divider);
         display: flex;
@@ -378,7 +421,7 @@
         padding: 2px 7px;
         border-radius: 999px;
         background: rgba(255,255,255,0.08);
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         border: 1px solid var(--cl-divider);
       }
       .groups-grid-cup .group-cell {
@@ -427,7 +470,7 @@
       .legend-item {
         display: flex; align-items: center; gap: 6px;
         font-size: 10px;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         font-weight: 700;
         letter-spacing: 0.04em;
       }
@@ -445,7 +488,7 @@
         top: 12px;
         left: 50%;
         transform: translateX(-50%);
-        background: #0b0f1a;
+        background: var(--cl-toast-bg);
         color: #ffffff;
         padding: 10px 18px;
         border-radius: 14px;
@@ -483,7 +526,7 @@
         90%  { opacity: 1; transform: translate(-50%, 0) scale(1); }
         100% { opacity: 0; transform: translate(-50%, -10px) scale(0.95); }
       }
-    `}}),window.customCards=window.customCards||[],window.customCards.push({type:"calcio-live-classifica",name:"Calcio Live Classifica Card",description:"Mostra la classifica del campionato o coppe"}),customElements.define("calcio-live-classifica-editor",class extends oe{static get properties(){return{_config:{type:Object},hass:{type:Object},entities:{type:Array},groups:{type:Array}}}constructor(){super(),this.entities=[],this.groups=[]}static get styles(){return s`
+    `]}}),window.customCards=window.customCards||[],window.customCards.push({type:"calcio-live-classifica",name:"Calcio Live Classifica Card",description:"Mostra la classifica del campionato o coppe"}),customElements.define("calcio-live-classifica-editor",class extends oe{static get properties(){return{_config:{type:Object},hass:{type:Object},entities:{type:Array},groups:{type:Array}}}constructor(){super(),this.entities=[],this.groups=[]}static get styles(){return s`
       .card-config {
         display: flex;
         flex-direction: column;
@@ -581,6 +624,13 @@
           />
         </div>
         <div>
+          <label class="field-label">Skin</label>
+          <select data-config-value="skin" @change=${this._selectChanged}>
+            <option value="dark" ?selected=${"dark"===(this._config.skin||"dark")}>Dark</option>
+            <option value="light" ?selected=${"light"===this._config.skin}>Light</option>
+          </select>
+        </div>
+        <div>
           <label class="field-label">Language · Lingua</label>
           <select data-config-value="language" @change=${this._selectChanged}>
             <option value="" ?selected=${!this._config.language}>Auto (HA locale)</option>
@@ -592,7 +642,7 @@
           </select>
         </div>
       </div>
-    `}}),customElements.define("calcio-live-matches",class extends oe{static get properties(){return{hass:{},_config:{},showPopup:{type:Boolean},activeMatch:{type:Object},_eventSubscriptions:{type:Array},_recentEventMatches:{type:Object},_toastMessage:{type:String},_toastVisible:{type:Boolean},_toastVariant:{type:String}}}constructor(){super(),this._recentEventMatches=new Map,this._eventSubscriptions=[],this._toastMessage="",this._toastVisible=!1,this._toastVariant="goal",this._toastTimer=null}setConfig(e){if(!e.entity)throw new Error("Entity required");this._config=e,this.maxEventsVisible=e.max_events_visible?e.max_events_visible:5,this.maxEventsTotal=e.max_events_total?e.max_events_total:50,this.showFinishedMatches=void 0===e.show_finished_matches||e.show_finished_matches,this.hideHeader=void 0!==e.hide_header&&e.hide_header,this.hidePastDays=void 0!==e.hide_past_days?e.hide_past_days:0,this.showEventToasts=!0===e.show_event_toasts,this.activeMatch=null,this.showPopup=!1}_t(e,t){return pe(e,de(this.hass,this._config),t)}connectedCallback(){super.connectedCallback(),this._subscribeToEvents()}disconnectedCallback(){super.disconnectedCallback(),this._eventSubscriptions&&Array.isArray(this._eventSubscriptions)&&(this._eventSubscriptions.forEach((e=>{"function"==typeof e&&e()})),this._eventSubscriptions=[])}_subscribeToEvents(){this.hass&&this.hass.connection&&(this._eventSubscriptions=[],["calcio_live_goal","calcio_live_yellow_card","calcio_live_red_card"].forEach((e=>{this.hass.connection.subscribeEvents(this._handleCalcioLiveEvent.bind(this),e).then((e=>{"function"==typeof e&&this._eventSubscriptions.push(e)}))})))}_eventBelongsToThisCard(e){if(!this.hass||!this._config)return!1;const t=this.hass.states[this._config.entity];return!!t&&(t.attributes.matches||[]).some((t=>t.home_team===e.home_team&&t.away_team===e.away_team))}_handleCalcioLiveEvent(e){const t=e.event_type,i=e.data;if(!this._eventBelongsToThisCard(i))return;const a=`${i.home_team}_${i.away_team}`;this._recentEventMatches.set(a,"calcio_live_goal"===t?"goal":"card"),this.requestUpdate(),setTimeout((()=>{this._recentEventMatches.delete(a),this.requestUpdate()}),5e3),this.showEventToasts&&this._showEventToast(t,i)}_showEventToast(e,t){let i="",a="goal";"calcio_live_goal"===e?(i=`<strong>${this._t("event.goal").toUpperCase()}!</strong> ${t.player} · ${t.home_team} ${t.home_score} - ${t.away_score} ${t.away_team}`,a="goal"):"calcio_live_yellow_card"===e?(i=`🟨 <strong>${this._t("event.yellow_card")}</strong> · ${t.player}${t.minute?` (${t.minute}')`:""}`,a="yellow"):"calcio_live_red_card"===e&&(i=`🟥 <strong>${this._t("event.red_card")}</strong> · ${t.player}${t.minute?` (${t.minute}')`:""}`,a="red"),i&&(this._toastMessage=i,this._toastVariant=a,this._toastVisible=!0,this._toastTimer&&clearTimeout(this._toastTimer),this._toastTimer=setTimeout((()=>{this._toastVisible=!1,this.requestUpdate()}),4e3),this.requestUpdate())}getCardSize(){return 4}static getConfigElement(){return document.createElement("calcio-live-matches-editor")}static getStubConfig(){return{entity:"sensor.calcio_live",max_events_visible:5,max_events_total:50,hide_past_days:0,show_finished_matches:!0,hide_header:!1,show_event_toasts:!1}}_parseMatchDate(e){if(!e)return null;const[t,i]=e.split(" "),[a,n,s]=t.split("/").map(Number),[o,r]=i?i.split(":").map(Number):[0,0];return new Date(s,n-1,a,o,r)}_matchTimeLabel(e){if("in"===e.state)return e.clock&&"N/A"!==e.clock?e.clock:"LIVE";if("post"===e.state)return"FT";if(e.date){const t=e.date.split(" ");return t[1]||t[0]}return"—"}_matchScore(e,t){return"pre"===e.state?"-":e["home"===t?"home_score":"away_score"]??"-"}_isWinner(e,t){if("pre"===e.state)return null;const i=parseInt(e.home_score),a=parseInt(e.away_score);return isNaN(i)||isNaN(a)||i===a?null:"home"===t?i>a:a>i}_dayKey(e){if(!e.date)return"—";const t=this._parseMatchDate(e.date);if(!t)return e.date.split(" ")[0]||"—";const i=new Date;i.setHours(0,0,0,0);const a=new Date(t);a.setHours(0,0,0,0);const n=Math.round((a-i)/864e5);if(0===n)return"⚡ "+this._t("time.today");if(-1===n)return this._t("time.yesterday");if(1===n)return this._t("time.tomorrow");const s=this._t("month."+(a.getMonth()+1));return`${a.getDate()} ${s}`}showDetails(e){this.activeMatch=e,this.showPopup=!0}closePopup(){this.showPopup=!1}separateEvents(e){const t=[],i=[],a=[];return e.forEach((e=>{const n=String(e||"");n.includes("Goal")||n.includes("Penalty - Scored")?t.push(this.formatMatchEvent(n)):n.includes("Yellow Card")?i.push(this.formatMatchEvent(n)):n.includes("Red Card")&&a.push(this.formatMatchEvent(n))})),{goals:t,yellowCards:i,redCards:a}}formatMatchEvent(e){const t=e=>this._t(e);let i=String(e||"").trim();i=i.replace(/^Goal\s*-\s*/i,"").replace(/^Yellow Card\s*-\s*/i,"").replace(/^Red Card\s*-\s*/i,"").replace(/^Penalty - Scored\s*-\s*/i,`${t("event.penalty")} - `).replace(/^Header\s*-\s*/i,`${t("event.header")} - `).replace(/^Shot\s*-\s*/i,`${t("event.shot")} - `).replace(/^Free-kick\s*-\s*/i,`${t("event.free_kick")} - `).replace(/^Penalty\s*-\s*/i,`${t("event.penalty")} - `),i=i.replace(/^([^:]+):\s*/,"$1 ");const a=[t("event.header"),t("event.shot"),t("event.penalty"),t("event.free_kick")].map((e=>e.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")));return i=i.replace(new RegExp(`^(${a.join("|")})\\s*-\\s*(.+)$`,"i"),((e,t,i)=>`${i} (${t.toLowerCase()})`)),i=i.replace(/\bN\/A\b/g,t("generic.unknown")),i}render(){if(!this.hass||!this._config)return q``;const e=this._config.entity,t=this.hass.states[e];if(!t)return q`<ha-card class="empty">${this._t("generic.unknown_entity")}: ${e}</ha-card>`;let i=t.attributes.matches||[];const a=t.attributes.league_info?t.attributes.league_info[0]:null,n=t.attributes.team_logo||null;if(this.showFinishedMatches||(i=i.filter((e=>"Full Time"!==e.status))),i=i.slice().sort(((e,t)=>new Date(e.date)-new Date(t.date))),this.hidePastDays>0){const e=new Date;e.setDate(e.getDate()-this.hidePastDays),i=i.filter((t=>{const i=this._parseMatchDate(t.date);return!i||i>=e}))}const s=i.slice(0,this.maxEventsTotal);if(0===s.length)return q`<ha-card class="empty">${this._t("generic.no_match")}</ha-card>`;const o=s.filter((e=>"in"===e.state)).length,r=[];let l=null;s.forEach((e=>{const t=this._dayKey(e);t!==l?(l=t,r.push({key:t,matches:[e]})):r[r.length-1].matches.push(e)}));const c=Math.max(80*this.maxEventsVisible,240);return q`
+    `}}),customElements.define("calcio-live-matches",class extends oe{static get properties(){return{hass:{},_config:{},showPopup:{type:Boolean},activeMatch:{type:Object},_eventSubscriptions:{type:Array},_recentEventMatches:{type:Object},_toastMessage:{type:String},_toastVisible:{type:Boolean},_toastVariant:{type:String}}}constructor(){super(),this._recentEventMatches=new Map,this._eventSubscriptions=[],this._toastMessage="",this._toastVisible=!1,this._toastVariant="goal",this._toastTimer=null}setConfig(e){if(!e.entity)throw new Error("Entity required");this._config=e,ge(this,e),this.maxEventsVisible=e.max_events_visible?e.max_events_visible:5,this.maxEventsTotal=e.max_events_total?e.max_events_total:50,this.showFinishedMatches=void 0===e.show_finished_matches||e.show_finished_matches,this.hideHeader=void 0!==e.hide_header&&e.hide_header,this.hidePastDays=void 0!==e.hide_past_days?e.hide_past_days:0,this.showEventToasts=!0===e.show_event_toasts,this.activeMatch=null,this.showPopup=!1}_t(e,t){return pe(e,de(this.hass,this._config),t)}connectedCallback(){super.connectedCallback(),this._subscribeToEvents()}disconnectedCallback(){super.disconnectedCallback(),this._eventSubscriptions&&Array.isArray(this._eventSubscriptions)&&(this._eventSubscriptions.forEach((e=>{"function"==typeof e&&e()})),this._eventSubscriptions=[])}_subscribeToEvents(){this.hass&&this.hass.connection&&(this._eventSubscriptions=[],["calcio_live_goal","calcio_live_yellow_card","calcio_live_red_card"].forEach((e=>{this.hass.connection.subscribeEvents(this._handleCalcioLiveEvent.bind(this),e).then((e=>{"function"==typeof e&&this._eventSubscriptions.push(e)}))})))}_eventBelongsToThisCard(e){if(!this.hass||!this._config)return!1;const t=this.hass.states[this._config.entity];return!!t&&(t.attributes.matches||[]).some((t=>t.home_team===e.home_team&&t.away_team===e.away_team))}_handleCalcioLiveEvent(e){const t=e.event_type,i=e.data;if(!this._eventBelongsToThisCard(i))return;const a=`${i.home_team}_${i.away_team}`;this._recentEventMatches.set(a,"calcio_live_goal"===t?"goal":"card"),this.requestUpdate(),setTimeout((()=>{this._recentEventMatches.delete(a),this.requestUpdate()}),5e3),this.showEventToasts&&this._showEventToast(t,i)}_showEventToast(e,t){let i="",a="goal";"calcio_live_goal"===e?(i=`<strong>${this._t("event.goal").toUpperCase()}!</strong> ${t.player} · ${t.home_team} ${t.home_score} - ${t.away_score} ${t.away_team}`,a="goal"):"calcio_live_yellow_card"===e?(i=`🟨 <strong>${this._t("event.yellow_card")}</strong> · ${t.player}${t.minute?` (${t.minute}')`:""}`,a="yellow"):"calcio_live_red_card"===e&&(i=`🟥 <strong>${this._t("event.red_card")}</strong> · ${t.player}${t.minute?` (${t.minute}')`:""}`,a="red"),i&&(this._toastMessage=i,this._toastVariant=a,this._toastVisible=!0,this._toastTimer&&clearTimeout(this._toastTimer),this._toastTimer=setTimeout((()=>{this._toastVisible=!1,this.requestUpdate()}),4e3),this.requestUpdate())}getCardSize(){return 4}static getConfigElement(){return document.createElement("calcio-live-matches-editor")}static getStubConfig(){return{entity:"sensor.calcio_live",max_events_visible:5,max_events_total:50,hide_past_days:0,show_finished_matches:!0,hide_header:!1,show_event_toasts:!1}}_parseMatchDate(e){if(!e)return null;const[t,i]=e.split(" "),[a,n,s]=t.split("/").map(Number),[o,r]=i?i.split(":").map(Number):[0,0];return new Date(s,n-1,a,o,r)}_matchTimeLabel(e){if("in"===e.state)return e.clock&&"N/A"!==e.clock?e.clock:"LIVE";if("post"===e.state)return"FT";if(e.date){const t=e.date.split(" ");return t[1]||t[0]}return"—"}_matchScore(e,t){return"pre"===e.state?"-":e["home"===t?"home_score":"away_score"]??"-"}_isWinner(e,t){if("pre"===e.state)return null;const i=parseInt(e.home_score),a=parseInt(e.away_score);return isNaN(i)||isNaN(a)||i===a?null:"home"===t?i>a:a>i}_dayKey(e){if(!e.date)return"—";const t=this._parseMatchDate(e.date);if(!t)return e.date.split(" ")[0]||"—";const i=new Date;i.setHours(0,0,0,0);const a=new Date(t);a.setHours(0,0,0,0);const n=Math.round((a-i)/864e5);if(0===n)return"⚡ "+this._t("time.today");if(-1===n)return this._t("time.yesterday");if(1===n)return this._t("time.tomorrow");const s=this._t("month."+(a.getMonth()+1));return`${a.getDate()} ${s}`}showDetails(e){this.activeMatch=e,this.showPopup=!0}closePopup(){this.showPopup=!1}separateEvents(e){const t=[],i=[],a=[];return e.forEach((e=>{const n=String(e||"");n.includes("Goal")||n.includes("Penalty - Scored")?t.push(this.formatMatchEvent(n)):n.includes("Yellow Card")?i.push(this.formatMatchEvent(n)):n.includes("Red Card")&&a.push(this.formatMatchEvent(n))})),{goals:t,yellowCards:i,redCards:a}}formatMatchEvent(e){const t=e=>this._t(e);let i=String(e||"").trim();i=i.replace(/^Goal\s*-\s*/i,"").replace(/^Yellow Card\s*-\s*/i,"").replace(/^Red Card\s*-\s*/i,"").replace(/^Penalty - Scored\s*-\s*/i,`${t("event.penalty")} - `).replace(/^Header\s*-\s*/i,`${t("event.header")} - `).replace(/^Shot\s*-\s*/i,`${t("event.shot")} - `).replace(/^Free-kick\s*-\s*/i,`${t("event.free_kick")} - `).replace(/^Penalty\s*-\s*/i,`${t("event.penalty")} - `),i=i.replace(/^([^:]+):\s*/,"$1 ");const a=[t("event.header"),t("event.shot"),t("event.penalty"),t("event.free_kick")].map((e=>e.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")));return i=i.replace(new RegExp(`^(${a.join("|")})\\s*-\\s*(.+)$`,"i"),((e,t,i)=>`${i} (${t.toLowerCase()})`)),i=i.replace(/\bN\/A\b/g,t("generic.unknown")),i}render(){if(!this.hass||!this._config)return q``;const e=this._config.entity,t=this.hass.states[e];if(!t)return q`<ha-card class="empty">${this._t("generic.unknown_entity")}: ${e}</ha-card>`;let i=t.attributes.matches||[];const a=t.attributes.league_info?t.attributes.league_info[0]:null,n=t.attributes.team_logo||null;if(this.showFinishedMatches||(i=i.filter((e=>"Full Time"!==e.status))),i=i.slice().sort(((e,t)=>new Date(e.date)-new Date(t.date))),this.hidePastDays>0){const e=new Date;e.setDate(e.getDate()-this.hidePastDays),i=i.filter((t=>{const i=this._parseMatchDate(t.date);return!i||i>=e}))}const s=i.slice(0,this.maxEventsTotal);if(0===s.length)return q`<ha-card class="empty">${this._t("generic.no_match")}</ha-card>`;const o=s.filter((e=>"in"===e.state)).length,r=[];let l=null;s.forEach((e=>{const t=this._dayKey(e);t!==l?(l=t,r.push({key:t,matches:[e]})):r[r.length-1].matches.push(e)}));const c=Math.max(80*this.maxEventsVisible,240);return q`
       <ha-card>
         <div class="hero-bg"></div>
 
@@ -648,7 +698,7 @@
           `))}
         </div>
       </ha-card>
-    `}updated(e){(e.has("showPopup")||e.has("activeMatch"))&&this.renderPopupToBody()}renderPopupToBody(){if(!this.showPopup||!this.activeMatch){const e=document.getElementById("calcio-live-matches-popup");return void(e&&e.remove())}let e=document.getElementById("calcio-live-matches-popup");e||(e=document.createElement("div"),e.id="calcio-live-matches-popup",e.style.cssText="\n        position: fixed; inset: 0;\n        display: flex; justify-content: center; align-items: center;\n        z-index: 999999;\n        background: rgba(0,0,0,0.7);\n        backdrop-filter: blur(8px);\n        overflow: auto;\n      ",e.addEventListener("click",(t=>{t.target===e&&(this.showPopup=!1)})),document.body.appendChild(e));const t=this.activeMatch,i=e=>this._t(e);e.innerHTML=`\n      <div style="background:#1a1f2e; padding:24px; border-radius:20px; width:90%; max-width:560px; max-height:85vh; overflow-y:auto; border:1px solid rgba(255,255,255,0.08); box-shadow:0 24px 64px rgba(0,0,0,0.6); margin:auto; color:#f8fafc; font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;">\n        <h3 style="margin:0 0 20px; font-size:22px; font-weight:800; letter-spacing:-0.02em; background:linear-gradient(135deg,#6366f1,#ec4899); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">${i("popup.match_details")}</h3>\n        <div style="display:flex; justify-content:center; align-items:center; gap:18px; margin-bottom:24px;">\n          <img style="width:64px; height:64px; object-fit:contain;" src="${t.home_logo}" alt="${t.home_team}" />\n          <div style="text-align:center;">\n            <div style="font-size:38px; font-weight:900; letter-spacing:-0.04em; line-height:1;">${t.home_score??"-"} <span style="opacity:0.4;">-</span> ${t.away_score??"-"}</div>\n            <div style="font-size:12px; color:#94a3b8; margin-top:8px; font-weight:600;">${t.clock??t.status??""}</div>\n          </div>\n          <img style="width:64px; height:64px; object-fit:contain;" src="${t.away_logo}" alt="${t.away_team}" />\n        </div>\n        <p style="text-align:center; color:#cbd5e1; font-size:14px; margin:0 0 20px;"><strong>${t.home_team}</strong> vs <strong>${t.away_team}</strong></p>\n        <div id="matches-events-container"></div>\n        <button id="popup-close-btn" style="background:linear-gradient(135deg,#6366f1,#ec4899); color:white; padding:12px 20px; border:none; border-radius:12px; cursor:pointer; margin-top:20px; font-weight:800; width:100%; font-size:14px;">${i("generic.close")}</button>\n      </div>\n    `;const a=e.querySelector("#popup-close-btn");a&&a.addEventListener("click",(()=>{this.showPopup=!1}));const n=e.querySelector("#matches-events-container"),{goals:s,yellowCards:o,redCards:r}=this.separateEvents(t.match_details||[]),l=(e,t,i)=>t.length?`<div style="margin-bottom:14px; padding:14px; background:${i.bg}; border-left:3px solid ${i.border}; border-radius:10px;">\n        <h5 style="margin:0 0 8px; font-size:12px; text-transform:uppercase; letter-spacing:0.08em; color:${i.border}; font-weight:800;">${e}</h5>\n        <ul style="margin:0; padding-left:18px; font-size:13px; color:#cbd5e1;">${t.map((e=>`<li style="margin:4px 0;">${e}</li>`)).join("")}</ul>\n      </div>`:"";let c="";c+=l(i("event.goal"),s,{bg:"rgba(99,102,241,0.1)",border:"#6366f1"}),c+=l(i("event.yellow_card"),o,{bg:"rgba(245,158,11,0.1)",border:"#f59e0b"}),c+=l(i("event.red_card"),r,{bg:"rgba(239,68,68,0.1)",border:"#ef4444"}),n.innerHTML=c||`<p style="text-align:center; color:#94a3b8; font-size:13px;">${i("popup.no_events")}</p>`}static get styles(){return s`
+    `}updated(e){(e.has("showPopup")||e.has("activeMatch"))&&this.renderPopupToBody()}renderPopupToBody(){if(!this.showPopup||!this.activeMatch){const e=document.getElementById("calcio-live-matches-popup");return void(e&&e.remove())}let e=document.getElementById("calcio-live-matches-popup");e||(e=document.createElement("div"),e.id="calcio-live-matches-popup",e.style.cssText="\n        position: fixed; inset: 0;\n        display: flex; justify-content: center; align-items: center;\n        z-index: 999999;\n        background: rgba(0,0,0,0.7);\n        backdrop-filter: blur(8px);\n        overflow: auto;\n      ",e.addEventListener("click",(t=>{t.target===e&&(this.showPopup=!1)})),document.body.appendChild(e));const t=this.activeMatch,i=e=>this._t(e);e.innerHTML=`\n      <div style="background:#1a1f2e; padding:24px; border-radius:20px; width:90%; max-width:560px; max-height:85vh; overflow-y:auto; border:1px solid rgba(255,255,255,0.08); box-shadow:0 24px 64px rgba(0,0,0,0.6); margin:auto; color:#f8fafc; font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;">\n        <h3 style="margin:0 0 20px; font-size:22px; font-weight:800; letter-spacing:-0.02em; background:linear-gradient(135deg,#6366f1,#ec4899); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">${i("popup.match_details")}</h3>\n        <div style="display:flex; justify-content:center; align-items:center; gap:18px; margin-bottom:24px;">\n          <img style="width:64px; height:64px; object-fit:contain;" src="${t.home_logo}" alt="${t.home_team}" />\n          <div style="text-align:center;">\n            <div style="font-size:38px; font-weight:900; letter-spacing:-0.04em; line-height:1;">${t.home_score??"-"} <span style="opacity:0.4;">-</span> ${t.away_score??"-"}</div>\n            <div style="font-size:12px; color:#94a3b8; margin-top:8px; font-weight:600;">${t.clock??t.status??""}</div>\n          </div>\n          <img style="width:64px; height:64px; object-fit:contain;" src="${t.away_logo}" alt="${t.away_team}" />\n        </div>\n        <p style="text-align:center; color:#cbd5e1; font-size:14px; margin:0 0 20px;"><strong>${t.home_team}</strong> vs <strong>${t.away_team}</strong></p>\n        <div id="matches-events-container"></div>\n        <button id="popup-close-btn" style="background:linear-gradient(135deg,#6366f1,#ec4899); color:white; padding:12px 20px; border:none; border-radius:12px; cursor:pointer; margin-top:20px; font-weight:800; width:100%; font-size:14px;">${i("generic.close")}</button>\n      </div>\n    `;const a=e.querySelector("#popup-close-btn");a&&a.addEventListener("click",(()=>{this.showPopup=!1}));const n=e.querySelector("#matches-events-container"),{goals:s,yellowCards:o,redCards:r}=this.separateEvents(t.match_details||[]),l=(e,t,i)=>t.length?`<div style="margin-bottom:14px; padding:14px; background:${i.bg}; border-left:3px solid ${i.border}; border-radius:10px;">\n        <h5 style="margin:0 0 8px; font-size:12px; text-transform:uppercase; letter-spacing:0.08em; color:${i.border}; font-weight:800;">${e}</h5>\n        <ul style="margin:0; padding-left:18px; font-size:13px; color:#cbd5e1;">${t.map((e=>`<li style="margin:4px 0;">${e}</li>`)).join("")}</ul>\n      </div>`:"";let c="";c+=l(i("event.goal"),s,{bg:"rgba(99,102,241,0.1)",border:"#6366f1"}),c+=l(i("event.yellow_card"),o,{bg:"rgba(245,158,11,0.1)",border:"#f59e0b"}),c+=l(i("event.red_card"),r,{bg:"rgba(239,68,68,0.1)",border:"#ef4444"}),n.innerHTML=c||`<p style="text-align:center; color:#94a3b8; font-size:13px;">${i("popup.no_events")}</p>`}static get styles(){return[he,s`
       :host {
         --cl-accent: #6366f1;
         --cl-accent-2: #ec4899;
@@ -667,11 +717,13 @@
         border-radius: 20px;
         padding: 0;
         box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+        background: var(--cl-bg);
+        color: var(--cl-text);
       }
       ha-card.empty {
         padding: 24px;
         text-align: center;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
       }
       .hero-bg {
         position: absolute;
@@ -710,14 +762,14 @@
         font-size: 16px;
         font-weight: 800;
         letter-spacing: -0.02em;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
       .league-dates {
         font-size: 11px;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         margin-top: 2px;
         font-weight: 500;
       }
@@ -743,7 +795,7 @@
         font-size: 10px;
         text-transform: uppercase;
         letter-spacing: 0.15em;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         font-weight: 800;
         display: flex; align-items: center; gap: 8px;
       }
@@ -812,7 +864,7 @@
 
       .match-time {
         font-size: 11px;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         font-weight: 700;
         font-variant-numeric: tabular-nums;
         min-width: 44px;
@@ -843,23 +895,23 @@
         font-weight: 600;
         flex: 1;
         letter-spacing: -0.01em;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
       .match-team .name.winner { font-weight: 800; }
-      .match-team .name.loser { color: var(--secondary-text-color); }
+      .match-team .name.loser { color: var(--cl-text-2); }
       .match-team .score {
         font-size: 14px;
         font-weight: 800;
         font-variant-numeric: tabular-nums;
         min-width: 22px;
         text-align: right;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
       }
       .match-team .score.winner { color: var(--cl-accent); }
-      .match-team .score.loser { color: var(--secondary-text-color); opacity: 0.6; }
+      .match-team .score.loser { color: var(--cl-text-2); opacity: 0.6; }
       .row-extras {
         display: flex;
         gap: 6px;
@@ -881,7 +933,7 @@
       }
       .tv-chip svg { width: 10px; height: 10px; }
       .match-status-icon {
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         font-size: 18px;
         opacity: 0.5;
         transition: all 0.2s;
@@ -898,7 +950,7 @@
         top: 12px;
         left: 50%;
         transform: translateX(-50%);
-        background: #0b0f1a;
+        background: var(--cl-toast-bg);
         color: #ffffff;
         padding: 10px 18px;
         border-radius: 14px;
@@ -935,7 +987,7 @@
         90%  { opacity: 1; transform: translate(-50%, 0) scale(1); }
         100% { opacity: 0; transform: translate(-50%, -10px) scale(0.95); }
       }
-    `}}),window.customCards=window.customCards||[],window.customCards.push({type:"calcio-live-matches",name:"Calcio Live Matches Card",description:"Mostra le partite della settimana o del tuo Team"}),customElements.define("calcio-live-matches-editor",class extends oe{static get properties(){return{_config:{type:Object},hass:{type:Object},entities:{type:Array}}}constructor(){super(),this.entities=[]}static get styles(){return s`
+    `]}}),window.customCards=window.customCards||[],window.customCards.push({type:"calcio-live-matches",name:"Calcio Live Matches Card",description:"Mostra le partite della settimana o del tuo Team"}),customElements.define("calcio-live-matches-editor",class extends oe{static get properties(){return{_config:{type:Object},hass:{type:Object},entities:{type:Array}}}constructor(){super(),this.entities=[]}static get styles(){return s`
       .card-config {
         display: flex;
         flex-direction: column;
@@ -1063,6 +1115,13 @@
           <div class="hint">Per funzionare, "Show Finished Matches" deve essere attivo.</div>
         </div>
         <div>
+          <label class="field-label">Skin</label>
+          <select data-config-value="skin" @change=${this._selectChanged}>
+            <option value="dark" ?selected=${"dark"===(this._config.skin||"dark")}>Dark</option>
+            <option value="light" ?selected=${"light"===this._config.skin}>Light</option>
+          </select>
+        </div>
+        <div>
           <label class="field-label">Language · Lingua</label>
           <select data-config-value="language" @change=${this._selectChanged}>
             <option value="" ?selected=${!this._config.language}>Auto (HA locale)</option>
@@ -1074,7 +1133,7 @@
           </select>
         </div>
       </div>
-    `}}),customElements.define("calcio-live-team",class extends oe{static get properties(){return{hass:{},_config:{},showPopup:{type:Boolean},activeMatch:{type:Object},_eventSubscriptions:{type:Array},_toastMessage:{type:String},_toastVisible:{type:Boolean},_toastVariant:{type:String}}}setConfig(e){if(!e.entity)throw new Error("Entity required");this._config=e,this.showPopup=!1,this.activeMatch=null,this.showEventToasts=!0===e.show_event_toasts,this._toastMessage="",this._toastVisible=!1,this._toastVariant="goal",this._toastTimer=null}_t(e,t){return pe(e,de(this.hass,this._config),t)}_translatePhase(e){return e?{"regular-season":this._t("phase.regular_season"),"group stage":this._t("phase.group_stage"),playoffs:this._t("phase.playoffs")}[String(e).toLowerCase()]||e:""}_shouldShowPhase(e){return!!e&&"regular-season"!==String(e).toLowerCase()}connectedCallback(){super.connectedCallback(),this._subscribeToEvents()}disconnectedCallback(){super.disconnectedCallback(),this._eventSubscriptions&&Array.isArray(this._eventSubscriptions)&&(this._eventSubscriptions.forEach((e=>{"function"==typeof e&&e()})),this._eventSubscriptions=[])}_subscribeToEvents(){this.hass&&this.hass.connection&&(this._eventSubscriptions=[],["calcio_live_goal","calcio_live_yellow_card","calcio_live_red_card"].forEach((e=>{this.hass.connection.subscribeEvents(this._handleCalcioLiveEvent.bind(this),e).then((e=>{"function"==typeof e&&this._eventSubscriptions.push(e)}))})))}_eventBelongsToThisCard(e){if(!this.hass||!this._config)return!1;const t=this.hass.states[this._config.entity];if(!t)return!1;const i=t.attributes.matches||[];if(0===i.length)return!1;const a=i[0];return a.home_team===e.home_team&&a.away_team===e.away_team}_handleCalcioLiveEvent(e){const t=e.event_type,i=e.data;if(this._eventBelongsToThisCard(i)&&this.showEventToasts)if("calcio_live_goal"===t){const e=i.team===i.home_team?"home":"away";requestAnimationFrame((()=>this._triggerGoalCelebration(e,i)))}else this._showEventToast(t,i)}_showEventToast(e,t){let i="",a="goal";"calcio_live_goal"===e?(i=`<strong>${this._t("event.goal").toUpperCase()}!</strong> ${t.player} · ${t.home_team} ${t.home_score} - ${t.away_score} ${t.away_team}`,a="goal"):"calcio_live_yellow_card"===e?(i=`🟨 <strong>${this._t("event.yellow_card")}</strong> · ${t.player}${t.minute?` (${t.minute}')`:""}`,a="yellow"):"calcio_live_red_card"===e&&(i=`🟥 <strong>${this._t("event.red_card")}</strong> · ${t.player}${t.minute?` (${t.minute}')`:""}`,a="red"),i&&(this._toastMessage=i,this._toastVariant=a,this._toastVisible=!0,this._toastTimer&&clearTimeout(this._toastTimer),this._toastTimer=setTimeout((()=>{this._toastVisible=!1,this.requestUpdate()}),4e3),this.requestUpdate())}_triggerGoalCelebration(e,t){const i=this.shadowRoot&&this.shadowRoot.querySelector("ha-card");if(!i)return;i.querySelectorAll(".confetti, .goal-banner, .goal-flash-overlay").forEach((e=>e.remove())),i.classList.remove("goal-flash"),i.offsetWidth,i.classList.add("goal-flash"),setTimeout((()=>i.classList.remove("goal-flash")),1700);const a=document.createElement("div");a.className="goal-flash-overlay",i.appendChild(a),setTimeout((()=>a.remove()),1e3);const n=document.createElement("div");n.className="goal-banner",n.innerHTML='<div class="goal-banner-text">GOAL!</div>',i.appendChild(n),setTimeout((()=>n.remove()),1700);const s=i.querySelector(".score-numbers");s&&(s.classList.remove("goal-scored"),s.offsetWidth,s.classList.add("goal-scored"),setTimeout((()=>s.classList.remove("goal-scored")),1300));const o=i.querySelectorAll(".team-side .team-logo-big"),r="away"===e?o[1]:o[0];r&&(r.classList.remove("scorer-bounce"),r.offsetWidth,r.classList.add("scorer-bounce"),setTimeout((()=>r.classList.remove("scorer-bounce")),1300)),navigator.vibrate&&navigator.vibrate([180,80,180,80,280]),setTimeout((()=>this._showEventToast("calcio_live_goal",t)),600);const l=["#ec4899","#6366f1","#06b6d4","#fbbf24","#10b981","#ef4444"],c=["⚽","🎉","✨","🔥","⭐"];for(let e=0;e<36;e++){const e=document.createElement("div");e.className="confetti",Math.random()>.55?(e.textContent=c[Math.floor(Math.random()*c.length)],e.style.fontSize=14+10*Math.random()+"px",e.style.background="transparent"):(e.style.background=l[Math.floor(Math.random()*l.length)],e.style.borderRadius=Math.random()>.5?"50%":"2px");const t=380*(Math.random()-.5)+"px",a=240*Math.random()+100+"px";e.style.setProperty("--dx",t),e.style.setProperty("--dy",a),e.style.animationDelay=.3*Math.random()+"s",i.appendChild(e),setTimeout((()=>e.remove()),2e3)}}getCardSize(){return 4}static getConfigElement(){return document.createElement("calcio-live-team-editor")}static getStubConfig(){return{entity:"sensor.calcio_live",show_event_toasts:!1}}showDetails(e){this.activeMatch=e,this.showPopup=!0}closePopup(){this.showPopup=!1}separateEvents(e){const t=[],i=[],a=[];return e.forEach((e=>{const n=String(e||"");n.includes("Goal")||n.includes("Penalty - Scored")?t.push(this.formatMatchEvent(n)):n.includes("Yellow Card")?i.push(this.formatMatchEvent(n)):n.includes("Red Card")&&a.push(this.formatMatchEvent(n))})),{goals:t,yellowCards:i,redCards:a}}formatMatchEvent(e){const t=e=>this._t(e);let i=String(e||"").trim();i=i.replace(/^Goal\s*-\s*/i,"").replace(/^Yellow Card\s*-\s*/i,"").replace(/^Red Card\s*-\s*/i,"").replace(/^Penalty - Scored\s*-\s*/i,`${t("event.penalty")} - `).replace(/^Header\s*-\s*/i,`${t("event.header")} - `).replace(/^Shot\s*-\s*/i,`${t("event.shot")} - `).replace(/^Free-kick\s*-\s*/i,`${t("event.free_kick")} - `).replace(/^Penalty\s*-\s*/i,`${t("event.penalty")} - `),i=i.replace(/^([^:]+):\s*/,"$1 ");const a=[t("event.header"),t("event.shot"),t("event.penalty"),t("event.free_kick")].map((e=>e.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")));return i=i.replace(new RegExp(`^(${a.join("|")})\\s*-\\s*(.+)$`,"i"),((e,t,i)=>`${i} (${t.toLowerCase()})`)),i=i.replace(/\bN\/A\b/g,t("generic.unknown")),i}_renderStatusBadge(e){const t=e.state;return"in"===t?q`<span class="status-badge live"><span class="dot"></span>${this._t("status.live")}</span>`:"post"===t?q`<span class="status-badge finished">${this._t("status.finished")}</span>`:q`<span class="status-badge scheduled">${e.date||this._t("status.scheduled")}</span>`}_renderClock(e){const t=e.state;if("in"===t){const t=e.status_detail&&"N/A"!==e.status_detail?e.status_detail:"",i=(e.clock&&"N/A"!==e.clock?e.clock:"")||t||e.status||"";return q`<div class="clock"><span class="dot"></span>${i}</div>`}return"post"===t?q`<div class="clock finished">${this._t("status.full_time")}</div>`:q`<div class="clock upcoming">${e.date||""}</div>`}_renderRecord(e){if(!e||"N/A"===e)return"";const t=String(e).split("-");return 3===t.length?q`<div class="record">
+    `}}),customElements.define("calcio-live-team",class extends oe{static get properties(){return{hass:{},_config:{},showPopup:{type:Boolean},activeMatch:{type:Object},_eventSubscriptions:{type:Array},_toastMessage:{type:String},_toastVisible:{type:Boolean},_toastVariant:{type:String}}}setConfig(e){if(!e.entity)throw new Error("Entity required");this._config=e,ge(this,e),this.showPopup=!1,this.activeMatch=null,this.showEventToasts=!0===e.show_event_toasts,this._toastMessage="",this._toastVisible=!1,this._toastVariant="goal",this._toastTimer=null}_t(e,t){return pe(e,de(this.hass,this._config),t)}_translatePhase(e){return e?{"regular-season":this._t("phase.regular_season"),"group stage":this._t("phase.group_stage"),playoffs:this._t("phase.playoffs")}[String(e).toLowerCase()]||e:""}_shouldShowPhase(e){return!!e&&"regular-season"!==String(e).toLowerCase()}connectedCallback(){super.connectedCallback(),this._subscribeToEvents()}disconnectedCallback(){super.disconnectedCallback(),this._eventSubscriptions&&Array.isArray(this._eventSubscriptions)&&(this._eventSubscriptions.forEach((e=>{"function"==typeof e&&e()})),this._eventSubscriptions=[])}_subscribeToEvents(){this.hass&&this.hass.connection&&(this._eventSubscriptions=[],["calcio_live_goal","calcio_live_yellow_card","calcio_live_red_card"].forEach((e=>{this.hass.connection.subscribeEvents(this._handleCalcioLiveEvent.bind(this),e).then((e=>{"function"==typeof e&&this._eventSubscriptions.push(e)}))})))}_eventBelongsToThisCard(e){if(!this.hass||!this._config)return!1;const t=this.hass.states[this._config.entity];if(!t)return!1;const i=t.attributes.matches||[];if(0===i.length)return!1;const a=i[0];return a.home_team===e.home_team&&a.away_team===e.away_team}_handleCalcioLiveEvent(e){const t=e.event_type,i=e.data;if(this._eventBelongsToThisCard(i)&&this.showEventToasts)if("calcio_live_goal"===t){const e=i.team===i.home_team?"home":"away";requestAnimationFrame((()=>this._triggerGoalCelebration(e,i)))}else this._showEventToast(t,i)}_showEventToast(e,t){let i="",a="goal";"calcio_live_goal"===e?(i=`<strong>${this._t("event.goal").toUpperCase()}!</strong> ${t.player} · ${t.home_team} ${t.home_score} - ${t.away_score} ${t.away_team}`,a="goal"):"calcio_live_yellow_card"===e?(i=`🟨 <strong>${this._t("event.yellow_card")}</strong> · ${t.player}${t.minute?` (${t.minute}')`:""}`,a="yellow"):"calcio_live_red_card"===e&&(i=`🟥 <strong>${this._t("event.red_card")}</strong> · ${t.player}${t.minute?` (${t.minute}')`:""}`,a="red"),i&&(this._toastMessage=i,this._toastVariant=a,this._toastVisible=!0,this._toastTimer&&clearTimeout(this._toastTimer),this._toastTimer=setTimeout((()=>{this._toastVisible=!1,this.requestUpdate()}),4e3),this.requestUpdate())}_triggerGoalCelebration(e,t){const i=this.shadowRoot&&this.shadowRoot.querySelector("ha-card");if(!i)return;i.querySelectorAll(".confetti, .goal-banner, .goal-flash-overlay").forEach((e=>e.remove())),i.classList.remove("goal-flash"),i.offsetWidth,i.classList.add("goal-flash"),setTimeout((()=>i.classList.remove("goal-flash")),1700);const a=document.createElement("div");a.className="goal-flash-overlay",i.appendChild(a),setTimeout((()=>a.remove()),1e3);const n=document.createElement("div");n.className="goal-banner",n.innerHTML='<div class="goal-banner-text">GOAL!</div>',i.appendChild(n),setTimeout((()=>n.remove()),1700);const s=i.querySelector(".score-numbers");s&&(s.classList.remove("goal-scored"),s.offsetWidth,s.classList.add("goal-scored"),setTimeout((()=>s.classList.remove("goal-scored")),1300));const o=i.querySelectorAll(".team-side .team-logo-big"),r="away"===e?o[1]:o[0];r&&(r.classList.remove("scorer-bounce"),r.offsetWidth,r.classList.add("scorer-bounce"),setTimeout((()=>r.classList.remove("scorer-bounce")),1300)),navigator.vibrate&&navigator.vibrate([180,80,180,80,280]),setTimeout((()=>this._showEventToast("calcio_live_goal",t)),600);const l=["#ec4899","#6366f1","#06b6d4","#fbbf24","#10b981","#ef4444"],c=["⚽","🎉","✨","🔥","⭐"];for(let e=0;e<36;e++){const e=document.createElement("div");e.className="confetti",Math.random()>.55?(e.textContent=c[Math.floor(Math.random()*c.length)],e.style.fontSize=14+10*Math.random()+"px",e.style.background="transparent"):(e.style.background=l[Math.floor(Math.random()*l.length)],e.style.borderRadius=Math.random()>.5?"50%":"2px");const t=380*(Math.random()-.5)+"px",a=240*Math.random()+100+"px";e.style.setProperty("--dx",t),e.style.setProperty("--dy",a),e.style.animationDelay=.3*Math.random()+"s",i.appendChild(e),setTimeout((()=>e.remove()),2e3)}}getCardSize(){return 4}static getConfigElement(){return document.createElement("calcio-live-team-editor")}static getStubConfig(){return{entity:"sensor.calcio_live",show_event_toasts:!1}}showDetails(e){this.activeMatch=e,this.showPopup=!0}closePopup(){this.showPopup=!1}separateEvents(e){const t=[],i=[],a=[];return e.forEach((e=>{const n=String(e||"");n.includes("Goal")||n.includes("Penalty - Scored")?t.push(this.formatMatchEvent(n)):n.includes("Yellow Card")?i.push(this.formatMatchEvent(n)):n.includes("Red Card")&&a.push(this.formatMatchEvent(n))})),{goals:t,yellowCards:i,redCards:a}}formatMatchEvent(e){const t=e=>this._t(e);let i=String(e||"").trim();i=i.replace(/^Goal\s*-\s*/i,"").replace(/^Yellow Card\s*-\s*/i,"").replace(/^Red Card\s*-\s*/i,"").replace(/^Penalty - Scored\s*-\s*/i,`${t("event.penalty")} - `).replace(/^Header\s*-\s*/i,`${t("event.header")} - `).replace(/^Shot\s*-\s*/i,`${t("event.shot")} - `).replace(/^Free-kick\s*-\s*/i,`${t("event.free_kick")} - `).replace(/^Penalty\s*-\s*/i,`${t("event.penalty")} - `),i=i.replace(/^([^:]+):\s*/,"$1 ");const a=[t("event.header"),t("event.shot"),t("event.penalty"),t("event.free_kick")].map((e=>e.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")));return i=i.replace(new RegExp(`^(${a.join("|")})\\s*-\\s*(.+)$`,"i"),((e,t,i)=>`${i} (${t.toLowerCase()})`)),i=i.replace(/\bN\/A\b/g,t("generic.unknown")),i}_renderStatusBadge(e){const t=e.state;return"in"===t?q`<span class="status-badge live"><span class="dot"></span>${this._t("status.live")}</span>`:"post"===t?q`<span class="status-badge finished">${this._t("status.finished")}</span>`:q`<span class="status-badge scheduled">${e.date||this._t("status.scheduled")}</span>`}_renderClock(e){const t=e.state;if("in"===t){const t=e.status_detail&&"N/A"!==e.status_detail?e.status_detail:"",i=(e.clock&&"N/A"!==e.clock?e.clock:"")||t||e.status||"";return q`<div class="clock"><span class="dot"></span>${i}</div>`}return"post"===t?q`<div class="clock finished">${this._t("status.full_time")}</div>`:q`<div class="clock upcoming">${e.date||""}</div>`}_renderRecord(e){if(!e||"N/A"===e)return"";const t=String(e).split("-");return 3===t.length?q`<div class="record">
         <span class="rec rec-w">${t[0]}${this._t("form.W")}</span>
         <span class="rec rec-d">${t[1]}${this._t("form.D")}</span>
         <span class="rec rec-l">${t[2]}${this._t("form.L")}</span>
@@ -1185,7 +1244,7 @@
           </div>
         `:""}
       </ha-card>
-    `}updated(e){(e.has("showPopup")||e.has("activeMatch"))&&this.renderPopupToBody()}renderPopupToBody(){if(!this.showPopup||!this.activeMatch){const e=document.getElementById("calcio-live-team-popup");return void(e&&e.remove())}let e=document.getElementById("calcio-live-team-popup");e||(e=document.createElement("div"),e.id="calcio-live-team-popup",e.style.cssText="\n        position: fixed; inset: 0;\n        display: flex; justify-content: center; align-items: center;\n        z-index: 999999;\n        background: rgba(0,0,0,0.7);\n        backdrop-filter: blur(8px);\n        overflow: auto;\n      ",e.addEventListener("click",(t=>{t.target===e&&(this.showPopup=!1)})),document.body.appendChild(e));const t=this.activeMatch,i=e=>this._t(e);e.innerHTML=`\n      <div style="background: #1a1f2e; padding: 24px; border-radius: 20px; width: 90%; max-width: 560px; max-height: 85vh; overflow-y: auto; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 24px 64px rgba(0,0,0,0.6); margin: auto; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;">\n        <h3 style="margin:0 0 20px; font-size: 22px; font-weight: 800; letter-spacing:-0.02em; background: linear-gradient(135deg,#6366f1,#ec4899); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color: transparent;">${i("popup.match_details")}</h3>\n        <div style="display:flex; justify-content:center; align-items:center; gap:18px; margin-bottom:24px;">\n          <img style="width:72px; height:72px; object-fit:contain; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));" src="${t.home_logo}" alt="${t.home_team}" />\n          <div style="text-align:center;">\n            <div style="font-size:42px; font-weight:900; letter-spacing:-0.04em; line-height:1;">${t.home_score??"-"} <span style="opacity:0.4;">-</span> ${t.away_score??"-"}</div>\n            <div style="font-size:12px; color:#94a3b8; margin-top:8px; font-weight:600;">${t.clock??t.status??""}</div>\n          </div>\n          <img style="width:72px; height:72px; object-fit:contain; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));" src="${t.away_logo}" alt="${t.away_team}" />\n        </div>\n        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:18px;">\n          <div style="background:rgba(255,255,255,0.04); padding:14px; border-radius:14px;">\n            <div style="font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:#94a3b8; font-weight:700; margin-bottom:6px;">${t.home_team}</div>\n            <div style="font-size:13px;"><span style="color:#94a3b8;">${i("team.possession")}:</span> <strong>${t.home_statistics?.possessionPct??"—"}%</strong></div>\n            <div style="font-size:13px;"><span style="color:#94a3b8;">${i("team.shots")}:</span> <strong>${t.home_statistics?.totalShots??"—"}</strong></div>\n            <div style="font-size:13px;"><span style="color:#94a3b8;">${i("team.on_target")}:</span> <strong>${t.home_statistics?.shotsOnTarget??"—"}</strong></div>\n            <div style="font-size:13px;"><span style="color:#94a3b8;">${i("team.fouls")}:</span> <strong>${t.home_statistics?.foulsCommitted??"—"}</strong></div>\n          </div>\n          <div style="background:rgba(255,255,255,0.04); padding:14px; border-radius:14px;">\n            <div style="font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:#94a3b8; font-weight:700; margin-bottom:6px;">${t.away_team}</div>\n            <div style="font-size:13px;"><span style="color:#94a3b8;">${i("team.possession")}:</span> <strong>${t.away_statistics?.possessionPct??"—"}%</strong></div>\n            <div style="font-size:13px;"><span style="color:#94a3b8;">${i("team.shots")}:</span> <strong>${t.away_statistics?.totalShots??"—"}</strong></div>\n            <div style="font-size:13px;"><span style="color:#94a3b8;">${i("team.on_target")}:</span> <strong>${t.away_statistics?.shotsOnTarget??"—"}</strong></div>\n            <div style="font-size:13px;"><span style="color:#94a3b8;">${i("team.fouls")}:</span> <strong>${t.away_statistics?.foulsCommitted??"—"}</strong></div>\n          </div>\n        </div>\n        <div id="team-events-container"></div>\n        <button id="popup-close-btn" style="background:linear-gradient(135deg,#6366f1,#ec4899); color:white; padding:12px 20px; border:none; border-radius:12px; cursor:pointer; margin-top:20px; font-weight:800; width:100%; font-size:14px;">${i("generic.close")}</button>\n      </div>\n    `;const a=e.querySelector("#popup-close-btn");a&&a.addEventListener("click",(()=>{this.showPopup=!1}));const n=e.querySelector("#team-events-container"),{goals:s,yellowCards:o,redCards:r}=this.separateEvents(t.match_details||[]),l=(e,t,i)=>t.length?`<div style="margin-bottom:14px; padding:14px; background:${i.bg}; border-left:3px solid ${i.border}; border-radius:10px;">\n        <h5 style="margin:0 0 8px; font-size:12px; text-transform:uppercase; letter-spacing:0.08em; color:${i.border}; font-weight:800;">${e}</h5>\n        <ul style="margin:0; padding-left:18px; font-size:13px; color:#cbd5e1;">${t.map((e=>`<li style="margin:4px 0;">${e}</li>`)).join("")}</ul>\n      </div>`:"";let c="";c+=l(i("event.goal"),s,{bg:"rgba(99,102,241,0.1)",border:"#6366f1"}),c+=l(i("event.yellow_card"),o,{bg:"rgba(245,158,11,0.1)",border:"#f59e0b"}),c+=l(i("event.red_card"),r,{bg:"rgba(239,68,68,0.1)",border:"#ef4444"});const d=t.lineup_home||[],p=t.lineup_away||[];if(d.length||p.length){const e=t.formation_home||"",a=t.formation_away||"",n=(e,t,i)=>{const a=(e||[]).filter((e=>e.starter));return a.length?`<div style="margin-bottom:8px;">\n          <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px;">\n            <span style="font-size:12px; font-weight:800; color:#fff;">${i}</span>\n            ${t?`<span style="font-size:10px; font-weight:700; color:#6366f1; letter-spacing:0.1em;">${t}</span>`:""}\n          </div>\n          <div style="font-size:12px; color:#cbd5e1; line-height:1.7;">\n            ${a.map((e=>`<span style="display:inline-block; padding:2px 8px; background:rgba(255,255,255,0.05); border-radius:6px; margin:2px;">${e.jersey?`<strong style="color:#fbbf24;">${e.jersey}</strong> `:""}${e.short_name||e.name}</span>`)).join("")}\n          </div>\n        </div>`:""};c+=`<div style="margin-bottom:14px; padding:14px; background:rgba(16,185,129,0.08); border-left:3px solid #10b981; border-radius:10px;">\n        <h5 style="margin:0 0 10px; font-size:12px; text-transform:uppercase; letter-spacing:0.08em; color:#10b981; font-weight:800;">${i("popup.lineups")}</h5>\n        ${n(d,e,t.home_team)}\n        ${n(p,a,t.away_team)}\n      </div>`}const h=t.key_events||[];if(h.length){const e=e=>{const t=(e.type||"").toLowerCase(),i=(e.type_text||"").toLowerCase();return"goal"===t||e.scoring_play?"⚽":i.includes("yellow")?"🟨":i.includes("red")?"🟥":"substitution"===t?"🔄":i.includes("halftime")?"⏸":i.includes("kickoff")?"▶":i.includes("end")?"🏁":"·"};c+=`<div style="margin-bottom:14px; padding:14px; background:rgba(251,191,36,0.08); border-left:3px solid #fbbf24; border-radius:10px;">\n        <h5 style="margin:0 0 10px; font-size:12px; text-transform:uppercase; letter-spacing:0.08em; color:#fbbf24; font-weight:800;">${i("popup.timeline")}</h5>\n        <ul style="margin:0; padding:0; list-style:none;">\n          ${h.map((t=>`<li style="display:grid; grid-template-columns:36px 24px 1fr; gap:8px; align-items:start; padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:12px; color:#cbd5e1;">\n            <span style="text-align:right; font-weight:700; color:#94a3b8; font-variant-numeric:tabular-nums;">${t.clock||""}</span>\n            <span style="text-align:center;">${e(t)}</span>\n            <span><strong style="color:#fff;">${(t.athletes||[]).filter(Boolean).join(", ")||t.type_text||""}</strong>${t.team?`<br><span style="color:#94a3b8; font-size:11px;">${t.team}</span>`:""}</span>\n          </li>`)).join("")}\n        </ul>\n      </div>`}const g=t.head_to_head||[];g.length&&(c+=`<div style="margin-bottom:14px; padding:14px; background:rgba(99,102,241,0.08); border-left:3px solid #6366f1; border-radius:10px;">\n        <h5 style="margin:0 0 10px; font-size:12px; text-transform:uppercase; letter-spacing:0.08em; color:#6366f1; font-weight:800;">${i("popup.h2h")} (${g.length})</h5>\n        <ul style="margin:0; padding:0; list-style:none;">\n          ${g.slice(0,8).map((e=>{const t=e.date?new Date(e.date).toLocaleDateString(de(this.hass,this._config)):"";return`<li style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:12px; color:#cbd5e1;">\n              <span>${e.home_team} <strong>${e.home_score??"-"}</strong> - <strong>${e.away_score??"-"}</strong> ${e.away_team}</span>\n              <span style="color:#94a3b8;">${t}</span>\n            </li>`})).join("")}\n        </ul>\n      </div>`),n.innerHTML=c||`<p style="text-align:center; color:#94a3b8; font-size:13px;">${i("popup.no_events")}</p>`}static get styles(){return s`
+    `}updated(e){(e.has("showPopup")||e.has("activeMatch"))&&this.renderPopupToBody()}renderPopupToBody(){if(!this.showPopup||!this.activeMatch){const e=document.getElementById("calcio-live-team-popup");return void(e&&e.remove())}let e=document.getElementById("calcio-live-team-popup");e||(e=document.createElement("div"),e.id="calcio-live-team-popup",e.style.cssText="\n        position: fixed; inset: 0;\n        display: flex; justify-content: center; align-items: center;\n        z-index: 999999;\n        background: rgba(0,0,0,0.7);\n        backdrop-filter: blur(8px);\n        overflow: auto;\n      ",e.addEventListener("click",(t=>{t.target===e&&(this.showPopup=!1)})),document.body.appendChild(e));const t=this.activeMatch,i=e=>this._t(e);e.innerHTML=`\n      <div style="background: #1a1f2e; padding: 24px; border-radius: 20px; width: 90%; max-width: 560px; max-height: 85vh; overflow-y: auto; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 24px 64px rgba(0,0,0,0.6); margin: auto; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;">\n        <h3 style="margin:0 0 20px; font-size: 22px; font-weight: 800; letter-spacing:-0.02em; background: linear-gradient(135deg,#6366f1,#ec4899); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color: transparent;">${i("popup.match_details")}</h3>\n        <div style="display:flex; justify-content:center; align-items:center; gap:18px; margin-bottom:24px;">\n          <img style="width:72px; height:72px; object-fit:contain; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));" src="${t.home_logo}" alt="${t.home_team}" />\n          <div style="text-align:center;">\n            <div style="font-size:42px; font-weight:900; letter-spacing:-0.04em; line-height:1;">${t.home_score??"-"} <span style="opacity:0.4;">-</span> ${t.away_score??"-"}</div>\n            <div style="font-size:12px; color:#94a3b8; margin-top:8px; font-weight:600;">${t.clock??t.status??""}</div>\n          </div>\n          <img style="width:72px; height:72px; object-fit:contain; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));" src="${t.away_logo}" alt="${t.away_team}" />\n        </div>\n        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:18px;">\n          <div style="background:rgba(255,255,255,0.04); padding:14px; border-radius:14px;">\n            <div style="font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:#94a3b8; font-weight:700; margin-bottom:6px;">${t.home_team}</div>\n            <div style="font-size:13px;"><span style="color:#94a3b8;">${i("team.possession")}:</span> <strong>${t.home_statistics?.possessionPct??"—"}%</strong></div>\n            <div style="font-size:13px;"><span style="color:#94a3b8;">${i("team.shots")}:</span> <strong>${t.home_statistics?.totalShots??"—"}</strong></div>\n            <div style="font-size:13px;"><span style="color:#94a3b8;">${i("team.on_target")}:</span> <strong>${t.home_statistics?.shotsOnTarget??"—"}</strong></div>\n            <div style="font-size:13px;"><span style="color:#94a3b8;">${i("team.fouls")}:</span> <strong>${t.home_statistics?.foulsCommitted??"—"}</strong></div>\n          </div>\n          <div style="background:rgba(255,255,255,0.04); padding:14px; border-radius:14px;">\n            <div style="font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:#94a3b8; font-weight:700; margin-bottom:6px;">${t.away_team}</div>\n            <div style="font-size:13px;"><span style="color:#94a3b8;">${i("team.possession")}:</span> <strong>${t.away_statistics?.possessionPct??"—"}%</strong></div>\n            <div style="font-size:13px;"><span style="color:#94a3b8;">${i("team.shots")}:</span> <strong>${t.away_statistics?.totalShots??"—"}</strong></div>\n            <div style="font-size:13px;"><span style="color:#94a3b8;">${i("team.on_target")}:</span> <strong>${t.away_statistics?.shotsOnTarget??"—"}</strong></div>\n            <div style="font-size:13px;"><span style="color:#94a3b8;">${i("team.fouls")}:</span> <strong>${t.away_statistics?.foulsCommitted??"—"}</strong></div>\n          </div>\n        </div>\n        <div id="team-events-container"></div>\n        <button id="popup-close-btn" style="background:linear-gradient(135deg,#6366f1,#ec4899); color:white; padding:12px 20px; border:none; border-radius:12px; cursor:pointer; margin-top:20px; font-weight:800; width:100%; font-size:14px;">${i("generic.close")}</button>\n      </div>\n    `;const a=e.querySelector("#popup-close-btn");a&&a.addEventListener("click",(()=>{this.showPopup=!1}));const n=e.querySelector("#team-events-container"),{goals:s,yellowCards:o,redCards:r}=this.separateEvents(t.match_details||[]),l=(e,t,i)=>t.length?`<div style="margin-bottom:14px; padding:14px; background:${i.bg}; border-left:3px solid ${i.border}; border-radius:10px;">\n        <h5 style="margin:0 0 8px; font-size:12px; text-transform:uppercase; letter-spacing:0.08em; color:${i.border}; font-weight:800;">${e}</h5>\n        <ul style="margin:0; padding-left:18px; font-size:13px; color:#cbd5e1;">${t.map((e=>`<li style="margin:4px 0;">${e}</li>`)).join("")}</ul>\n      </div>`:"";let c="";c+=l(i("event.goal"),s,{bg:"rgba(99,102,241,0.1)",border:"#6366f1"}),c+=l(i("event.yellow_card"),o,{bg:"rgba(245,158,11,0.1)",border:"#f59e0b"}),c+=l(i("event.red_card"),r,{bg:"rgba(239,68,68,0.1)",border:"#ef4444"});const d=t.lineup_home||[],p=t.lineup_away||[];if(d.length||p.length){const e=t.formation_home||"",a=t.formation_away||"",n=(e,t,i)=>{const a=(e||[]).filter((e=>e.starter));return a.length?`<div style="margin-bottom:8px;">\n          <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px;">\n            <span style="font-size:12px; font-weight:800; color:#fff;">${i}</span>\n            ${t?`<span style="font-size:10px; font-weight:700; color:#6366f1; letter-spacing:0.1em;">${t}</span>`:""}\n          </div>\n          <div style="font-size:12px; color:#cbd5e1; line-height:1.7;">\n            ${a.map((e=>`<span style="display:inline-block; padding:2px 8px; background:rgba(255,255,255,0.05); border-radius:6px; margin:2px;">${e.jersey?`<strong style="color:#fbbf24;">${e.jersey}</strong> `:""}${e.short_name||e.name}</span>`)).join("")}\n          </div>\n        </div>`:""};c+=`<div style="margin-bottom:14px; padding:14px; background:rgba(16,185,129,0.08); border-left:3px solid #10b981; border-radius:10px;">\n        <h5 style="margin:0 0 10px; font-size:12px; text-transform:uppercase; letter-spacing:0.08em; color:#10b981; font-weight:800;">${i("popup.lineups")}</h5>\n        ${n(d,e,t.home_team)}\n        ${n(p,a,t.away_team)}\n      </div>`}const h=t.key_events||[];if(h.length){const e=e=>{const t=(e.type||"").toLowerCase(),i=(e.type_text||"").toLowerCase();return"goal"===t||e.scoring_play?"⚽":i.includes("yellow")?"🟨":i.includes("red")?"🟥":"substitution"===t?"🔄":i.includes("halftime")?"⏸":i.includes("kickoff")?"▶":i.includes("end")?"🏁":"·"};c+=`<div style="margin-bottom:14px; padding:14px; background:rgba(251,191,36,0.08); border-left:3px solid #fbbf24; border-radius:10px;">\n        <h5 style="margin:0 0 10px; font-size:12px; text-transform:uppercase; letter-spacing:0.08em; color:#fbbf24; font-weight:800;">${i("popup.timeline")}</h5>\n        <ul style="margin:0; padding:0; list-style:none;">\n          ${h.map((t=>`<li style="display:grid; grid-template-columns:36px 24px 1fr; gap:8px; align-items:start; padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:12px; color:#cbd5e1;">\n            <span style="text-align:right; font-weight:700; color:#94a3b8; font-variant-numeric:tabular-nums;">${t.clock||""}</span>\n            <span style="text-align:center;">${e(t)}</span>\n            <span><strong style="color:#fff;">${(t.athletes||[]).filter(Boolean).join(", ")||t.type_text||""}</strong>${t.team?`<br><span style="color:#94a3b8; font-size:11px;">${t.team}</span>`:""}</span>\n          </li>`)).join("")}\n        </ul>\n      </div>`}const g=t.head_to_head||[];g.length&&(c+=`<div style="margin-bottom:14px; padding:14px; background:rgba(99,102,241,0.08); border-left:3px solid #6366f1; border-radius:10px;">\n        <h5 style="margin:0 0 10px; font-size:12px; text-transform:uppercase; letter-spacing:0.08em; color:#6366f1; font-weight:800;">${i("popup.h2h")} (${g.length})</h5>\n        <ul style="margin:0; padding:0; list-style:none;">\n          ${g.slice(0,8).map((e=>{const t=e.date?new Date(e.date).toLocaleDateString(de(this.hass,this._config)):"";return`<li style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:12px; color:#cbd5e1;">\n              <span>${e.home_team} <strong>${e.home_score??"-"}</strong> - <strong>${e.away_score??"-"}</strong> ${e.away_team}</span>\n              <span style="color:#94a3b8;">${t}</span>\n            </li>`})).join("")}\n        </ul>\n      </div>`),n.innerHTML=c||`<p style="text-align:center; color:#94a3b8; font-size:13px;">${i("popup.no_events")}</p>`}static get styles(){return[he,s`
       :host {
         --cl-accent: #6366f1;
         --cl-accent-2: #ec4899;
@@ -1205,11 +1264,13 @@
         border-radius: 20px;
         padding: 0;
         box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+        background: var(--cl-bg);
+        color: var(--cl-text);
       }
       ha-card.empty {
         padding: 24px;
         text-align: center;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
       }
 
       .bg-logos {
@@ -1280,7 +1341,7 @@
         gap: 10px;
         font-size: 12px;
         font-weight: 700;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
         letter-spacing: -0.01em;
         min-width: 0;
       }
@@ -1328,7 +1389,7 @@
       .status-badge.scheduled {
         background: var(--cl-card-2);
         border: 1px solid var(--cl-glass-border);
-        color: var(--primary-text-color);
+        color: var(--cl-text);
       }
       @keyframes badge-pulse {
         0%, 100% { box-shadow: 0 4px 16px var(--cl-live-glow); }
@@ -1385,7 +1446,7 @@
         line-height: 1.2;
         max-width: 110px;
         letter-spacing: -0.01em;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
       }
       .form-pills {
         display: flex; gap: 3px;
@@ -1419,7 +1480,7 @@
         border-radius: 10px;
         font-size: 10px;
         font-weight: 700;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         max-width: 150px;
       }
       .top-scorer .ts-label {
@@ -1442,7 +1503,7 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
         font-size: 11px;
         font-weight: 700;
       }
@@ -1482,7 +1543,7 @@
         letter-spacing: -0.04em;
         font-variant-numeric: tabular-nums;
         line-height: 0.95;
-        background: linear-gradient(180deg, var(--primary-text-color) 30%, var(--cl-accent));
+        background: linear-gradient(180deg, var(--cl-text) 30%, var(--cl-accent));
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -1497,7 +1558,7 @@
         font-size: 30px;
         font-weight: 800;
         letter-spacing: 0.08em;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         opacity: 0.6;
       }
       @keyframes score-pop {
@@ -1546,7 +1607,7 @@
         text-transform: uppercase;
         letter-spacing: 0.1em;
         font-size: 9px;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
       }
       .stat-bar-track {
         height: 6px;
@@ -1617,7 +1678,7 @@
       }
       .meta-item {
         display: flex; align-items: center; gap: 6px;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         font-size: 11px;
         font-weight: 600;
       }
@@ -1646,7 +1707,7 @@
         top: 12px;
         left: 50%;
         transform: translateX(-50%);
-        background: #0b0f1a;
+        background: var(--cl-toast-bg);
         color: #ffffff;
         padding: 10px 18px;
         border-radius: 14px;
@@ -1734,7 +1795,7 @@
         content: '';
         position: absolute;
         inset: 0;
-        background: radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 40%, transparent 70%);
+        background: radial-gradient(ellipse at center, var(--cl-overlay-strong) 0%, var(--cl-overlay-soft) 40%, transparent 70%);
         animation: banner-backdrop 1.6s ease-out forwards;
       }
       @keyframes banner-backdrop {
@@ -1797,7 +1858,7 @@
           opacity: 0;
         }
       }
-    `}}),window.customCards=window.customCards||[],window.customCards.push({type:"calcio-live-team",name:"Calcio Live team Card",description:"Mostra la prossima partita / partita in corso del tuo Team"}),customElements.define("calcio-live-team-editor",class extends oe{static get properties(){return{_config:{type:Object},hass:{type:Object},entities:{type:Array}}}constructor(){super(),this.entities=[]}static get styles(){return s`
+    `]}}),window.customCards=window.customCards||[],window.customCards.push({type:"calcio-live-team",name:"Calcio Live team Card",description:"Mostra la prossima partita / partita in corso del tuo Team"}),customElements.define("calcio-live-team-editor",class extends oe{static get properties(){return{_config:{type:Object},hass:{type:Object},entities:{type:Array}}}constructor(){super(),this.entities=[]}static get styles(){return s`
       .card-config {
         display: flex;
         flex-direction: column;
@@ -1864,6 +1925,13 @@
           ></ha-switch>
         </div>
         <div>
+          <label class="field-label">Skin</label>
+          <select data-config-value="skin" @change=${this._selectChanged}>
+            <option value="dark" ?selected=${"dark"===(this._config.skin||"dark")}>Dark</option>
+            <option value="light" ?selected=${"light"===this._config.skin}>Light</option>
+          </select>
+        </div>
+        <div>
           <label class="field-label">Language · Lingua</label>
           <select data-config-value="language" @change=${this._selectChanged}>
             <option value="" ?selected=${!this._config.language}>Auto (HA locale)</option>
@@ -1875,7 +1943,7 @@
           </select>
         </div>
       </div>
-    `}}),customElements.define("calcio-live-news",class extends oe{static get properties(){return{hass:{},_config:{}}}setConfig(e){if(!e.entity)throw new Error("Entity required");this._config=e,this.maxArticles=e.max_articles?e.max_articles:5,this.hideHeader=!0===e.hide_header,this.hideImages=!0===e.hide_images}_t(e,t){return pe(e,de(this.hass,this._config),t)}getCardSize(){return 4}static getConfigElement(){return document.createElement("calcio-live-news-editor")}static getStubConfig(){return{entity:"sensor.calciolive_news",max_articles:5,hide_header:!1,hide_images:!1}}_formatDate(e){if(!e)return"";try{const t=new Date(e),i=(new Date-t)/1e3;if(i<60)return this._t("time.now");if(i<3600)return this._t("time.n_min_ago",{n:Math.floor(i/60)});if(i<86400)return this._t("time.n_h_ago",{n:Math.floor(i/3600)});if(i<604800)return this._t("time.n_d_ago",{n:Math.floor(i/86400)});const a=this._t("month."+(t.getMonth()+1));return`${t.getDate()} ${a}`}catch(e){return""}}_openLink(e){e&&window.open(e,"_blank","noopener,noreferrer")}render(){if(!this.hass||!this._config)return q``;const e=this.hass.states[this._config.entity];if(!e)return q`<ha-card class="empty">${this._t("generic.unknown_entity")}: ${this._config.entity}</ha-card>`;const t=(e.attributes.articles||[]).slice(0,this.maxArticles);return 0===t.length?q`<ha-card class="empty">${this._t("news.empty")}</ha-card>`:q`
+    `}}),customElements.define("calcio-live-news",class extends oe{static get properties(){return{hass:{},_config:{}}}setConfig(e){if(!e.entity)throw new Error("Entity required");this._config=e,ge(this,e),this.maxArticles=e.max_articles?e.max_articles:5,this.hideHeader=!0===e.hide_header,this.hideImages=!0===e.hide_images}_t(e,t){return pe(e,de(this.hass,this._config),t)}getCardSize(){return 4}static getConfigElement(){return document.createElement("calcio-live-news-editor")}static getStubConfig(){return{entity:"sensor.calciolive_news",max_articles:5,hide_header:!1,hide_images:!1}}_formatDate(e){if(!e)return"";try{const t=new Date(e),i=(new Date-t)/1e3;if(i<60)return this._t("time.now");if(i<3600)return this._t("time.n_min_ago",{n:Math.floor(i/60)});if(i<86400)return this._t("time.n_h_ago",{n:Math.floor(i/3600)});if(i<604800)return this._t("time.n_d_ago",{n:Math.floor(i/86400)});const a=this._t("month."+(t.getMonth()+1));return`${t.getDate()} ${a}`}catch(e){return""}}_openLink(e){e&&window.open(e,"_blank","noopener,noreferrer")}render(){if(!this.hass||!this._config)return q``;const e=this.hass.states[this._config.entity];if(!e)return q`<ha-card class="empty">${this._t("generic.unknown_entity")}: ${this._config.entity}</ha-card>`;const t=(e.attributes.articles||[]).slice(0,this.maxArticles);return 0===t.length?q`<ha-card class="empty">${this._t("news.empty")}</ha-card>`:q`
       <ha-card>
         <div class="hero-bg"></div>
         ${this.hideHeader?"":q`
@@ -1905,7 +1973,7 @@
           `))}
         </div>
       </ha-card>
-    `}static get styles(){return s`
+    `}static get styles(){return[he,s`
       :host {
         --cl-accent: #6366f1;
         --cl-accent-2: #ec4899;
@@ -1918,11 +1986,13 @@
         border-radius: 20px;
         padding: 0;
         box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+        background: var(--cl-bg);
+        color: var(--cl-text);
       }
       ha-card.empty {
         padding: 24px;
         text-align: center;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
       }
       .hero-bg {
         position: absolute; inset: 0; z-index: 0;
@@ -1957,11 +2027,11 @@
         font-size: 18px;
         font-weight: 900;
         letter-spacing: -0.02em;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
       }
       .header-text .subtitle {
         font-size: 11px;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         margin-top: 2px;
         font-weight: 600;
       }
@@ -2008,7 +2078,7 @@
         font-weight: 700;
         letter-spacing: 0.04em;
         text-transform: uppercase;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
       }
       .news-meta .cat {
         color: var(--cl-accent);
@@ -2023,7 +2093,7 @@
         font-size: 14px;
         font-weight: 800;
         line-height: 1.3;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
         letter-spacing: -0.01em;
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -2033,14 +2103,14 @@
       .news-desc {
         font-size: 12px;
         font-weight: 500;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         line-height: 1.4;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
       }
-    `}}),window.customCards=window.customCards||[],window.customCards.push({type:"calcio-live-news",name:"Calcio Live News Card",description:"Mostra le ultime notizie di calcio (per competizione)"}),customElements.define("calcio-live-news-editor",class extends oe{static get properties(){return{_config:{type:Object},hass:{type:Object},entities:{type:Array}}}constructor(){super(),this.entities=[]}static get styles(){return s`
+    `]}}),window.customCards=window.customCards||[],window.customCards.push({type:"calcio-live-news",name:"Calcio Live News Card",description:"Mostra le ultime notizie di calcio (per competizione)"}),customElements.define("calcio-live-news-editor",class extends oe{static get properties(){return{_config:{type:Object},hass:{type:Object},entities:{type:Array}}}constructor(){super(),this.entities=[]}static get styles(){return s`
       .card-config { display: flex; flex-direction: column; gap: 16px; }
       .option { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
       label { font-size: 14px; color: var(--primary-text-color); }
@@ -2090,6 +2160,13 @@
             @change=${this._numberChanged} />
         </div>
         <div>
+          <label class="field-label">Skin</label>
+          <select data-config-value="skin" @change=${this._selectChanged}>
+            <option value="dark" ?selected=${"dark"===(this._config.skin||"dark")}>Dark</option>
+            <option value="light" ?selected=${"light"===this._config.skin}>Light</option>
+          </select>
+        </div>
+        <div>
           <label class="field-label">Language · Lingua</label>
           <select data-config-value="language" @change=${this._selectChanged}>
             <option value="" ?selected=${!this._config.language}>Auto (HA locale)</option>
@@ -2101,7 +2178,7 @@
           </select>
         </div>
       </div>
-    `}}),customElements.define("calcio-live-lineup",class extends oe{static get properties(){return{hass:{},_config:{}}}setConfig(e){if(!e.entity)throw new Error("Entity required");this._config=e,this.hideHeader=!0===e.hide_header}_t(e,t){return pe(e,de(this.hass,this._config),t)}getCardSize(){return 6}static getConfigElement(){return document.createElement("calcio-live-lineup-editor")}static getStubConfig(){return{entity:"sensor.calciolive_next",hide_header:!1}}_starters(e){return(e||[]).filter((e=>!0===e.starter))}_bench(e){return(e||[]).filter((e=>!e.starter))}_renderPlayer(e){const t=(e.short_name||e.name||"").split(" ").map((e=>e[0])).slice(0,2).join("");return q`
+    `}}),customElements.define("calcio-live-lineup",class extends oe{static get properties(){return{hass:{},_config:{}}}setConfig(e){if(!e.entity)throw new Error("Entity required");this._config=e,ge(this,e),this.hideHeader=!0===e.hide_header}_t(e,t){return pe(e,de(this.hass,this._config),t)}getCardSize(){return 6}static getConfigElement(){return document.createElement("calcio-live-lineup-editor")}static getStubConfig(){return{entity:"sensor.calciolive_next",hide_header:!1}}_starters(e){return(e||[]).filter((e=>!0===e.starter))}_bench(e){return(e||[]).filter((e=>!e.starter))}_renderPlayer(e){const t=(e.short_name||e.name||"").split(" ").map((e=>e[0])).slice(0,2).join("");return q`
       <div class="player" title="${e.name}">
         <div class="player-card">
           ${e.headshot?q`<img class="player-img" src="${e.headshot}" alt="${e.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
@@ -2173,7 +2250,7 @@
           </div>
         </div>
       </ha-card>
-    `}static get styles(){return s`
+    `}static get styles(){return[he,s`
       :host {
         --cl-accent: #6366f1;
         --cl-accent-2: #ec4899;
@@ -2187,11 +2264,13 @@
         border-radius: 20px;
         padding: 0;
         box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+        background: var(--cl-bg);
+        color: var(--cl-text);
       }
       ha-card.empty {
         padding: 24px;
         text-align: center;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
       }
       .empty-state {
         display: flex; flex-direction: column;
@@ -2199,8 +2278,8 @@
         padding: 24px;
       }
       .empty-icon { font-size: 38px; opacity: 0.4; }
-      .empty-title { font-weight: 800; color: var(--primary-text-color); }
-      .empty-sub { font-size: 12px; color: var(--secondary-text-color); }
+      .empty-title { font-weight: 800; color: var(--cl-text); }
+      .empty-sub { font-size: 12px; color: var(--cl-text-2); }
 
       .hero-bg {
         position: absolute; inset: 0; z-index: 0;
@@ -2227,11 +2306,11 @@
       .header-text .title {
         font-size: 18px; font-weight: 900;
         letter-spacing: -0.02em;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
       }
       .header-text .subtitle {
         font-size: 11px;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         margin-top: 2px;
         font-weight: 600;
       }
@@ -2262,7 +2341,7 @@
       .team-block-name {
         font-size: 13px; font-weight: 800;
         white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
       }
       .formation {
         font-size: 10px;
@@ -2307,9 +2386,9 @@
       .player-num {
         position: absolute;
         bottom: -3px; right: -4px;
-        background: #0b0f1a;
+        background: var(--cl-num-bg);
         color: white;
-        border: 2px solid var(--card-background-color, #1a1f2e);
+        border: 2px solid var(--cl-bg);
         font-size: 9px; font-weight: 800;
         min-width: 18px; height: 18px;
         border-radius: 50%;
@@ -2321,7 +2400,7 @@
         font-size: 10px; font-weight: 700;
         line-height: 1.1;
         max-width: 64px;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
         word-wrap: break-word;
         text-align: center;
       }
@@ -2330,7 +2409,7 @@
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         background: var(--cl-card-2);
         padding: 1px 5px;
         border-radius: 4px;
@@ -2339,7 +2418,7 @@
         margin-top: 16px; margin-bottom: 8px;
         font-size: 10px; font-weight: 800;
         text-transform: uppercase; letter-spacing: 0.15em;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         display: flex; align-items: center; gap: 8px;
       }
       .bench-label::after {
@@ -2353,7 +2432,7 @@
         .team-block { border-right: none; border-bottom: 1px solid var(--cl-divider); }
         .team-block:last-child { border-bottom: none; }
       }
-    `}}),window.customCards=window.customCards||[],window.customCards.push({type:"calcio-live-lineup",name:"Calcio Live Lineup Card",description:"Mostra le formazioni di entrambe le squadre della prossima/attuale partita"}),customElements.define("calcio-live-lineup-editor",class extends oe{static get properties(){return{_config:{type:Object},hass:{type:Object},entities:{type:Array}}}constructor(){super(),this.entities=[]}static get styles(){return s`
+    `]}}),window.customCards=window.customCards||[],window.customCards.push({type:"calcio-live-lineup",name:"Calcio Live Lineup Card",description:"Mostra le formazioni di entrambe le squadre della prossima/attuale partita"}),customElements.define("calcio-live-lineup-editor",class extends oe{static get properties(){return{_config:{type:Object},hass:{type:Object},entities:{type:Array}}}constructor(){super(),this.entities=[]}static get styles(){return s`
       .card-config { display: flex; flex-direction: column; gap: 16px; }
       .option { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
       label { font-size: 14px; color: var(--primary-text-color); }
@@ -2390,6 +2469,13 @@
           ></ha-switch>
         </div>
         <div>
+          <label class="field-label">Skin</label>
+          <select data-config-value="skin" @change=${this._selectChanged}>
+            <option value="dark" ?selected=${"dark"===(this._config.skin||"dark")}>Dark</option>
+            <option value="light" ?selected=${"light"===this._config.skin}>Light</option>
+          </select>
+        </div>
+        <div>
           <label class="field-label">Language · Lingua</label>
           <select data-config-value="language" @change=${this._selectChanged}>
             <option value="" ?selected=${!this._config.language}>Auto (HA locale)</option>
@@ -2401,7 +2487,7 @@
           </select>
         </div>
       </div>
-    `}}),customElements.define("calcio-live-timeline",class extends oe{static get properties(){return{hass:{},_config:{}}}setConfig(e){if(!e.entity)throw new Error("Entity required");this._config=e,this.hideHeader=!0===e.hide_header,this.reverseOrder=!0===e.reverse_order}_t(e,t){return pe(e,de(this.hass,this._config),t)}getCardSize(){return 5}static getConfigElement(){return document.createElement("calcio-live-timeline-editor")}static getStubConfig(){return{entity:"sensor.calciolive_next",hide_header:!1,reverse_order:!0}}_eventMeta(e){const t=(e.type||"").toLowerCase(),i=(e.type_text||"").toLowerCase();return i.includes("kickoff")||"kickoff"===t?{icon:"⚽",label:this._t("status.kickoff"),cls:"meta"}:i.includes("halftime")||i.includes("intervallo")?{icon:"⏸",label:this._t("status.halftime"),cls:"meta"}:i.includes("start 2nd")||i.includes("secondo tempo")?{icon:"▶",label:this._t("status.second_half"),cls:"meta"}:i.includes("end regular")||i.includes("full time")?{icon:"🏁",label:this._t("status.end"),cls:"meta"}:"goal"===t||e.scoring_play?{icon:"⚽",label:this._t("event.goal"),cls:"goal"}:i.includes("penalty")?{icon:"⚽",label:this._t("timeline.penalty"),cls:"goal"}:i.includes("yellow card")?{icon:"🟨",label:this._t("event.yellow_card"),cls:"yellow"}:i.includes("red card")?{icon:"🟥",label:this._t("event.red_card"),cls:"red"}:"substitution"===t||i.includes("substitution")?{icon:"🔄",label:this._t("event.substitution"),cls:"sub"}:i.includes("var")?{icon:"📺",label:this._t("event.var"),cls:"meta"}:{icon:"·",label:e.type_text||this._t("timeline.event"),cls:"meta"}}render(){if(!this.hass||!this._config)return q``;const e=this.hass.states[this._config.entity];if(!e)return q`<ha-card class="empty">${this._t("generic.unknown_entity")}: ${this._config.entity}</ha-card>`;const t=e.attributes.matches||[];if(0===t.length)return q`<ha-card class="empty">${this._t("generic.no_match")}</ha-card>`;const i=t[0],a=i.key_events||e.attributes.key_events||[];if(0===a.length)return q`
+    `}}),customElements.define("calcio-live-timeline",class extends oe{static get properties(){return{hass:{},_config:{}}}setConfig(e){if(!e.entity)throw new Error("Entity required");this._config=e,ge(this,e),this.hideHeader=!0===e.hide_header,this.reverseOrder=!0===e.reverse_order}_t(e,t){return pe(e,de(this.hass,this._config),t)}getCardSize(){return 5}static getConfigElement(){return document.createElement("calcio-live-timeline-editor")}static getStubConfig(){return{entity:"sensor.calciolive_next",hide_header:!1,reverse_order:!0}}_eventMeta(e){const t=(e.type||"").toLowerCase(),i=(e.type_text||"").toLowerCase();return i.includes("kickoff")||"kickoff"===t?{icon:"⚽",label:this._t("status.kickoff"),cls:"meta"}:i.includes("halftime")||i.includes("intervallo")?{icon:"⏸",label:this._t("status.halftime"),cls:"meta"}:i.includes("start 2nd")||i.includes("secondo tempo")?{icon:"▶",label:this._t("status.second_half"),cls:"meta"}:i.includes("end regular")||i.includes("full time")?{icon:"🏁",label:this._t("status.end"),cls:"meta"}:"goal"===t||e.scoring_play?{icon:"⚽",label:this._t("event.goal"),cls:"goal"}:i.includes("penalty")?{icon:"⚽",label:this._t("timeline.penalty"),cls:"goal"}:i.includes("yellow card")?{icon:"🟨",label:this._t("event.yellow_card"),cls:"yellow"}:i.includes("red card")?{icon:"🟥",label:this._t("event.red_card"),cls:"red"}:"substitution"===t||i.includes("substitution")?{icon:"🔄",label:this._t("event.substitution"),cls:"sub"}:i.includes("var")?{icon:"📺",label:this._t("event.var"),cls:"meta"}:{icon:"·",label:e.type_text||this._t("timeline.event"),cls:"meta"}}render(){if(!this.hass||!this._config)return q``;const e=this.hass.states[this._config.entity];if(!e)return q`<ha-card class="empty">${this._t("generic.unknown_entity")}: ${this._config.entity}</ha-card>`;const t=e.attributes.matches||[];if(0===t.length)return q`<ha-card class="empty">${this._t("generic.no_match")}</ha-card>`;const i=t[0],a=i.key_events||e.attributes.key_events||[];if(0===a.length)return q`
         <ha-card class="empty">
           <div class="hero-bg"></div>
           <div class="empty-state">
@@ -2448,7 +2534,7 @@
             `}))}
         </div>
       </ha-card>
-    `}static get styles(){return s`
+    `}static get styles(){return[he,s`
       :host {
         --cl-accent: #6366f1;
         --cl-accent-2: #ec4899;
@@ -2465,11 +2551,13 @@
         border-radius: 20px;
         padding: 0;
         box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+        background: var(--cl-bg);
+        color: var(--cl-text);
       }
       ha-card.empty {
         padding: 24px;
         text-align: center;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
       }
       .empty-state {
         display: flex; flex-direction: column;
@@ -2477,8 +2565,8 @@
         padding: 24px;
       }
       .empty-icon { font-size: 38px; opacity: 0.4; }
-      .empty-title { font-weight: 800; color: var(--primary-text-color); }
-      .empty-sub { font-size: 12px; color: var(--secondary-text-color); }
+      .empty-title { font-weight: 800; color: var(--cl-text); }
+      .empty-sub { font-size: 12px; color: var(--cl-text-2); }
 
       .hero-bg {
         position: absolute; inset: 0; z-index: 0;
@@ -2504,12 +2592,12 @@
       .header-text .title {
         font-size: 18px; font-weight: 900;
         letter-spacing: -0.02em;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
       }
       .header-text .subtitle {
         display: flex; align-items: center; gap: 6px;
         font-size: 12px;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         margin-top: 2px;
         font-weight: 700;
       }
@@ -2531,7 +2619,7 @@
         text-align: right;
         font-size: 11px;
         font-weight: 700;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         font-variant-numeric: tabular-nums;
         padding: 8px 0;
       }
@@ -2556,7 +2644,7 @@
         z-index: 1;
         width: 26px; height: 26px;
         border-radius: 50%;
-        background: var(--card-background-color, #1a1f2e);
+        background: var(--cl-bg);
         border: 2px solid var(--cl-divider);
         display: flex; align-items: center; justify-content: center;
         font-size: 12px;
@@ -2607,7 +2695,7 @@
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
       }
       .tl-row.type-goal .tl-label { color: var(--cl-gold); }
       .tl-row.type-yellow .tl-label { color: #f59e0b; }
@@ -2616,7 +2704,7 @@
       .tl-team {
         font-size: 10px;
         font-weight: 700;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -2625,18 +2713,18 @@
       .tl-athletes {
         font-size: 13px;
         font-weight: 700;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
         margin-top: 3px;
         line-height: 1.3;
       }
       .tl-text {
         font-size: 11px;
         font-weight: 500;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         margin-top: 3px;
         line-height: 1.4;
       }
-    `}}),window.customCards=window.customCards||[],window.customCards.push({type:"calcio-live-timeline",name:"Calcio Live Timeline Card",description:"Cronologia minuto-per-minuto degli eventi della partita"}),customElements.define("calcio-live-timeline-editor",class extends oe{static get properties(){return{_config:{type:Object},hass:{type:Object},entities:{type:Array}}}constructor(){super(),this.entities=[]}static get styles(){return s`
+    `]}}),window.customCards=window.customCards||[],window.customCards.push({type:"calcio-live-timeline",name:"Calcio Live Timeline Card",description:"Cronologia minuto-per-minuto degli eventi della partita"}),customElements.define("calcio-live-timeline-editor",class extends oe{static get properties(){return{_config:{type:Object},hass:{type:Object},entities:{type:Array}}}constructor(){super(),this.entities=[]}static get styles(){return s`
       .card-config { display: flex; flex-direction: column; gap: 16px; }
       .option { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
       label { font-size: 14px; color: var(--primary-text-color); }
@@ -2681,6 +2769,13 @@
           ></ha-switch>
         </div>
         <div>
+          <label class="field-label">Skin</label>
+          <select data-config-value="skin" @change=${this._selectChanged}>
+            <option value="dark" ?selected=${"dark"===(this._config.skin||"dark")}>Dark</option>
+            <option value="light" ?selected=${"light"===this._config.skin}>Light</option>
+          </select>
+        </div>
+        <div>
           <label class="field-label">Language · Lingua</label>
           <select data-config-value="language" @change=${this._selectChanged}>
             <option value="" ?selected=${!this._config.language}>Auto (HA locale)</option>
@@ -2692,8 +2787,8 @@
           </select>
         </div>
       </div>
-    `}}),customElements.define("calcio-live-bracket",class extends oe{static get properties(){return{hass:{},_config:{}}}setConfig(e){if(!e.entity)throw new Error("Entity required");this._config=e,this.hideHeader=!0===e.hide_header,this.compactMode=!0===e.compact,this._cardStyle="tree"===e.style?"tree":"list",this.treeShowPlayoffs=!0===e.tree_show_playoffs}_t(e,t){return pe(e,de(this.hass,this._config),t)}_formatDate(e){if(!e)return"";try{const t=new Date(e),i=this._t("month."+(t.getMonth()+1));return`${t.getDate()} ${i}`}catch(e){return""}}_localizeRoundName(e){const t={Final:"round.final",Semifinals:"round.semifinals",Quarterfinals:"round.quarterfinals","Round of 16":"round.r16","Round of 32":"round.r32","Knockout Playoffs":"round.knockout_playoffs","Preliminary Round":"round.preliminary"}[e.name];return t?this._t(t):e.name}getCardSize(){return 6}static getConfigElement(){return document.createElement("calcio-live-bracket-editor")}static getStubConfig(){return{entity:"sensor.calciolive_bracket",hide_header:!1,compact:!1,style:"list"}}_formatScore(e){return null==e?"-":String(e)}_renderTie(e){const t=e.team_a||{},i=e.team_b||{},a=e.leg1,n=e.leg2,s=e.single,o=e.winner_team,r=o&&t.name&&o===t.name,l=o&&i.name&&o===i.name,c=(e,t)=>e&&t&&t.name?e.home_team===t.name?e.home_score:e.away_team===t.name?e.away_score:null:null,d=c(a,t),p=c(a,i),h=c(n,t),g=c(n,i),u=c(s,t),m=c(s,i),f=a&&"in"===a.state||n&&"in"===n.state||s&&"in"===s.state,v=!a&&!s;return q`
-      <div class="tie ${f?"live":""} ${e.completed?"done":""}">
+    `}}),customElements.define("calcio-live-bracket",class extends oe{static get properties(){return{hass:{},_config:{}}}setConfig(e){if(!e.entity)throw new Error("Entity required");this._config=e,ge(this,e),this.hideHeader=!0===e.hide_header,this.compactMode=!0===e.compact,this._cardStyle="tree"===e.style?"tree":"list",this.treeShowPlayoffs=!0===e.tree_show_playoffs}_t(e,t){return pe(e,de(this.hass,this._config),t)}_formatDate(e){if(!e)return"";try{const t=new Date(e),i=this._t("month."+(t.getMonth()+1));return`${t.getDate()} ${i}`}catch(e){return""}}_localizeRoundName(e){const t={Final:"round.final",Semifinals:"round.semifinals",Quarterfinals:"round.quarterfinals","Round of 16":"round.r16","Round of 32":"round.r32","Knockout Playoffs":"round.knockout_playoffs","Preliminary Round":"round.preliminary"}[e.name];return t?this._t(t):e.name}getCardSize(){return 6}static getConfigElement(){return document.createElement("calcio-live-bracket-editor")}static getStubConfig(){return{entity:"sensor.calciolive_bracket",hide_header:!1,compact:!1,style:"list"}}_formatScore(e){return null==e?"-":String(e)}_renderTie(e){const t=e.team_a||{},i=e.team_b||{},a=e.leg1,n=e.leg2,s=e.single,o=e.winner_team,r=o&&t.name&&o===t.name,l=o&&i.name&&o===i.name,c=(e,t)=>e&&t&&t.name?e.home_team===t.name?e.home_score:e.away_team===t.name?e.away_score:null:null,d=c(a,t),p=c(a,i),h=c(n,t),g=c(n,i),u=c(s,t),f=c(s,i),m=a&&"in"===a.state||n&&"in"===n.state||s&&"in"===s.state,v=!a&&!s;return q`
+      <div class="tie ${m?"live":""} ${e.completed?"done":""}">
         <div class="tie-row ${r?"winner":""} ${l?"loser":""}">
           <img src="${t.logo}" alt="${t.name}" />
           <span class="tname">${t.name||"TBD"}</span>
@@ -2708,17 +2803,17 @@
           <img src="${i.logo}" alt="${i.name}" />
           <span class="tname">${i.name||"TBD"}</span>
           <span class="legs">
-            ${s?q`<span class="leg">${this._formatScore(m)}</span>`:q`
+            ${s?q`<span class="leg">${this._formatScore(f)}</span>`:q`
               <span class="leg">${this._formatScore(p)}</span>
               <span class="leg">${this._formatScore(g)}</span>
             `}
           </span>
         </div>
         <div class="tie-foot">
-          ${f?q`<span class="live-badge"><span class="dot"></span>LIVE</span>`:""}
+          ${m?q`<span class="live-badge"><span class="dot"></span>LIVE</span>`:""}
           ${e.aggregate?q`<span class="agg">${this._t("bracket.agg")} ${e.aggregate}</span>`:""}
           ${e.tied?q`<span class="agg tied">${this._t("bracket.tied_agg")}</span>`:""}
-          ${e.completed||f||!e.first_leg_date?"":q`<span class="date">${this._formatDate(e.first_leg_date)}</span>`}
+          ${e.completed||m||!e.first_leg_date?"":q`<span class="date">${this._formatDate(e.first_leg_date)}</span>`}
           ${v?q`<span class="date pending">${this._t("bracket.tbd")}</span>`:""}
         </div>
       </div>
@@ -2825,7 +2920,7 @@
           </div>
         `}
       </ha-card>
-    `}static get styles(){return s`
+    `}static get styles(){return[he,s`
       :host {
         --cl-accent: #6366f1;
         --cl-accent-2: #ec4899;
@@ -2843,11 +2938,13 @@
         border-radius: 20px;
         padding: 0;
         box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+        background: var(--cl-bg);
+        color: var(--cl-text);
       }
       ha-card.empty {
         padding: 24px;
         text-align: center;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
       }
       .empty-state {
         display: flex; flex-direction: column;
@@ -2855,8 +2952,8 @@
         padding: 24px;
       }
       .empty-icon { font-size: 38px; opacity: 0.4; }
-      .empty-title { font-weight: 800; color: var(--primary-text-color); }
-      .empty-sub { font-size: 12px; color: var(--secondary-text-color); }
+      .empty-title { font-weight: 800; color: var(--cl-text); }
+      .empty-sub { font-size: 12px; color: var(--cl-text-2); }
 
       .hero-bg {
         position: absolute; inset: 0; z-index: 0;
@@ -2883,18 +2980,18 @@
       .header-text .title {
         font-size: 18px; font-weight: 900;
         letter-spacing: -0.02em;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
       }
       .header-text .title-it {
         font-size: 13px;
         font-weight: 600;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         margin-left: 4px;
         opacity: 0.85;
       }
       .header-text .subtitle {
         font-size: 11px;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         margin-top: 2px;
         font-weight: 600;
       }
@@ -2936,7 +3033,7 @@
       .round-name-it {
         font-size: 9px;
         font-weight: 600;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         opacity: 0.85;
         line-height: 1;
       }
@@ -2989,14 +3086,14 @@
       .tie-row .tname {
         font-size: 13px;
         font-weight: 600;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         letter-spacing: -0.01em;
       }
       .tie-row.winner .tname { font-weight: 800; }
-      .tie-row.loser .tname { color: var(--secondary-text-color); }
+      .tie-row.loser .tname { color: var(--cl-text-2); }
       .tie-row.loser img { opacity: 0.55; }
 
       .legs {
@@ -3012,7 +3109,7 @@
         padding: 2px 6px;
         border-radius: 6px;
         background: rgba(255,255,255,0.06);
-        color: var(--primary-text-color);
+        color: var(--cl-text);
       }
       .tie-row.winner .leg {
         background: rgba(16,185,129,0.2);
@@ -3049,7 +3146,7 @@
       .date {
         font-size: 10px;
         font-weight: 700;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         text-transform: uppercase;
         letter-spacing: 0.06em;
       }
@@ -3151,7 +3248,7 @@
       .tree-col-label-it {
         font-size: 8px;
         font-weight: 600;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         line-height: 1;
         opacity: 0.85;
       }
@@ -3189,7 +3286,7 @@
 
       /* Mini tie card */
       .mini-tie {
-        background: var(--card-background-color, rgba(20, 24, 36, 0.6));
+        background: var(--cl-bg);
         border: 1.5px solid var(--cl-accent);
         border-radius: 10px;
         padding: 7px 9px;
@@ -3237,7 +3334,7 @@
       .mini-team .abbr {
         font-size: 11px;
         font-weight: 700;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -3249,7 +3346,7 @@
         font-variant-numeric: tabular-nums;
         min-width: 14px;
         text-align: right;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
       }
       .mini-team.winner .abbr {
         font-weight: 800;
@@ -3258,7 +3355,7 @@
         color: var(--cl-green);
       }
       .mini-team.loser .abbr {
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
       }
       .mini-team.loser img {
         opacity: 0.5;
@@ -3348,7 +3445,7 @@
         position: relative;
         font-size: 11px;
         font-weight: 800;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         padding: 8px 14px;
         background: var(--cl-card-2);
         border: 1px dashed var(--cl-glass-border);
@@ -3384,7 +3481,7 @@
           padding: 12px;
         }
       }
-    `}}),window.customCards=window.customCards||[],window.customCards.push({type:"calcio-live-bracket",name:"Calcio Live Bracket Card",description:"Tabellone della fase a eliminazione diretta (Champions, Europa, Coppe)"}),customElements.define("calcio-live-bracket-editor",class extends oe{static get properties(){return{_config:{type:Object},hass:{type:Object},entities:{type:Array}}}constructor(){super(),this.entities=[]}static get styles(){return s`
+    `]}}),window.customCards=window.customCards||[],window.customCards.push({type:"calcio-live-bracket",name:"Calcio Live Bracket Card",description:"Tabellone della fase a eliminazione diretta (Champions, Europa, Coppe)"}),customElements.define("calcio-live-bracket-editor",class extends oe{static get properties(){return{_config:{type:Object},hass:{type:Object},entities:{type:Array}}}constructor(){super(),this.entities=[]}static get styles(){return s`
       .card-config { display: flex; flex-direction: column; gap: 16px; }
       .option { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
       label { font-size: 14px; color: var(--primary-text-color); }
@@ -3442,6 +3539,13 @@
             data-config-value="tree_show_playoffs"
             @change=${this._switchChanged}
           ></ha-switch>
+        </div>
+        <div>
+          <label class="field-label">Skin</label>
+          <select data-config-value="skin" @change=${this._selectChanged}>
+            <option value="dark" ?selected=${"dark"===(this._config.skin||"dark")}>Dark</option>
+            <option value="light" ?selected=${"light"===this._config.skin}>Light</option>
+          </select>
         </div>
         <div>
           <label class="field-label">Language · Lingua</label>

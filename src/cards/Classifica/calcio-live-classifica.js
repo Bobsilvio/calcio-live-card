@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 import { t, resolveLang } from "../../i18n.js";
+import { skinStyles, applySkin } from "../../skins.js";
 
 // Helper per generare un range inclusivo
 const range = (a, b) => Array.from({ length: b - a + 1 }, (_, i) => a + i);
@@ -132,6 +133,7 @@ class CalcioLiveStandingsCard extends LitElement {
       throw new Error("Entity required");
     }
     this._config = config;
+    applySkin(this, config);
     this.maxTeamsVisible = config.max_teams_visible ? config.max_teams_visible : 10;
     this.hideHeader = config.hide_header || false;
     this.selectedGroup = config.selected_group || '';
@@ -585,33 +587,20 @@ class CalcioLiveStandingsCard extends LitElement {
   }
 
   static get styles() {
-    return css`
-      :host {
-        --cl-accent: #6366f1;
-        --cl-accent-2: #ec4899;
-        --cl-live: #ef4444;
-        --cl-green: #10b981;
-        --cl-gold: #fbbf24;
-        --cl-gold-glow: rgba(251,191,36,0.4);
-        --cl-gold-text: #fde047;
-        --cl-card-2: rgba(255,255,255,0.05);
-        --cl-divider: rgba(255,255,255,0.08);
-        --cl-cl: #6366f1;
-        --cl-el: #f97316;
-        --cl-rel: #ef4444;
-        --cl-conf: #a855f7;
-      }
+    return [skinStyles, css`
       ha-card {
         position: relative;
         overflow: hidden;
         border-radius: 20px;
         padding: 0;
-        box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+        background: var(--cl-bg);
+        color: var(--cl-text);
+        box-shadow: 0 4px 24px var(--cl-shadow);
       }
       ha-card.empty {
         padding: 24px;
         text-align: center;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
       }
 
       .top-bar {
@@ -688,7 +677,7 @@ class CalcioLiveStandingsCard extends LitElement {
         border-radius: 999px;
         background: rgba(255,255,255,0.10);
         border: 1px solid rgba(255,255,255,0.12);
-        color: var(--primary-text-color);
+        color: var(--cl-text);
         backdrop-filter: blur(8px);
       }
       .top-bar h2 {
@@ -696,13 +685,13 @@ class CalcioLiveStandingsCard extends LitElement {
         font-size: 20px;
         font-weight: 900;
         letter-spacing: -0.03em;
-        background: linear-gradient(135deg, var(--primary-text-color), var(--cl-accent));
+        background: linear-gradient(135deg, var(--cl-text), var(--cl-accent));
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
       }
       .top-bar .sub {
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         font-size: 12px;
         margin-top: 4px;
         font-weight: 500;
@@ -726,7 +715,7 @@ class CalcioLiveStandingsCard extends LitElement {
         text-align: center;
         font-size: 10px;
         font-weight: 800;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         text-transform: uppercase;
         letter-spacing: 0.1em;
         border-bottom: 1px solid var(--cl-divider);
@@ -748,7 +737,7 @@ class CalcioLiveStandingsCard extends LitElement {
         border-bottom: 1px solid var(--cl-divider);
         font-variant-numeric: tabular-nums;
         font-weight: 600;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
       }
       .standings-table tbody tr:last-child td { border-bottom: none; }
       .standings-table tbody td:first-child { padding-left: 14px; text-align: left; }
@@ -797,7 +786,7 @@ class CalcioLiveStandingsCard extends LitElement {
       }
       .zone-default .rank-num {
         background: var(--cl-card-2);
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
       }
 
       .team-cell {
@@ -844,7 +833,7 @@ class CalcioLiveStandingsCard extends LitElement {
         font-weight: 900;
         letter-spacing: 0.12em;
         text-transform: uppercase;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
         background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(236,72,153,0.06));
         border-bottom: 1px solid var(--cl-divider);
         display: flex;
@@ -860,7 +849,7 @@ class CalcioLiveStandingsCard extends LitElement {
         padding: 2px 7px;
         border-radius: 999px;
         background: rgba(255,255,255,0.08);
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         border: 1px solid var(--cl-divider);
       }
       .groups-grid-cup .group-cell {
@@ -909,7 +898,7 @@ class CalcioLiveStandingsCard extends LitElement {
       .legend-item {
         display: flex; align-items: center; gap: 6px;
         font-size: 10px;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         font-weight: 700;
         letter-spacing: 0.04em;
       }
@@ -927,7 +916,7 @@ class CalcioLiveStandingsCard extends LitElement {
         top: 12px;
         left: 50%;
         transform: translateX(-50%);
-        background: #0b0f1a;
+        background: var(--cl-toast-bg);
         color: #ffffff;
         padding: 10px 18px;
         border-radius: 14px;
@@ -965,7 +954,7 @@ class CalcioLiveStandingsCard extends LitElement {
         90%  { opacity: 1; transform: translate(-50%, 0) scale(1); }
         100% { opacity: 0; transform: translate(-50%, -10px) scale(0.95); }
       }
-    `;
+    `];
   }
 }
 

@@ -1,5 +1,6 @@
 import { LitElement, html, svg, css } from "lit-element";
 import { t, resolveLang } from "../../i18n.js";
+import { skinStyles, applySkin } from "../../skins.js";
 
 class CalcioLiveBracketCard extends LitElement {
   static get properties() {
@@ -12,6 +13,7 @@ class CalcioLiveBracketCard extends LitElement {
   setConfig(config) {
     if (!config.entity) throw new Error("Entity required");
     this._config = config;
+    applySkin(this, config);
     this.hideHeader = config.hide_header === true;
     this.compactMode = config.compact === true;
     this._cardStyle = config.style === 'tree' ? 'tree' : 'list';
@@ -342,7 +344,7 @@ class CalcioLiveBracketCard extends LitElement {
   }
 
   static get styles() {
-    return css`
+    return [skinStyles, css`
       :host {
         --cl-accent: #6366f1;
         --cl-accent-2: #ec4899;
@@ -360,11 +362,13 @@ class CalcioLiveBracketCard extends LitElement {
         border-radius: 20px;
         padding: 0;
         box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+        background: var(--cl-bg);
+        color: var(--cl-text);
       }
       ha-card.empty {
         padding: 24px;
         text-align: center;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
       }
       .empty-state {
         display: flex; flex-direction: column;
@@ -372,8 +376,8 @@ class CalcioLiveBracketCard extends LitElement {
         padding: 24px;
       }
       .empty-icon { font-size: 38px; opacity: 0.4; }
-      .empty-title { font-weight: 800; color: var(--primary-text-color); }
-      .empty-sub { font-size: 12px; color: var(--secondary-text-color); }
+      .empty-title { font-weight: 800; color: var(--cl-text); }
+      .empty-sub { font-size: 12px; color: var(--cl-text-2); }
 
       .hero-bg {
         position: absolute; inset: 0; z-index: 0;
@@ -400,18 +404,18 @@ class CalcioLiveBracketCard extends LitElement {
       .header-text .title {
         font-size: 18px; font-weight: 900;
         letter-spacing: -0.02em;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
       }
       .header-text .title-it {
         font-size: 13px;
         font-weight: 600;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         margin-left: 4px;
         opacity: 0.85;
       }
       .header-text .subtitle {
         font-size: 11px;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         margin-top: 2px;
         font-weight: 600;
       }
@@ -453,7 +457,7 @@ class CalcioLiveBracketCard extends LitElement {
       .round-name-it {
         font-size: 9px;
         font-weight: 600;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         opacity: 0.85;
         line-height: 1;
       }
@@ -506,14 +510,14 @@ class CalcioLiveBracketCard extends LitElement {
       .tie-row .tname {
         font-size: 13px;
         font-weight: 600;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         letter-spacing: -0.01em;
       }
       .tie-row.winner .tname { font-weight: 800; }
-      .tie-row.loser .tname { color: var(--secondary-text-color); }
+      .tie-row.loser .tname { color: var(--cl-text-2); }
       .tie-row.loser img { opacity: 0.55; }
 
       .legs {
@@ -529,7 +533,7 @@ class CalcioLiveBracketCard extends LitElement {
         padding: 2px 6px;
         border-radius: 6px;
         background: rgba(255,255,255,0.06);
-        color: var(--primary-text-color);
+        color: var(--cl-text);
       }
       .tie-row.winner .leg {
         background: rgba(16,185,129,0.2);
@@ -566,7 +570,7 @@ class CalcioLiveBracketCard extends LitElement {
       .date {
         font-size: 10px;
         font-weight: 700;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         text-transform: uppercase;
         letter-spacing: 0.06em;
       }
@@ -668,7 +672,7 @@ class CalcioLiveBracketCard extends LitElement {
       .tree-col-label-it {
         font-size: 8px;
         font-weight: 600;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         line-height: 1;
         opacity: 0.85;
       }
@@ -706,7 +710,7 @@ class CalcioLiveBracketCard extends LitElement {
 
       /* Mini tie card */
       .mini-tie {
-        background: var(--card-background-color, rgba(20, 24, 36, 0.6));
+        background: var(--cl-bg);
         border: 1.5px solid var(--cl-accent);
         border-radius: 10px;
         padding: 7px 9px;
@@ -754,7 +758,7 @@ class CalcioLiveBracketCard extends LitElement {
       .mini-team .abbr {
         font-size: 11px;
         font-weight: 700;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -766,7 +770,7 @@ class CalcioLiveBracketCard extends LitElement {
         font-variant-numeric: tabular-nums;
         min-width: 14px;
         text-align: right;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
       }
       .mini-team.winner .abbr {
         font-weight: 800;
@@ -775,7 +779,7 @@ class CalcioLiveBracketCard extends LitElement {
         color: var(--cl-green);
       }
       .mini-team.loser .abbr {
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
       }
       .mini-team.loser img {
         opacity: 0.5;
@@ -865,7 +869,7 @@ class CalcioLiveBracketCard extends LitElement {
         position: relative;
         font-size: 11px;
         font-weight: 800;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         padding: 8px 14px;
         background: var(--cl-card-2);
         border: 1px dashed var(--cl-glass-border);
@@ -901,7 +905,7 @@ class CalcioLiveBracketCard extends LitElement {
           padding: 12px;
         }
       }
-    `;
+    `];
   }
 }
 

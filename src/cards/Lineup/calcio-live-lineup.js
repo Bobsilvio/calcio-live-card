@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 import { t, resolveLang } from "../../i18n.js";
+import { skinStyles, applySkin } from "../../skins.js";
 
 class CalcioLiveLineupCard extends LitElement {
   static get properties() {
@@ -12,6 +13,7 @@ class CalcioLiveLineupCard extends LitElement {
   setConfig(config) {
     if (!config.entity) throw new Error("Entity required");
     this._config = config;
+    applySkin(this, config);
     this.hideHeader = config.hide_header === true;
   }
 
@@ -139,7 +141,7 @@ class CalcioLiveLineupCard extends LitElement {
   }
 
   static get styles() {
-    return css`
+    return [skinStyles, css`
       :host {
         --cl-accent: #6366f1;
         --cl-accent-2: #ec4899;
@@ -153,11 +155,13 @@ class CalcioLiveLineupCard extends LitElement {
         border-radius: 20px;
         padding: 0;
         box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+        background: var(--cl-bg);
+        color: var(--cl-text);
       }
       ha-card.empty {
         padding: 24px;
         text-align: center;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
       }
       .empty-state {
         display: flex; flex-direction: column;
@@ -165,8 +169,8 @@ class CalcioLiveLineupCard extends LitElement {
         padding: 24px;
       }
       .empty-icon { font-size: 38px; opacity: 0.4; }
-      .empty-title { font-weight: 800; color: var(--primary-text-color); }
-      .empty-sub { font-size: 12px; color: var(--secondary-text-color); }
+      .empty-title { font-weight: 800; color: var(--cl-text); }
+      .empty-sub { font-size: 12px; color: var(--cl-text-2); }
 
       .hero-bg {
         position: absolute; inset: 0; z-index: 0;
@@ -193,11 +197,11 @@ class CalcioLiveLineupCard extends LitElement {
       .header-text .title {
         font-size: 18px; font-weight: 900;
         letter-spacing: -0.02em;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
       }
       .header-text .subtitle {
         font-size: 11px;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         margin-top: 2px;
         font-weight: 600;
       }
@@ -228,7 +232,7 @@ class CalcioLiveLineupCard extends LitElement {
       .team-block-name {
         font-size: 13px; font-weight: 800;
         white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
       }
       .formation {
         font-size: 10px;
@@ -273,9 +277,9 @@ class CalcioLiveLineupCard extends LitElement {
       .player-num {
         position: absolute;
         bottom: -3px; right: -4px;
-        background: #0b0f1a;
+        background: var(--cl-num-bg);
         color: white;
-        border: 2px solid var(--card-background-color, #1a1f2e);
+        border: 2px solid var(--cl-bg);
         font-size: 9px; font-weight: 800;
         min-width: 18px; height: 18px;
         border-radius: 50%;
@@ -287,7 +291,7 @@ class CalcioLiveLineupCard extends LitElement {
         font-size: 10px; font-weight: 700;
         line-height: 1.1;
         max-width: 64px;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
         word-wrap: break-word;
         text-align: center;
       }
@@ -296,7 +300,7 @@ class CalcioLiveLineupCard extends LitElement {
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         background: var(--cl-card-2);
         padding: 1px 5px;
         border-radius: 4px;
@@ -305,7 +309,7 @@ class CalcioLiveLineupCard extends LitElement {
         margin-top: 16px; margin-bottom: 8px;
         font-size: 10px; font-weight: 800;
         text-transform: uppercase; letter-spacing: 0.15em;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         display: flex; align-items: center; gap: 8px;
       }
       .bench-label::after {
@@ -319,7 +323,7 @@ class CalcioLiveLineupCard extends LitElement {
         .team-block { border-right: none; border-bottom: 1px solid var(--cl-divider); }
         .team-block:last-child { border-bottom: none; }
       }
-    `;
+    `];
   }
 }
 

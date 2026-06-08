@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 import { t, resolveLang } from "../../i18n.js";
+import { skinStyles, applySkin } from "../../skins.js";
 
 class CalcioLiveTodayMatchesCard extends LitElement {
   static get properties() {
@@ -31,6 +32,7 @@ class CalcioLiveTodayMatchesCard extends LitElement {
       throw new Error("Entity required");
     }
     this._config = config;
+    applySkin(this, config);
     this.maxEventsVisible = config.max_events_visible ? config.max_events_visible : 5;
     this.maxEventsTotal = config.max_events_total ? config.max_events_total : 50;
     this.showFinishedMatches = config.show_finished_matches !== undefined ? config.show_finished_matches : true;
@@ -430,7 +432,7 @@ class CalcioLiveTodayMatchesCard extends LitElement {
   }
 
   static get styles() {
-    return css`
+    return [skinStyles, css`
       :host {
         --cl-accent: #6366f1;
         --cl-accent-2: #ec4899;
@@ -449,11 +451,13 @@ class CalcioLiveTodayMatchesCard extends LitElement {
         border-radius: 20px;
         padding: 0;
         box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+        background: var(--cl-bg);
+        color: var(--cl-text);
       }
       ha-card.empty {
         padding: 24px;
         text-align: center;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
       }
       .hero-bg {
         position: absolute;
@@ -492,14 +496,14 @@ class CalcioLiveTodayMatchesCard extends LitElement {
         font-size: 16px;
         font-weight: 800;
         letter-spacing: -0.02em;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
       .league-dates {
         font-size: 11px;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         margin-top: 2px;
         font-weight: 500;
       }
@@ -525,7 +529,7 @@ class CalcioLiveTodayMatchesCard extends LitElement {
         font-size: 10px;
         text-transform: uppercase;
         letter-spacing: 0.15em;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         font-weight: 800;
         display: flex; align-items: center; gap: 8px;
       }
@@ -594,7 +598,7 @@ class CalcioLiveTodayMatchesCard extends LitElement {
 
       .match-time {
         font-size: 11px;
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         font-weight: 700;
         font-variant-numeric: tabular-nums;
         min-width: 44px;
@@ -625,23 +629,23 @@ class CalcioLiveTodayMatchesCard extends LitElement {
         font-weight: 600;
         flex: 1;
         letter-spacing: -0.01em;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
       .match-team .name.winner { font-weight: 800; }
-      .match-team .name.loser { color: var(--secondary-text-color); }
+      .match-team .name.loser { color: var(--cl-text-2); }
       .match-team .score {
         font-size: 14px;
         font-weight: 800;
         font-variant-numeric: tabular-nums;
         min-width: 22px;
         text-align: right;
-        color: var(--primary-text-color);
+        color: var(--cl-text);
       }
       .match-team .score.winner { color: var(--cl-accent); }
-      .match-team .score.loser { color: var(--secondary-text-color); opacity: 0.6; }
+      .match-team .score.loser { color: var(--cl-text-2); opacity: 0.6; }
       .row-extras {
         display: flex;
         gap: 6px;
@@ -663,7 +667,7 @@ class CalcioLiveTodayMatchesCard extends LitElement {
       }
       .tv-chip svg { width: 10px; height: 10px; }
       .match-status-icon {
-        color: var(--secondary-text-color);
+        color: var(--cl-text-2);
         font-size: 18px;
         opacity: 0.5;
         transition: all 0.2s;
@@ -680,7 +684,7 @@ class CalcioLiveTodayMatchesCard extends LitElement {
         top: 12px;
         left: 50%;
         transform: translateX(-50%);
-        background: #0b0f1a;
+        background: var(--cl-toast-bg);
         color: #ffffff;
         padding: 10px 18px;
         border-radius: 14px;
@@ -717,7 +721,7 @@ class CalcioLiveTodayMatchesCard extends LitElement {
         90%  { opacity: 1; transform: translate(-50%, 0) scale(1); }
         100% { opacity: 0; transform: translate(-50%, -10px) scale(0.95); }
       }
-    `;
+    `];
   }
 }
 
